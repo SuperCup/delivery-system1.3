@@ -1,0 +1,24 @@
+[
+  {
+    "id": "PKG-001",
+    "name": "销售日报",
+    "ownerDepartment": "销售部",
+    "version": "1.0.0",
+    "schema": [
+      { "field": "date", "type": "string" },
+      { "field": "amount", "type": "number" }
+    ],
+    "rowCount": 12000
+  },
+  {
+    "id": "PKG-002",
+    "name": "客户对账单",
+    "ownerDepartment": "财务部",
+    "version": "2.1.3",
+    "schema": [
+      { "field": "customerId", "type": "string" },
+      { "field": "balance", "type": "number" }
+    ],
+    "rowCount": 5400
+  }
+]

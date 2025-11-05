@@ -1,0 +1,6 @@
+[
+  { "id": "tool-excel", "name": "Excel导出助手", "category": "数据处理", "status": "已内置" },
+  { "id": "tool-mapper", "name": "字段映射器", "category": "数据治理", "status": "可安装" },
+  { "id": "tool-compare", "name": "差异对比", "category": "分析", "status": "可安装" },
+  { "id": "tool-report", "name": "报表模板中心", "category": "报表", "status": "可安装" }
+]

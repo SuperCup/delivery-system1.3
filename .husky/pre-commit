@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# 运行 ESLint 检查，可选执行格式化
+npm run lint
+npm run format --if-present

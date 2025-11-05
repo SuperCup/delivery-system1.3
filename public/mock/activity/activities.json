@@ -1,0 +1,105 @@
+[
+  {
+    "id": "A-202511-001",
+    "clientId": "C-003",
+    "name": "2025年11月康师傅双十一狂欢活动",
+    "status": "进行中",
+    "startTime": "2025-11-01 00:00:00",
+    "endTime": "2025-11-11 23:59:59",
+    "platforms": ["天猫", "京东"],
+    "batchSummary": [
+      { "platform": "天猫", "count": 3 },
+      { "platform": "京东", "count": 2 }
+    ],
+    "createdBy": "张三",
+    "createdAt": "2025-10-20 09:30:00"
+  },
+  {
+    "id": "A-202509-004",
+    "clientId": "C-001",
+    "name": "2025年达能秋季新品推广",
+    "status": "进行中",
+    "startTime": "2025-09-10 00:00:00",
+    "endTime": "2025-09-30 23:59:59",
+    "platforms": ["抖音", "微信"],
+    "batchSummary": [
+      { "platform": "抖音", "count": 2 },
+      { "platform": "微信", "count": 1 }
+    ],
+    "createdBy": "运营A",
+    "createdAt": "2025-08-28 11:00:00"
+  },
+  {
+    "id": "A-202511-005",
+    "clientId": "C-002",
+    "name": "2025年伊利双十一乳品大促",
+    "status": "草稿",
+    "startTime": "2025-11-01 00:00:00",
+    "endTime": "2025-11-12 23:59:59",
+    "platforms": ["天猫", "京东", "美团"],
+    "batchSummary": [
+      { "platform": "天猫", "count": 1 },
+      { "platform": "京东", "count": 1 },
+      { "platform": "美团", "count": 1 }
+    ],
+    "createdBy": "运营B",
+    "createdAt": "2025-10-01 08:30:00"
+  },
+  {
+    "id": "A-202510-002",
+    "clientId": "C-007",
+    "name": "2025年10月雀巢国庆促销活动",
+    "status": "已结束",
+    "startTime": "2025-10-01 00:00:00",
+    "endTime": "2025-10-07 23:59:59",
+    "platforms": ["天猫"],
+    "batchSummary": [{ "platform": "天猫", "count": 4 }],
+    "createdBy": "李四",
+    "createdAt": "2025-09-15 15:00:00"
+  },
+  {
+    "id": "A-202511-006",
+    "clientId": "C-004",
+    "name": "2025年嘉士伯双十一啤酒节",
+    "status": "进行中",
+    "startTime": "2025-11-01 00:00:00",
+    "endTime": "2025-11-11 23:59:59",
+    "platforms": ["抖音", "天猫"],
+    "batchSummary": [
+      { "platform": "抖音", "count": 1 },
+      { "platform": "天猫", "count": 2 }
+    ],
+    "createdBy": "运营C",
+    "createdAt": "2025-10-12 10:20:00"
+  },
+  {
+    "id": "A-202511-007",
+    "clientId": "C-006",
+    "name": "2025年百威“双十一红罐”活动",
+    "status": "草稿",
+    "startTime": "2025-11-03 00:00:00",
+    "endTime": "2025-11-15 23:59:59",
+    "platforms": ["京东到家", "美团"],
+    "batchSummary": [
+      { "platform": "京东到家", "count": 1 },
+      { "platform": "美团", "count": 1 }
+    ],
+    "createdBy": "运营D",
+    "createdAt": "2025-10-16 13:00:00"
+  },
+  {
+    "id": "A-202512-003",
+    "clientId": "C-005",
+    "name": "2025年双旦统一年终活动",
+    "status": "草稿",
+    "startTime": "2025-12-20 00:00:00",
+    "endTime": "2026-01-02 23:59:59",
+    "platforms": ["抖音", "淘宝"],
+    "batchSummary": [
+      { "platform": "抖音", "count": 1 },
+      { "platform": "淘宝", "count": 2 }
+    ],
+    "createdBy": "王五",
+    "createdAt": "2025-11-25 10:12:00"
+  }
+]

@@ -1,0 +1,17 @@
+.container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 16px;
+}
+.sideCard {
+  background: #fff;
+}
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 520px;
+  background: #fff;
+  border: 1px dashed #e5e7eb;
+  color: #999;
+}

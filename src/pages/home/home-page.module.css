@@ -1,0 +1,47 @@
+.page {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.hero {
+  background: linear-gradient(90deg, #1f2937 0%, #111827 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.heroTitle {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.heroDesc {
+  color: #cbd5e1;
+  margin-top: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.bizTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.sectionTitle {
+  font-weight: 600;
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ds-activity",
+    "name": "活动数据源",
+    "category": "到店营销",
+    "standardFields": 42,
+    "updateFrequency": "每日 02:00",
+    "source": "内置仓库"
+  },
+  {
+    "id": "ds-retail",
+    "name": "零售订单",
+    "category": "即时零售",
+    "standardFields": 28,
+    "updateFrequency": "每小时",
+    "source": "美团API"
+  },
+  {
+    "id": "ds-code",
+    "name": "物码扫码数据",
+    "category": "物码营销",
+    "standardFields": 15,
+    "updateFrequency": "每日 03:00",
+    "source": "扫码平台"
+  }
+]

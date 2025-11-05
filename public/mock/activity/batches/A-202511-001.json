@@ -1,0 +1,32 @@
+[
+  {
+    "batchId": "B-TM-001",
+    "platform": "天猫",
+    "title": "天猫11.1首发批次",
+    "createdAt": "2025-10-25 10:00:00"
+  },
+  {
+    "batchId": "B-TM-002",
+    "platform": "天猫",
+    "title": "天猫11.5加推批次",
+    "createdAt": "2025-10-30 14:00:00"
+  },
+  {
+    "batchId": "B-TM-003",
+    "platform": "天猫",
+    "title": "天猫11.10冲刺批次",
+    "createdAt": "2025-11-08 09:00:00"
+  },
+  {
+    "batchId": "B-JD-001",
+    "platform": "京东",
+    "title": "京东预热批次",
+    "createdAt": "2025-10-22 18:30:00"
+  },
+  {
+    "batchId": "B-JD-002",
+    "platform": "京东",
+    "title": "京东大促批次",
+    "createdAt": "2025-11-05 12:20:00"
+  }
+]

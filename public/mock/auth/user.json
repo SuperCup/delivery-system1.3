@@ -1,0 +1,26 @@
+{
+  "id": "U-1001",
+  "name": "luffy",
+  "department": "技术部",
+  "email": "luffy@example.com",
+  "phone": "13800001234",
+  "status": "正常",
+  "roles": [
+    {
+      "name": "管理员",
+      "permissions": [
+        "查看仪表盘",
+        "管理活动",
+        "访问数据中心",
+        "配置权限"
+      ]
+    },
+    {
+      "name": "运营",
+      "permissions": [
+        "查看活动",
+        "编辑内容"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "CH-SFTP-01",
+    "name": "内部SFTP通道",
+    "type": "sftp",
+    "host": "sftp.internal.local",
+    "port": 22,
+    "username": "delivery",
+    "basePath": "/exports"
+  },
+  {
+    "id": "CH-API-01",
+    "name": "对客API通道",
+    "type": "api",
+    "baseUrl": "https://api.customer.com/delivery",
+    "authToken": "***masked***"
+  }
+]

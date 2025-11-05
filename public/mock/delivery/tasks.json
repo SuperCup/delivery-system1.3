@@ -1,0 +1,24 @@
+[
+  {
+    "id": "T-1001",
+    "name": "销售日报交付",
+    "department": "销售部",
+    "recipientType": "internal",
+    "packageId": "PKG-001",
+    "channel": "sftp",
+    "scheduleCron": "0 8 * * *",
+    "status": "active",
+    "lastRunAt": "2025-11-04 08:00:05"
+  },
+  {
+    "id": "T-1002",
+    "name": "客户对账单交付",
+    "department": "财务部",
+    "recipientType": "external",
+    "packageId": "PKG-002",
+    "channel": "api",
+    "scheduleCron": "0 */6 * * *",
+    "status": "paused",
+    "lastRunAt": "2025-11-03 12:00:00"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  { "id": "C-001", "name": "达能", "contactCount": 6, "business": [
+    { "type": "到店营销", "activityCount": 3 },
+    { "type": "即时零售", "activityCount": 2 },
+    { "type": "物码营销", "activityCount": 1 }
+  ]},
+  { "id": "C-002", "name": "伊利", "contactCount": 8, "business": [
+    { "type": "到店营销", "activityCount": 4 },
+    { "type": "即时零售", "activityCount": 3 },
+    { "type": "物码营销", "activityCount": 2 }
+  ]},
+  { "id": "C-003", "name": "康师傅", "contactCount": 7, "business": [
+    { "type": "到店营销", "activityCount": 5 },
+    { "type": "即时零售", "activityCount": 3 },
+    { "type": "物码营销", "activityCount": 2 }
+  ]},
+  { "id": "C-004", "name": "嘉士伯", "contactCount": 5, "business": [
+    { "type": "到店营销", "activityCount": 2 },
+    { "type": "即时零售", "activityCount": 2 },
+    { "type": "物码营销", "activityCount": 1 }
+  ]},
+  { "id": "C-005", "name": "统一", "contactCount": 4, "business": [
+    { "type": "到店营销", "activityCount": 2 },
+    { "type": "即时零售", "activityCount": 1 },
+    { "type": "物码营销", "activityCount": 1 }
+  ]},
+  { "id": "C-006", "name": "百威", "contactCount": 6, "business": [
+    { "type": "到店营销", "activityCount": 3 },
+    { "type": "即时零售", "activityCount": 2 },
+    { "type": "物码营销", "activityCount": 1 }
+  ]},
+  { "id": "C-007", "name": "雀巢", "contactCount": 5, "business": [
+    { "type": "到店营销", "activityCount": 2 },
+    { "type": "即时零售", "activityCount": 2 },
+    { "type": "物码营销", "activityCount": 1 }
+  ]}
+]
