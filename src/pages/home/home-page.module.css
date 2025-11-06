@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
+  padding-top: 12px; /* 增加标题与页面顶部间距 */
 }
 
 .hero {
@@ -44,4 +45,5 @@
 
 .sectionTitle {
   font-weight: 600;
+  margin: 0 0 8px; /* 统一标题下间距 */
 }

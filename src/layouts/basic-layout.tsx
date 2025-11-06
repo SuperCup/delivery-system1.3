@@ -1,12 +1,10 @@
-import { Layout, Menu, theme, Dropdown } from 'antd'
-import type { MenuProps } from 'antd'
+import { Layout, Menu, theme } from 'antd'
 import type { ReactNode } from 'react'
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import styles from './basic-layout.module.css'
-import systemlogo from '../assets/systemlogo.png'
-import type { ClientItem } from '../types/client'
-import { DataDeliveryService } from '../services/data-delivery-service'
+// import type { ClientItem } from '../types/client'
+// import { DataDeliveryService } from '../services/data-delivery-service'
 import {
   MenuOutlined,
   CalendarOutlined,
@@ -20,7 +18,7 @@ import {
   HomeFilled,
 } from '@ant-design/icons'
 
-const { Header, Sider, Content } = Layout
+const { Sider, Content } = Layout
 
 type BasicLayoutProps = {
   children: ReactNode
@@ -29,28 +27,13 @@ type BasicLayoutProps = {
 export const BasicLayout = ({ children }: BasicLayoutProps) => {
   const navigate = useNavigate()
   const location = useLocation()
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken()
+  // 主题token不再用于Header背景
+  theme.useToken()
 
   // 活动管理页隐藏左侧菜单
   const hideSider = useMemo(() => location.pathname.startsWith('/activity-management'), [location.pathname])
 
-  // 用户下拉菜单（悬停触发）
-  const userMenuItems: MenuProps['items'] = [
-    { key: 'account', label: '账号管理' },
-  ]
-
-  // 客户下拉：在导航栏展示当前客户并可切换
-  const [clients, setClients] = useState<ClientItem[]>([])
-  const activeClientId = useMemo(() => new URLSearchParams(location.search).get('clientId') || '', [location.search])
-  const activeClient = useMemo(() => clients.find((c) => c.id === activeClientId) || null, [clients, activeClientId])
-
-  useEffect(() => {
-    DataDeliveryService.getClients().then(setClients).catch(() => setClients([]))
-  }, [])
-
-  const clientMenuItems: MenuProps['items'] = clients.map((c) => ({ key: c.id, label: c.name }))
+  // 顶部导航栏已移除
 
   const homeItems = useMemo(() => [{ key: '/home', label: '主页', icon: <HomeFilled /> }], [])
   const bizArea = useMemo(
@@ -86,9 +69,6 @@ export const BasicLayout = ({ children }: BasicLayoutProps) => {
     <Layout className={styles.layout}>
       {!hideSider && (
       <Sider className={styles.sider} theme="light" width={220} breakpoint="lg">
-        <div className={styles['sider-logo']}>
-          <img src={systemlogo} alt="系统Logo" className={styles.siderLogoImg} />
-        </div>
         <Menu
           className={styles.homeMenu}
           selectedKeys={[location.pathname]}
@@ -126,50 +106,6 @@ export const BasicLayout = ({ children }: BasicLayoutProps) => {
       </Sider>
       )}
       <Layout>
-        <Header className={styles.header} style={{ background: colorBgContainer }}>
-          <div className={styles.headerBar}>
-            {hideSider ? (
-              <div className={styles.brand}>
-                <img src={systemlogo} alt="系统Logo" className={styles.brandLogo} />
-              </div>
-            ) : (
-              <div className={styles.headerLeftSpacer} />
-            )}
-            {hideSider && (
-              <div className={styles.clientBox}>
-                <Dropdown
-                  trigger={["click"]}
-                  placement="bottom"
-                  menu={{
-                    items: clientMenuItems,
-                    onClick: (info) => navigate(`/activity-management?clientId=${info.key}`),
-                  }}
-                >
-                  <div className={styles.clientName}>
-                    {activeClient ? `当前客户：${activeClient.name}` : '未选择客户'}
-                  </div>
-                </Dropdown>
-              </div>
-            )}
-            <div className={styles.headerRight}>
-              <Dropdown
-                trigger={["hover"]}
-                placement="bottomRight"
-                menu={{
-                  items: userMenuItems,
-                  onClick: (info) => {
-                    if (info.key === 'account') navigate('/account-config')
-                  },
-                }}
-              >
-                <div className={styles.userBox}>
-                  <div className={styles.userAvatar} />
-                  <div className={styles.userName}>luffy</div>
-                </div>
-              </Dropdown>
-            </div>
-          </div>
-        </Header>
         <Content className={styles.content}>{children}</Content>
       </Layout>
     </Layout>

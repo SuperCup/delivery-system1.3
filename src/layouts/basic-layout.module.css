@@ -142,16 +142,6 @@
   padding: 16px;
   background-color: #f5f7fa;
 }
-.sider-logo {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.siderLogoImg {
-  width: 120px;
-  height: auto;
-}
 .siderTitle {
   font-weight: 600;
 }
@@ -183,9 +173,14 @@
 }
 
 .siderSectionTitle {
-  margin: 12px 12px 8px;
+  margin: 12px 0 8px;
+  padding: 0 12px;
+  box-sizing: border-box;
   color: #9aa4b2;
   font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 防止右侧超出菜单区域 */
 }
 
 /* 主页菜单强调样式 */
