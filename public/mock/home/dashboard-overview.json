@@ -1,0 +1,75 @@
+{
+  "stats": [
+    {
+      "id": "clients",
+      "title": "服务客户数",
+      "value": 28,
+      "unit": "家",
+      "trend": "+12%",
+      "trendType": "up",
+      "icon": "team"
+    },
+    {
+      "id": "activities",
+      "title": "活动总数",
+      "value": 156,
+      "unit": "个",
+      "trend": "+23%",
+      "trendType": "up",
+      "icon": "project"
+    },
+    {
+      "id": "tasks",
+      "title": "待办任务",
+      "value": 8,
+      "unit": "项",
+      "trend": "-5",
+      "trendType": "down",
+      "icon": "clock"
+    },
+    {
+      "id": "messages",
+      "title": "未读消息",
+      "value": 3,
+      "unit": "条",
+      "trend": "2条今日",
+      "trendType": "normal",
+      "icon": "bell"
+    }
+  ],
+  "quickActions": [
+    {
+      "id": "create-activity",
+      "title": "新建活动",
+      "description": "创建到店营销活动",
+      "icon": "plus",
+      "link": "/activity-management",
+      "color": "#1677ff"
+    },
+    {
+      "id": "data-center",
+      "title": "数据中心",
+      "description": "查看和管理数据",
+      "icon": "database",
+      "link": "/data-center",
+      "color": "#0958d9"
+    },
+    {
+      "id": "settlement",
+      "title": "结算助手",
+      "description": "财务结算管理",
+      "icon": "calculator",
+      "link": "/settlement-assistant",
+      "color": "#4096ff"
+    },
+    {
+      "id": "tools",
+      "title": "工具市场",
+      "description": "实用工具集合",
+      "icon": "tool",
+      "link": "/tools-market",
+      "color": "#69b1ff"
+    }
+  ]
+}
+

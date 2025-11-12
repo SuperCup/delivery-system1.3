@@ -1,0 +1,47 @@
+{
+  "categories": [
+    {
+      "id": "pub-001",
+      "name": "行业政策速览",
+      "description": "与交付业务相关的最新行业政策、监管解读。",
+      "type": "政策"
+    },
+    {
+      "id": "pub-002",
+      "name": "合作平台指引",
+      "description": "各大平台对外发布的运营合作规范与资源说明。",
+      "type": "业务"
+    }
+  ],
+  "items": [
+    {
+      "id": "pub-item-001",
+      "title": "2025 全国夜经济消费指导意见解读",
+      "summary": "文化和旅游部发布的夜经济政策，将对夜场营销、商圈活动带来新的机会点。",
+      "tags": ["政策解读", "夜经济", "线下活动"],
+      "type": "政策",
+      "categoryId": "pub-001",
+      "owner": "交付策略组",
+      "updatedAt": "2025-11-08",
+      "views": 128,
+      "attachments": [
+        { "name": "政策原文.pdf", "url": "/mock/files/policy-night-economy.pdf" }
+      ]
+    },
+    {
+      "id": "pub-item-002",
+      "title": "美团到店合作商家赋能计划",
+      "summary": "美团发布的 2025 商家成长计划，覆盖流量扶持、培训、活动合作等内容。",
+      "tags": ["平台合作", "到店营销", "美团到店"],
+      "type": "业务",
+      "categoryId": "pub-002",
+      "owner": "平台合作部",
+      "updatedAt": "2025-11-03",
+      "views": 242,
+      "attachments": [
+        { "name": "官方说明.pptx", "url": "/mock/files/meituan-partner-plan.pptx" }
+      ]
+    }
+  ]
+}
+

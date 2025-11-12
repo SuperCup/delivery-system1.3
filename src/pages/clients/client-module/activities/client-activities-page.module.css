@@ -1,0 +1,183 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 4px;
+}
+
+.pageTitle {
+  margin: 0;
+  color: #1a234a;
+}
+
+.pageSubtitle {
+  margin: 4px 0 0;
+  color: rgba(26, 35, 74, 0.6);
+}
+
+.switchCard {
+  border-radius: 14px;
+  border: 1px solid rgba(26, 35, 74, 0.06);
+  box-shadow: 0 12px 28px rgba(26, 35, 74, 0.08);
+}
+
+.segmentHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.segmentTitle {
+  font-weight: 600;
+  color: #1a234a;
+}
+
+.segmented {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(244, 247, 255, 0.65), rgba(255, 255, 255, 0.95));
+  border-radius: 12px;
+  padding: 6px;
+}
+
+.segmented :global(.ant-segmented-item) {
+  padding: 12px 18px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  align-items: flex-start;
+}
+
+.segmentItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.segmentLabel {
+  font-weight: 600;
+  color: #1c2b6f;
+  font-size: 15px;
+}
+
+.segmentDesc {
+  font-size: 12px;
+  color: rgba(26, 35, 74, 0.65);
+  line-height: 1.4;
+}
+
+.segmented :global(.ant-segmented-item-selected) {
+  background: linear-gradient(135deg, rgba(86, 126, 252, 0.22), rgba(86, 126, 252, 0.45));
+  box-shadow: inset 0 0 0 1px rgba(86, 126, 252, 0.35);
+}
+
+.guideContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.guideSummary {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1c2b6f;
+}
+
+.guideDetail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.guideList ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: rgba(26, 35, 74, 0.75);
+}
+
+.previewAlert {
+  border-radius: 10px;
+  border: 1px dashed rgba(250, 173, 20, 0.35);
+}
+
+.previewList {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  color: rgba(112, 82, 1, 0.85);
+}
+
+.tableCard {
+  border-radius: 14px;
+  border: 1px solid rgba(15, 33, 77, 0.06);
+  box-shadow: 0 10px 24px rgba(15, 33, 77, 0.08);
+}
+
+.emptyWrap {
+  padding: 80px 0;
+}
+
+.table {
+  margin-top: 12px;
+}
+
+.activityName {
+  font-weight: 600;
+  color: #1a234a;
+}
+
+.activityMeta {
+  font-size: 12px;
+  color: rgba(26, 35, 74, 0.55);
+}
+
+.period {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #1a234a;
+}
+
+.periodDivider {
+  padding: 0 4px;
+}
+
+.platformTag {
+  border-radius: 8px;
+  padding: 4px 10px;
+  background: rgba(86, 126, 252, 0.12);
+  border: 1px solid rgba(86, 126, 252, 0.3);
+  color: #1c2b6f;
+}
+
+.scopePanel {
+  margin-top: 24px;
+}
+
+.scopeList {
+  width: 100%;
+}
+
+.scopeCard {
+  border-radius: 12px;
+  border: 1px solid rgba(26, 35, 74, 0.08);
+  background: rgba(247, 249, 255, 0.85);
+}
+
+.scopeTitle {
+  font-weight: 600;
+  color: #1c2b6f;
+}
+
+.uploadHint {
+  display: block;
+  margin-top: 8px;
+}
+

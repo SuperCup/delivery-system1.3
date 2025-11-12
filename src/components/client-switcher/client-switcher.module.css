@@ -1,0 +1,146 @@
+.switcher {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 18px;
+  background: linear-gradient(150deg, rgba(243, 247, 255, 0.95), #ffffff);
+}
+
+.currentClient {
+  display: flex;
+  flex-direction: column;
+}
+
+.clientHeader {
+  display: flex;
+  align-items: center;
+}
+
+.clientMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.avatar {
+  background: linear-gradient(135deg, #5b7bff, #6eb7ff);
+  flex-shrink: 0;
+}
+
+.clientInfo {
+  flex: 1;
+  min-width: 0;
+  color: #2d3553;
+}
+
+.clientNameRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.clientName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a234a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.switchIconButton {
+  color: #5d70c8;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  width: 32px;
+  border-radius: 6px;
+}
+
+.switchIconButton:hover,
+.switchIconButton:focus {
+  color: #2b4bff;
+  background: rgba(86, 126, 252, 0.12);
+}
+
+.clientId {
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(43, 54, 98, 0.6);
+  font-family: 'Courier New', monospace;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.searchInput {
+  border-radius: 6px;
+}
+
+.clientList :global(.ant-list-items) {
+  row-gap: 16px;
+}
+
+.clientCard {
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  border: 1px solid #e6ebff;
+  background-color: #f9fbff;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.clientCard:hover {
+  border-color: #567efc;
+  box-shadow: 0 10px 22px rgba(86, 126, 252, 0.18);
+}
+
+.activeCard {
+  border-color: #567efc;
+  background: linear-gradient(180deg, rgba(86, 126, 252, 0.12), #f9fbff 100%);
+  box-shadow: 0 14px 28px rgba(86, 126, 252, 0.22);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #25315d;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #4a5375;
+}
+
+.cardMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clientCard :global(.ant-card-body) {
+  padding: 18px;
+}
+

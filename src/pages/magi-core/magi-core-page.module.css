@@ -1,0 +1,81 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchBar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.agentCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.agentCard :global(.ant-card-body) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.agentCard :global(.ant-card-cover) {
+  height: 160px;
+  overflow: hidden;
+}
+
+.agentCover {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.agentStats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.agentUsage {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--ant-color-text-secondary);
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.cardFooter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+

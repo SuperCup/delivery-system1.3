@@ -1,0 +1,90 @@
+{
+  "messages": [
+    {
+      "id": "msg-001",
+      "type": "info",
+      "title": "系统升级通知",
+      "content": "交付中台系统将于本周六凌晨2:00-4:00进行系统升级维护，期间服务可能短暂中断。",
+      "time": "2025-11-06 09:30:00",
+      "isRead": false,
+      "priority": "normal"
+    },
+    {
+      "id": "msg-002",
+      "type": "success",
+      "title": "康师傅双十一活动已上线",
+      "content": "康师傅品牌的双十一营销活动已成功上线，当前参与用户数已达到预期目标的80%。",
+      "time": "2025-11-05 16:45:00",
+      "isRead": false,
+      "priority": "high"
+    },
+    {
+      "id": "msg-003",
+      "type": "warning",
+      "title": "数据同步延迟提醒",
+      "content": "检测到美团平台数据同步延迟，技术团队正在处理中，预计30分钟内恢复正常。",
+      "time": "2025-11-05 14:20:00",
+      "isRead": false,
+      "priority": "high"
+    },
+    {
+      "id": "msg-004",
+      "type": "info",
+      "title": "伊利品牌月度报告已生成",
+      "content": "伊利品牌10月份营销数据报告已自动生成，请及时查看和下载。",
+      "time": "2025-11-04 10:00:00",
+      "isRead": true,
+      "priority": "normal"
+    },
+    {
+      "id": "msg-005",
+      "type": "success",
+      "title": "新功能上线：智能推荐",
+      "content": "系统新增智能推荐功能，可根据历史数据为您推荐最佳营销方案。",
+      "time": "2025-11-03 11:15:00",
+      "isRead": true,
+      "priority": "low"
+    }
+  ],
+  "todos": [
+    {
+      "id": "todo-001",
+      "title": "审核嘉士伯活动方案",
+      "status": "pending",
+      "priority": "high",
+      "dueDate": "2025-11-07",
+      "category": "审核"
+    },
+    {
+      "id": "todo-002",
+      "title": "更新百威品牌数据源配置",
+      "status": "pending",
+      "priority": "medium",
+      "dueDate": "2025-11-08",
+      "category": "配置"
+    },
+    {
+      "id": "todo-003",
+      "title": "导出统一品牌月度数据",
+      "status": "pending",
+      "priority": "medium",
+      "dueDate": "2025-11-09",
+      "category": "数据"
+    },
+    {
+      "id": "todo-004",
+      "title": "联系达能客户确认需求",
+      "status": "in-progress",
+      "priority": "high",
+      "dueDate": "2025-11-06",
+      "category": "沟通"
+    }
+  ]
+}
+
+
+
+
+
+
+

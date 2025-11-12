@@ -1,0 +1,49 @@
+{
+  "id": "C-002",
+  "name": "伊利",
+  "industry": "乳制品",
+  "address": "内蒙古呼和浩特市金川开发区",
+  "website": "https://www.yili.com",
+  "description": "伊利集团是中国领先的乳制品企业，致力于为消费者提供高品质的乳制品产品。",
+  "contacts": [
+    {
+      "id": "CT-007",
+      "name": "周杰",
+      "position": "市场总监",
+      "phone": "139-0000-0001",
+      "email": "zhoujie@yili.com",
+      "department": "市场部"
+    },
+    {
+      "id": "CT-008",
+      "name": "吴敏",
+      "position": "品牌经理",
+      "phone": "139-0000-0002",
+      "email": "wumin@yili.com",
+      "department": "市场部"
+    }
+  ],
+  "business": [
+    {
+      "type": "到店营销",
+      "activityCount": 4,
+      "totalAmount": 2000000,
+      "lastActivityDate": "2025-10-20"
+    },
+    {
+      "type": "即时零售",
+      "activityCount": 3,
+      "totalAmount": 1200000,
+      "lastActivityDate": "2025-09-25"
+    },
+    {
+      "type": "物码营销",
+      "activityCount": 2,
+      "totalAmount": 800000,
+      "lastActivityDate": "2025-08-15"
+    }
+  ],
+  "createdAt": "2024-02-01",
+  "updatedAt": "2025-10-20"
+}
+

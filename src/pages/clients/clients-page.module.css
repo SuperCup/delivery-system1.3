@@ -1,0 +1,45 @@
+.page {
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.title {
+  margin: 0 !important;
+  font-weight: 500 !important;
+  color: #1f2937 !important;
+}
+
+.clientCard {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.clientCard:hover {
+  box-shadow: 0 2px 8px rgba(22, 119, 255, 0.12);
+}
+
+.bizTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.clientCard :global(.ant-card-extra) {
+  display: flex;
+  align-items: center;
+  color: #8c8c8c;
+  transition: color 0.2s;
+}
+
+.clientCard :global(.ant-card-extra):hover {
+  color: #1677ff;
+}
+

@@ -1,124 +1,185 @@
 .layout {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .sider {
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: 64px;
+  height: calc(100vh - 64px);
   overflow: auto;
 }
 .header {
-  background-color: #fff;
-  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   position: sticky;
   top: 0;
   z-index: 1000;
   height: 64px;
   display: flex;
   align-items: center;
+  padding: 0;
+  line-height: 64px;
+  backdrop-filter: blur(10px);
 }
 .headerBar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 0 16px;
+  width: 100%;
+  padding: 0;
   height: 64px;
+  gap: 16px;
 }
-.headerLeftSpacer {
+
+/* 顶部水平菜单 */
+.topMenu {
   flex: 1;
+  border-bottom: none;
+  line-height: 64px;
+  background: transparent;
 }
-.clientBox {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.clientName {
-  padding: 6px 12px;
-  border-radius: 14px;
-  background: #f1f5f9;
-  color: #334155;
-  cursor: pointer;
-  font-size: 13px;
-  min-width: 160px;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.clientName:hover {
-  background: #e8eef6;
-}
-.quickNav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  flex: 1;
-}
-.navChip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 16px;
-  border: 1px solid transparent;
-  background: #f1f5f9;
-  color: #334155;
-  cursor: pointer;
-  font-size: 13px;
-}
-.navChip:hover {
-  background: #e8eef6;
-}
-.navChip :global(.anticon) {
+
+.topMenu :global(.ant-menu-item),
+.topMenu :global(.ant-menu-submenu-title) {
+  height: 64px;
+  line-height: 64px;
+  padding: 0 20px;
+  margin: 0 2px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
   color: #64748b;
+  position: relative;
+  overflow: hidden;
 }
-.navChipActive {
-  background: #1677ff;
-  color: #ffffff;
+
+.topMenu :global(.ant-menu-item::before),
+.topMenu :global(.ant-menu-submenu-title::before) {
+  content: none;
 }
-.navChipActive :global(.anticon) {
-  color: #ffffff;
+
+.topMenu :global(.ant-menu-item:hover),
+.topMenu :global(.ant-menu-submenu:hover .ant-menu-submenu-title) {
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.08), rgba(64, 150, 255, 0.05));
+  color: #1677ff;
+  transform: translateY(-1px);
 }
+
+.topMenu :global(.ant-menu-item:hover::before),
+.topMenu :global(.ant-menu-submenu:hover .ant-menu-submenu-title::before) {
+  content: none;
+}
+
+.topMenu :global(.ant-menu-item-selected) {
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.12), rgba(64, 150, 255, 0.08));
+  color: #1677ff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(22, 119, 255, 0.15);
+}
+
+.topMenu :global(.ant-menu-item-selected::before) {
+  content: none;
+}
+
+.topMenu :global(.ant-menu-item-selected .anticon),
+.topMenu :global(.ant-menu-item-selected::after) {
+  color: #1677ff;
+  border-bottom: none;
+}
+
+.topMenu :global(.ant-menu-item .anticon),
+.topMenu :global(.ant-menu-submenu-title .anticon) {
+  margin-right: 8px;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.topMenu :global(.ant-menu-item:hover .anticon),
+.topMenu :global(.ant-menu-submenu:hover .ant-menu-submenu-title .anticon) {
+  transform: scale(1.1);
+}
+
+.topMenu :global(.ant-menu-item-selected .anticon) {
+  transform: scale(1.15);
+}
+
+/* 下拉菜单样式 */
+.topMenu :global(.ant-menu-submenu-popup) {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item) {
+  height: 40px;
+  line-height: 40px;
+  margin: 4px 0;
+  border-radius: 6px;
+  padding: 0 16px;
+  transition: all 0.2s ease;
+}
+
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item:hover) {
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.1), rgba(64, 150, 255, 0.06));
+  color: #1677ff;
+  transform: translateX(4px);
+}
+
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-selected) {
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.15), rgba(64, 150, 255, 0.1));
+  color: #1677ff;
+  font-weight: 600;
+}
+
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-selected::before) {
+  display: none;
+}
+
+/* 下拉箭头样式 */
+.topMenu :global(.ant-menu-submenu-arrow) {
+  color: #94a3b8;
+  transition: all 0.3s ease;
+}
+
+.topMenu :global(.ant-menu-submenu:hover .ant-menu-submenu-arrow) {
+  color: #1677ff;
+  transform: rotate(180deg);
+}
+
+.topMenu :global(.ant-menu-submenu-open .ant-menu-submenu-arrow) {
+  color: #1677ff;
+}
+
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  min-width: 180px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.02), rgba(64, 150, 255, 0.01));
+}
+
+.brand:hover {
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.05), rgba(64, 150, 255, 0.02));
+  transform: scale(1.02);
 }
 .brandLogo {
-  width: 120px;
-  height: auto;
-}
-.brandText {
-  display: flex;
-  flex-direction: column;
-}
-.brandTitle {
-  font-weight: 600;
-  color: #1f2937;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.brandSub {
-  font-size: 12px;
-  color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  height: 48px;
+  width: auto;
+  object-fit: contain;
 }
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   height: 64px;
-  margin-left: auto;
-}
-.headerMeta {
-  font-size: 12px;
-  color: #94a3b8;
+  padding-right: 24px;
 }
 .userBox {
   display: flex;
@@ -137,6 +198,44 @@
   color: #334155;
   display: flex;
   align-items: center;
+}
+
+/* 消息相关样式 */
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.messageUnread {
+  background-color: #e6f4ff;
+  border-left: 3px solid #1677ff;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.messageRead {
+  opacity: 0.7;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.messageTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.messageContent {
+  margin: 4px 0 0 !important;
+}
+
+.messageTime {
+  font-size: 12px;
+  white-space: nowrap;
+  margin-left: 8px;
 }
 .content {
   padding: 16px;

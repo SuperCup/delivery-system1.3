@@ -1,4 +1,5 @@
-import { Component, ReactNode } from 'react'
+import { Component } from 'react'
+import type { ReactNode } from 'react'
 import { Result, Button } from 'antd'
 
 type ErrorBoundaryProps = {
@@ -20,7 +21,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return { hasError: true, error }
   }
 
-  componentDidCatch(error: Error, info: unknown) {
+  componentDidCatch(_error: Error, _info: unknown) {
     // 可以在此处接入日志上报
     // console.error('ErrorBoundary caught:', error, info)
   }

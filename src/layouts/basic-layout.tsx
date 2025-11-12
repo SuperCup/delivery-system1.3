@@ -1,24 +1,18 @@
-import { Layout, Menu, theme } from 'antd'
+import { Layout, Menu, theme, Avatar, Dropdown, Drawer, Badge, List, Typography, Button, message } from 'antd'
 import type { ReactNode } from 'react'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import styles from './basic-layout.module.css'
-// import type { ClientItem } from '../types/client'
-// import { DataDeliveryService } from '../services/data-delivery-service'
-import {
-  MenuOutlined,
-  CalendarOutlined,
-  QrcodeOutlined,
-  CalculatorOutlined,
-  BookOutlined,
-  DatabaseOutlined,
-  ToolOutlined,
-  SafetyOutlined,
-  SettingOutlined,
-  HomeFilled,
-} from '@ant-design/icons'
+import systemLogo from '../assets/systemlogo.png'
+import type { UserProfile } from '../types/auth'
+import { AuthService } from '../services/auth-service'
+import { HomeService } from '../services/home-service'
+import type { HomeMessages, Message } from '../types/home'
 
-const { Sider, Content } = Layout
+const { Paragraph, Text } = Typography
+import { UserOutlined, LogoutOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons'
+
+const { Header, Content } = Layout
 
 type BasicLayoutProps = {
   children: ReactNode
@@ -27,87 +21,233 @@ type BasicLayoutProps = {
 export const BasicLayout = ({ children }: BasicLayoutProps) => {
   const navigate = useNavigate()
   const location = useLocation()
-  // 主题token不再用于Header背景
-  theme.useToken()
+  const { token } = theme.useToken()
+  const [user, setUser] = useState<UserProfile | null>(null)
+  const [messagesDrawerVisible, setMessagesDrawerVisible] = useState(false)
+  const [homeMessages, setHomeMessages] = useState<HomeMessages | null>(null)
+  const [messagesLoading, setMessagesLoading] = useState(false)
 
-  // 活动管理页隐藏左侧菜单
-  const hideSider = useMemo(() => location.pathname.startsWith('/activity-management'), [location.pathname])
+  // 加载用户信息
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const userData = await AuthService.getCurrentUser()
+        setUser(userData)
+      } catch (error) {
+        console.error('加载用户信息失败:', error)
+      }
+    }
+    loadUser()
+  }, [])
 
-  // 顶部导航栏已移除
+  // 加载消息数据
+  const loadMessages = async () => {
+    setMessagesLoading(true)
+    try {
+      const messagesData = await HomeService.getHomeMessages()
+      setHomeMessages(messagesData)
+    } catch (error) {
+      const err = error as Error
+      message.error(`加载消息失败：${err.message}`)
+    } finally {
+      setMessagesLoading(false)
+    }
+  }
 
-  const homeItems = useMemo(() => [{ key: '/home', label: '主页', icon: <HomeFilled /> }], [])
-  const bizArea = useMemo(
+  // 打开消息抽屉时加载数据
+  const handleBellClick = () => {
+    setMessagesDrawerVisible(true)
+    if (!homeMessages) {
+      loadMessages()
+    }
+  }
+
+  const renderMessage = (msg: Message) => {
+    return (
+      <List.Item
+        className={msg.isRead ? styles.messageRead : styles.messageUnread}
+      >
+        <List.Item.Meta
+          title={
+            <div className={styles.messageTitle}>
+              <Text strong={!msg.isRead}>{msg.title}</Text>
+              <Text type="secondary" className={styles.messageTime}>{msg.time}</Text>
+            </div>
+          }
+          description={
+            <Paragraph ellipsis={{ rows: 2 }} className={styles.messageContent}>
+              {msg.content}
+            </Paragraph>
+          }
+        />
+      </List.Item>
+    )
+  }
+
+  // 计算当前选中的菜单项（处理子路由的情况）
+  const menuRoutes = useMemo(
     () => [
-      { key: '/activity-management', label: '到店营销', icon: <MenuOutlined /> },
-      { key: '/channels', label: '即时零售', icon: <CalendarOutlined /> },
-      { key: '/magi-core', label: '物码营销', icon: <QrcodeOutlined /> },
+      '/home',
+      '/magi-core',
+      '/knowledge-base',
+      '/data-warehouse',
+      '/tools-market',
+      '/permission-center',
     ],
     [],
   )
-  const projectSupport = useMemo(
-    () => [{ key: '/settlement-assistant', label: '结算助手', icon: <CalculatorOutlined /> }],
-    [],
-  )
-  const basicServices = useMemo(
+
+  const selectedMenuKey = useMemo(() => {
+    const { pathname } = location
+    const matched = menuRoutes.find((route) => {
+      if (route === '/home') {
+        return pathname === '/home'
+      }
+      return pathname === route || pathname.startsWith(`${route}/`)
+    })
+    return matched ?? ''
+  }, [location, menuRoutes])
+
+  // 用户下拉菜单
+  const userMenuItems = useMemo(() => [
+    {
+      key: 'profile',
+      icon: <UserOutlined />,
+      label: '个人中心',
+    },
+    {
+      key: 'settings',
+      icon: <SettingOutlined />,
+      label: '设置',
+    },
+    {
+      type: 'divider' as const,
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: '退出登录',
+    },
+  ], [])
+
+  const handleUserMenuClick = ({ key }: { key: string }) => {
+    if (key === 'logout') {
+      // 退出登录逻辑
+      console.log('退出登录')
+    } else if (key === 'profile') {
+      navigate('/account-config')
+    } else if (key === 'settings') {
+      navigate('/account-config')
+    }
+  }
+
+  const menuItems = useMemo(
     () => [
-      { key: '/magi-core', label: '魔盒MagiCore', icon: <QrcodeOutlined /> },
-      { key: '/ai-knowledge', label: '知识库', icon: <BookOutlined /> },
-      { key: '/data-center', label: '数据中心', icon: <DatabaseOutlined /> },
-      { key: '/tools-market', label: '工具市场', icon: <ToolOutlined /> },
-    ],
+      { key: '/home', label: '首页' },
+      { key: '/magi-core', label: '魔盒 MagiCore' },
+      { key: '/knowledge-base', label: '知识库' },
+      { key: '/data-warehouse', label: '数据仓库' },
+        { key: '/tools-market', label: '工具市场' },
+      { key: '/permission-center', label: '权限中心' },
+      ],
     [],
   )
-  const systemAdmin = useMemo(
-    () => [
-      { key: '/access-control', label: '权限管理', icon: <SafetyOutlined /> },
-      { key: '/account-config', label: '系统设置', icon: <SettingOutlined /> },
-    ],
-    [],
-  )
+
+  // 所有菜单路由列表
+  // 判断当前路由是否在菜单中
+  const isMenuRoute = useMemo(() => {
+    const { pathname } = location
+    // 检查是否匹配菜单路由或子路由
+    return menuRoutes.some(route => {
+      if (route === '/home') {
+        return pathname === '/home'
+      }
+      // 对于其他路由，检查是否以该路由开头（支持子路由）
+      return pathname.startsWith(route)
+    })
+  }, [location, menuRoutes])
 
   return (
     <Layout className={styles.layout}>
-      {!hideSider && (
-      <Sider className={styles.sider} theme="light" width={220} breakpoint="lg">
-        <Menu
-          className={styles.homeMenu}
-          selectedKeys={[location.pathname]}
-          items={homeItems}
-          onClick={(e) => navigate(e.key)}
-        />
-        <div className={styles.siderSectionTitle}>业务专区</div>
-        <Menu
-          className={styles.siderMenu}
-          selectedKeys={[location.pathname]}
-          items={bizArea}
-          onClick={(e) => navigate(e.key)}
-        />
-        <div className={styles.siderSectionTitle}>项目支持</div>
-        <Menu
-          className={styles.siderMenu}
-          selectedKeys={[location.pathname]}
-          items={projectSupport}
-          onClick={(e) => navigate(e.key)}
-        />
-        <div className={styles.siderSectionTitle}>基础服务</div>
-        <Menu
-          className={styles.siderMenu}
-          selectedKeys={[location.pathname]}
-          items={basicServices}
-          onClick={(e) => navigate(e.key)}
-        />
-        <div className={styles.siderSectionTitle}>系统管理</div>
-        <Menu
-          className={styles.siderMenu}
-          selectedKeys={[location.pathname]}
-          items={systemAdmin}
-          onClick={(e) => navigate(e.key)}
-        />
-      </Sider>
-      )}
+      {/* 顶部导航栏 */}
+      <Header className={styles.header}>
+        <div className={styles.headerBar}>
+          {/* Logo */}
+          <div 
+            className={styles.brand} 
+            onClick={() => navigate('/home')}
+          >
+            <img src={systemLogo} alt="系统Logo" className={styles.brandLogo} />
+          </div>
+
+          {/* 导航菜单 */}
+          {isMenuRoute && selectedMenuKey && (
+            <Menu
+              mode="horizontal"
+              selectedKeys={[selectedMenuKey]}
+              items={menuItems}
+              onClick={(e) => {
+                if (e.key.startsWith('/')) {
+                  navigate(e.key)
+                }
+              }}
+              className={styles.topMenu}
+            />
+          )}
+
+          {/* 右侧区域 */}
+          <div className={styles.headerRight}>
+            {/* 通知图标 */}
+            <Badge count={homeMessages?.messages.filter(m => !m.isRead).length || 0} size="small">
+              <BellOutlined 
+                style={{ fontSize: '18px', color: token.colorTextSecondary, cursor: 'pointer' }} 
+                onClick={handleBellClick}
+              />
+            </Badge>
+            
+            {/* 用户信息 */}
+            <Dropdown menu={{ items: userMenuItems, onClick: handleUserMenuClick }} placement="bottomRight">
+              <div className={styles.userBox}>
+                <Avatar 
+                  size="default" 
+                  icon={<UserOutlined />} 
+                  style={{ backgroundColor: '#d9d9d9' }}
+                />
+                <span className={styles.userName}>{user?.name || '加载中...'}</span>
+              </div>
+            </Dropdown>
+          </div>
+        </div>
+      </Header>
+
+      {/* 布局主体 */}
       <Layout>
-        <Content className={styles.content}>{children}</Content>
+        <Layout>
+          <Content className={styles.content}>{children}</Content>
+        </Layout>
       </Layout>
+
+      {/* 消息抽屉 */}
+      <Drawer
+        title={
+          <div className={styles.drawerHeader}>
+            <Text strong>最新消息</Text>
+            <Badge count={homeMessages?.messages.filter(m => !m.isRead).length || 0} />
+          </div>
+        }
+        placement="right"
+        width={400}
+        open={messagesDrawerVisible}
+        onClose={() => setMessagesDrawerVisible(false)}
+        extra={<Button type="link" size="small">查看全部</Button>}
+      >
+        <List
+          loading={messagesLoading}
+          dataSource={homeMessages?.messages || []}
+          renderItem={renderMessage}
+          locale={{ emptyText: '暂无消息' }}
+        />
+      </Drawer>
     </Layout>
   )
 }

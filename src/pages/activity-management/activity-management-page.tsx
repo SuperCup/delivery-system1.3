@@ -1,203 +1,279 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Card, Table, Tag, Button, Space, Typography, message, Tabs } from 'antd'
+import {
+  Alert,
+  Button,
+  Card,
+  Empty,
+  message,
+  Select,
+  Space,
+  Table,
+  Tabs,
+  Tag,
+  Typography,
+} from 'antd'
+import type { ColumnsType } from 'antd/es/table'
+import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import styles from './activity-management-page.module.css'
-// 活动管理页不再包含客户列表，下拉选择在导航栏实现
 import type { ActivityItem, ActivityStatus } from '../../types/activity'
-import type { BusinessType } from '../../types/home'
-// import { DataDeliveryService } from '../../services/data-delivery-service'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { ActivityService } from '../../services/activity-service'
+import type { BusinessType, Contact } from '../../types/client'
+import type { BusinessActivityGuide } from '../../types/activity-guidance'
+import { ClientActivityService } from '../../services/client-activity-service'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
-const statusColor = (s: ActivityStatus) => {
-  switch (s) {
-    case '进行中':
-      return 'green'
-    case '已结束':
-      return 'default'
-    default:
-      return 'blue'
-  }
+const businessTypeOptions: BusinessType[] = ['到店营销', '即时零售', '物码营销']
+
+const statusColorMap: Record<ActivityStatus, string> = {
+  草稿: '#7491ff',
+  进行中: '#32c3a7',
+  已结束: '#b1b5c6',
 }
 
 export default function ActivityManagementPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const activeClientId = useMemo(() => new URLSearchParams(location.search).get('clientId') || '', [location.search])
+  const { clientId: routeClientId } = useParams<{ clientId?: string }>()
+  const clientId = useMemo(
+    () => new URLSearchParams(location.search).get('clientId') || routeClientId || '',
+    [location.search, routeClientId],
+  )
 
   const [activities, setActivities] = useState<ActivityItem[]>([])
   const [loading, setLoading] = useState(false)
-
-  // 批次详情弹窗已移除：列表不再展示关联批次
-  // 新建活动改为独立页面
-
-  // 根据URL参数加载活动
+  const [guides, setGuides] = useState<Partial<Record<BusinessType, BusinessActivityGuide>>>({})
+  const [contacts, setContacts] = useState<Contact[]>([])
+  const [activeType, setActiveType] = useState<BusinessType>('到店营销')
 
   useEffect(() => {
-    if (!activeClientId) return
-    setLoading(true)
-    ActivityService.getActivitiesByClient(activeClientId)
-      .then(setActivities)
-      .catch((e) => message.error(`加载活动失败：${e.message}`))
-      .finally(() => setLoading(false))
-  }, [activeClientId])
-
-  // 客户列表与搜索已移除
-
-  // 已移除批次详情逻辑
-
-  // 业务类型判定：根据平台归类（示例映射）
-  const isInstantRetail = (ps: string[]) => ps.some((p) => ['美团', '京东到家', '饿了么'].includes(p))
-  const isInStoreMarketing = (ps: string[]) => ps.some((p) => ['微信', '支付宝', '抖音到店', '美团到店', '天猫校园', '抖音'].includes(p))
-  const isCodeMarketing = (ps: string[]) => ps.some((p) => ['天猫', '京东', '淘宝'].includes(p))
-
-  const activitiesByType = useMemo(() => {
-    const groups: Record<BusinessType, ActivityItem[]> = {
-      '到店营销': [],
-      '即时零售': [],
-      '物码营销': [],
+    if (!clientId) return
+    const init = async () => {
+      setLoading(true)
+      try {
+        const [actList, guideList, contactList] = await Promise.all([
+          ClientActivityService.getActivities(clientId),
+          ClientActivityService.getBusinessGuides(),
+          ClientActivityService.getClientContacts(clientId),
+        ])
+        setActivities(actList)
+        const guideMap = guideList.reduce(
+          (acc, item) => {
+            acc[item.type] = item
+            return acc
+          },
+          {} as Partial<Record<BusinessType, BusinessActivityGuide>>,
+        )
+        setGuides((prev) => ({ ...prev, ...guideMap }))
+        setContacts(contactList)
+        if (actList.length > 0) {
+          setActiveType(actList[0].businessType ?? '到店营销')
+        }
+      } catch (error: any) {
+        message.error(`加载数据失败：${error.message}`)
+      } finally {
+        setLoading(false)
+      }
     }
-    activities.forEach((a) => {
-      if (isInstantRetail(a.platforms)) groups['即时零售'].push(a)
-      if (isInStoreMarketing(a.platforms)) groups['到店营销'].push(a)
-      if (isCodeMarketing(a.platforms)) groups['物码营销'].push(a)
-    })
-    return groups
-  }, [activities])
+    init()
+  }, [clientId])
 
-  const columns = [
-    { title: '活动编号', dataIndex: 'id', key: 'id', width: 160, fixed: 'left' as const },
-    { title: '名称', dataIndex: 'name', key: 'name', width: 280, fixed: 'left' as const },
+  const filteredActivities = useMemo(
+    () => activities.filter((item) => item.businessType === activeType),
+    [activities, activeType],
+  )
+
+  const contactMap = useMemo(() => {
+    const map = new Map<string, string>()
+    contacts.forEach((contact) => {
+      map.set(contact.id, contact.name)
+    })
+    return map
+  }, [contacts])
+
+  const scopeSummary = (record: ActivityItem): string => {
+    if (!record.dataScopes || record.dataScopes.length === 0) {
+      return '—'
+    }
+    const systemCount = record.dataScopes.filter((s) => s.sourceType === 'system').length
+    const manualCount = record.dataScopes.filter((s) => s.sourceType === 'manual').length
+    const parts: string[] = []
+    if (systemCount > 0) parts.push(`系统圈选 ${systemCount} 个平台`)
+    if (manualCount > 0) parts.push(`人工上传 ${manualCount} 个平台`)
+    return parts.join('，')
+  }
+
+  const columns: ColumnsType<ActivityItem> = [
     {
-      title: '活动状态',
+      title: '活动编号',
+      dataIndex: 'id',
+      key: 'id',
+      width: 160,
+      fixed: 'left',
+    },
+    {
+      title: '活动名称',
+      dataIndex: 'name',
+      key: 'name',
+      width: 280,
+      fixed: 'left',
+    },
+    {
+      title: '状态',
       dataIndex: 'status',
       key: 'status',
       width: 120,
-      render: (s: ActivityStatus) => <Tag color={statusColor(s)}>{s}</Tag>,
+      render: (status: ActivityStatus) => (
+        <Tag color={statusColorMap[status] ?? '#7491ff'}>{status}</Tag>
+      ),
     },
-    { title: '活动开始时间', dataIndex: 'startTime', key: 'startTime', width: 200 },
-    { title: '活动结束时间', dataIndex: 'endTime', key: 'endTime', width: 200 },
+    {
+      title: '活动时间',
+      key: 'period',
+      width: 220,
+      render: (_, record) => (
+        <div className={styles.period}>
+          <span>{record.startTime}</span>
+          <span className={styles.periodDivider}>~</span>
+          <span>{record.endTime}</span>
+        </div>
+      ),
+    },
     {
       title: '活动平台',
       dataIndex: 'platforms',
       key: 'platforms',
       width: 220,
-      render: (ps: string[]) => {
-        const priority = ['微信', '支付宝']
-        const sorted = [...ps].sort((a, b) => {
-          const ai = priority.includes(a) ? 0 : 1
-          const bi = priority.includes(b) ? 0 : 1
-          if (ai !== bi) return ai - bi
-          return ps.indexOf(a) - ps.indexOf(b)
-        })
-        return (
-          <Space>
-            {sorted.map((p) => (
-              <Tag key={p}>{p}</Tag>
+      render: (platforms: string[]) => (
+        <Space size={[8, 8]} wrap>
+          {platforms.map((platform) => (
+            <Tag key={platform} className={styles.platformTag}>
+              {platform}
+            </Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: '数据范围',
+      key: 'scope',
+      width: 260,
+      render: (_, record) => <Text>{scopeSummary(record)}</Text>,
+    },
+    {
+      title: '可见联系人',
+      key: 'contacts',
+      width: 200,
+      render: (_, record) =>
+        record.visibleContacts && record.visibleContacts.length > 0 ? (
+          <Space size={[8, 8]} wrap>
+            {record.visibleContacts.map((contactId) => (
+              <Tag key={contactId}>{contactMap.get(contactId) ?? contactId}</Tag>
             ))}
           </Space>
-        )
-      },
+        ) : (
+          <Text type="secondary">—</Text>
+        ),
     },
-    // 移除“关联批次”列，按要求不在列表中展示批次
-    { title: '创建人', dataIndex: 'createdBy', key: 'createdBy', width: 140 },
-    { title: '创建时间', dataIndex: 'createdAt', key: 'createdAt', width: 180 },
     {
       title: '操作',
-      key: 'action',
-      fixed: 'right' as const,
+      key: 'actions',
+      fixed: 'right',
       width: 120,
-      render: (_: unknown, r: ActivityItem) => (
-        <a href={`/activity-management/detail/${r.id}`} target="_blank" rel="noopener noreferrer">
-          详情
-        </a>
+      render: (_, record) => (
+        <Button type="link" onClick={() => handleEdit(record)}>
+          编辑
+        </Button>
       ),
     },
   ]
 
+  const handleCreate = () => {
+    navigate(`/activity-management/create?clientId=${clientId}&businessType=${activeType}`)
+  }
+
+  const handleEdit = (record: ActivityItem) => {
+    navigate(`/activity-management/edit/${record.id}?clientId=${clientId}`)
+  }
+
   return (
-    <div>
-      <Title level={4}>活动管理</Title>
-      <div className={styles.container}>
-        <Card
-          className={styles.content}
-          title="活动列表（按业务类型）"
-          size="small"
-          extra={
-            <Button
-              type="primary"
-              disabled={!activeClientId}
-              onClick={() => navigate(`/activity-management/create?clientId=${activeClientId}`)}
-            >
-              新增活动
-            </Button>
-          }
+    <div className={styles.page}>
+      <div className={styles.pageHeader}>
+        <Title level={3} className={styles.pageTitle}>
+          活动管理
+        </Title>
+        <Button
+          type="primary"
+          disabled={!clientId}
+          onClick={() => window.open('https://dsmcloud-datacenter.netlify.app/', '_blank')}
         >
-          {!activeClientId ? (
-            <div className={styles.placeholder}>请在导航栏选择客户以查看活动列表</div>
-          ) : (
-            <Tabs
-              defaultActiveKey="到店营销"
-              items={[
-                {
-                  key: '到店营销',
-                  label: `到店营销（${activitiesByType['到店营销'].length}）`,
-                  children: (
-                    <div className={styles.tableContainer}>
-                      <Table<ActivityItem>
-                        rowKey="id"
-                        loading={loading}
-                        columns={columns}
-                        dataSource={activitiesByType['到店营销']}
-                        pagination={{ pageSize: 8 }}
-                        scroll={{ x: 'max-content' }}
-                        className={styles.tableWrap}
-                      />
-                    </div>
-                  ),
-                },
-                {
-                  key: '即时零售',
-                  label: `即时零售（${activitiesByType['即时零售'].length}）`,
-                  children: (
-                    <div className={styles.tableContainer}>
-                      <Table<ActivityItem>
-                        rowKey="id"
-                        loading={loading}
-                        columns={columns}
-                        dataSource={activitiesByType['即时零售']}
-                        pagination={{ pageSize: 8 }}
-                        scroll={{ x: 'max-content' }}
-                        className={styles.tableWrap}
-                      />
-                    </div>
-                  ),
-                },
-                {
-                  key: '物码营销',
-                  label: `物码营销（${activitiesByType['物码营销'].length}）`,
-                  children: (
-                    <div className={styles.tableContainer}>
-                      <Table<ActivityItem>
-                        rowKey="id"
-                        loading={loading}
-                        columns={columns}
-                        dataSource={activitiesByType['物码营销']}
-                        pagination={{ pageSize: 8 }}
-                        scroll={{ x: 'max-content' }}
-                        className={styles.tableWrap}
-                      />
-                    </div>
-                  ),
-                },
-              ]}
-            />
-          )}
-        </Card>
+          进入客户端
+        </Button>
       </div>
 
-      {/* 新建活动改为独立页面 */}
+      <Card className={styles.tableCard}>
+        <Tabs
+          activeKey={activeType}
+          onChange={(key) => setActiveType(key as BusinessType)}
+          items={businessTypeOptions.map((type) => ({
+            key: type,
+            label: type,
+            children: (
+              <div className={styles.tabContent}>
+                {guides[type] && (
+                  <Alert
+                    type="info"
+                    showIcon
+                    message={guides[type]?.summary}
+                    description={
+                      <div className={styles.guideDescription}>
+                        {guides[type]?.previewTips && guides[type]!.previewTips!.length > 0 && (
+                          <div style={{ marginTop: 8 }}>
+                            <Text strong>特别提示：</Text>
+                            <Text>{guides[type]?.previewTips?.join('；')}</Text>
+                          </div>
+                        )}
+                      </div>
+                    }
+                    className={styles.guideAlert}
+                  />
+                )}
+                <div className={styles.actionBar}>
+                  <Space size={12}>
+                    <Button type="primary" onClick={handleCreate} disabled={!clientId}>
+                      新建活动
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        navigate(
+                          `/activity-management/data-sources?clientId=${clientId}&businessType=${type}`,
+                        )
+                      }
+                      disabled={!clientId}
+                    >
+                      源数据管理
+                    </Button>
+                  </Space>
+                </div>
+                {filteredActivities.length === 0 ? (
+                  <div className={styles.emptyWrap}>
+                    <Empty description="当前业务类型还没有活动" />
+                  </div>
+                ) : (
+                  <Table<ActivityItem>
+                    rowKey="id"
+                    loading={loading}
+                    dataSource={filteredActivities}
+                    columns={columns}
+                    pagination={{ pageSize: 6 }}
+                    scroll={{ x: 1080 }}
+                    className={styles.table}
+                  />
+                )}
+              </div>
+            ),
+          }))}
+        />
+      </Card>
     </div>
   )
 }

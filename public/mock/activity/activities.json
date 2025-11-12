@@ -12,7 +12,29 @@
       { "platform": "京东", "count": 2 }
     ],
     "createdBy": "张三",
-    "createdAt": "2025-10-20 09:30:00"
+    "createdAt": "2025-10-20 09:30:00",
+    "businessType": "物码营销",
+    "dataScopes": [
+      {
+        "platform": "天猫",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：旗舰店超级会员日",
+          "批次：天猫双十一核心城配"
+        ]
+      },
+      {
+        "platform": "京东",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：京东自营乳品主推",
+          "批次：双十一预售优选"
+        ]
+      }
+    ],
+    "visibleContacts": ["CT-009"],
+    "description": "聚焦双十一核心乳品品类，通过旗舰店权益券与预售套餐带动新品转化。",
+    "lastUpdatedAt": "2025-10-28 18:20:00"
   },
   {
     "id": "A-202509-004",
@@ -27,7 +49,29 @@
       { "platform": "微信", "count": 1 }
     ],
     "createdBy": "运营A",
-    "createdAt": "2025-08-28 11:00:00"
+    "createdAt": "2025-08-28 11:00:00",
+    "businessType": "到店营销",
+    "dataScopes": [
+      {
+        "platform": "抖音",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：抖音探店精选",
+          "批次：秋季爆款视频计划"
+        ]
+      },
+      {
+        "platform": "微信",
+        "sourceType": "manual",
+        "uploadFile": {
+          "name": "达能会员导出.xlsx",
+          "size": 245760
+        }
+      }
+    ],
+    "visibleContacts": ["CT-001", "CT-004", "CT-006"],
+    "description": "围绕秋季新品，联动抖音达人探店与会员运营，沉淀私域线索。",
+    "lastUpdatedAt": "2025-09-05 14:10:00"
   },
   {
     "id": "A-202511-005",
@@ -43,7 +87,37 @@
       { "platform": "美团", "count": 1 }
     ],
     "createdBy": "运营B",
-    "createdAt": "2025-10-01 08:30:00"
+    "createdAt": "2025-10-01 08:30:00",
+    "businessType": "即时零售",
+    "dataScopes": [
+      {
+        "platform": "天猫",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：旗舰店核心新品池",
+          "批次：低温乳品预售"
+        ]
+      },
+      {
+        "platform": "京东",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：京东自营全渠道",
+          "批次：华北冷链加速"
+        ]
+      },
+      {
+        "platform": "美团",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：美团门店即时送",
+          "批次：一小时达重点仓"
+        ]
+      }
+    ],
+    "visibleContacts": ["CT-007", "CT-008"],
+    "description": "聚焦低温乳品场景，布局即时零售渠道，保障核心仓即时履约。",
+    "lastUpdatedAt": "2025-10-18 09:45:00"
   },
   {
     "id": "A-202510-002",
@@ -55,7 +129,21 @@
     "platforms": ["天猫"],
     "batchSummary": [{ "platform": "天猫", "count": 4 }],
     "createdBy": "李四",
-    "createdAt": "2025-09-15 15:00:00"
+    "createdAt": "2025-09-15 15:00:00",
+    "businessType": "物码营销",
+    "dataScopes": [
+      {
+        "platform": "天猫",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：国庆主题券包",
+          "批次：旗舰店全渠道共享"
+        ]
+      }
+    ],
+    "visibleContacts": [],
+    "description": "国庆黄金周主题券包，覆盖旗舰店线上消费者。",
+    "lastUpdatedAt": "2025-10-02 10:00:00"
   },
   {
     "id": "A-202511-006",
@@ -70,7 +158,29 @@
       { "platform": "天猫", "count": 2 }
     ],
     "createdBy": "运营C",
-    "createdAt": "2025-10-12 10:20:00"
+    "createdAt": "2025-10-12 10:20:00",
+    "businessType": "到店营销",
+    "dataScopes": [
+      {
+        "platform": "抖音",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：抖音酒饮场景团购",
+          "批次：华南夜经济专场"
+        ]
+      },
+      {
+        "platform": "天猫",
+        "sourceType": "manual",
+        "uploadFile": {
+          "name": "嘉士伯会员清单.xlsx",
+          "size": 312000
+        }
+      }
+    ],
+    "visibleContacts": [],
+    "description": "酒饮夜经济主题直播搭配会员权益券包，强化店铺转化。",
+    "lastUpdatedAt": "2025-10-22 16:35:00"
   },
   {
     "id": "A-202511-007",
@@ -85,7 +195,29 @@
       { "platform": "美团", "count": 1 }
     ],
     "createdBy": "运营D",
-    "createdAt": "2025-10-16 13:00:00"
+    "createdAt": "2025-10-16 13:00:00",
+    "businessType": "即时零售",
+    "dataScopes": [
+      {
+        "platform": "京东到家",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：夜宵场景补货",
+          "批次：核心商圈即配"
+        ]
+      },
+      {
+        "platform": "美团",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：商超闪购主推",
+          "批次：重点门店夜间延时"
+        ]
+      }
+    ],
+    "visibleContacts": [],
+    "description": "夜宵场景主推红罐包装，强化即配渠道库存周转。",
+    "lastUpdatedAt": "2025-10-30 11:50:00"
   },
   {
     "id": "A-202512-003",
@@ -100,6 +232,28 @@
       { "platform": "淘宝", "count": 2 }
     ],
     "createdBy": "王五",
-    "createdAt": "2025-11-25 10:12:00"
+    "createdAt": "2025-11-25 10:12:00",
+    "businessType": "物码营销",
+    "dataScopes": [
+      {
+        "platform": "抖音",
+        "sourceType": "system",
+        "systemSelection": [
+          "项目：抖音年货节联播",
+          "批次：达人团购预热"
+        ]
+      },
+      {
+        "platform": "淘宝",
+        "sourceType": "manual",
+        "uploadFile": {
+          "name": "统一门店清单.xlsx",
+          "size": 268000
+        }
+      }
+    ],
+    "visibleContacts": [],
+    "description": "双旦年终联动直播与门店服务场景，覆盖核心消费者人群。",
+    "lastUpdatedAt": "2025-11-28 15:05:00"
   }
 ]

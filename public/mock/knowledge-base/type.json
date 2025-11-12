@@ -1,0 +1,63 @@
+{
+  "categories": [
+    {
+      "id": "type-001",
+      "name": "技术方案",
+      "description": "系统架构、接口规范、部署方案等技术文档。",
+      "type": "技术"
+    },
+    {
+      "id": "type-002",
+      "name": "运营策略",
+      "description": "活动策划、促活路径与用户增长策略。",
+      "type": "运营"
+    },
+    {
+      "id": "type-003",
+      "name": "品牌营销",
+      "description": "品牌资产建设、跨平台联合营销方法论。",
+      "type": "市场"
+    }
+  ],
+  "items": [
+    {
+      "id": "type-item-001",
+      "title": "交付中台 API 网关配置指南",
+      "summary": "介绍 API 网关路由、鉴权、熔断以及限流策略，并附常见排查指引。",
+      "tags": ["API 网关", "限流", "鉴权"],
+      "type": "技术",
+      "categoryId": "type-001",
+      "owner": "平台研发团队",
+      "updatedAt": "2025-11-06",
+      "views": 119,
+      "attachments": [
+        { "name": "api-gateway-guide.md", "url": "/mock/files/api-gateway-guide.md" }
+      ]
+    },
+    {
+      "id": "type-item-002",
+      "title": "到店营销强曝光人群策略包",
+      "summary": "梳理线下扫码、会员触达、达人探店等组合打法，提供场景化脚本。",
+      "tags": ["人群运营", "到店营销", "脚本库"],
+      "type": "运营",
+      "categoryId": "type-002",
+      "owner": "增长策略组",
+      "updatedAt": "2025-11-05",
+      "views": 154,
+      "attachments": []
+    },
+    {
+      "id": "type-item-003",
+      "title": "百威品牌全年整合营销蓝图",
+      "summary": "结合电商、即时零售与线下渠道，规划全年品牌资产建设路径。",
+      "tags": ["百威", "整合营销", "品牌规划"],
+      "type": "市场",
+      "categoryId": "type-003",
+      "owner": "品牌策略部",
+      "updatedAt": "2025-11-01",
+      "views": 87,
+      "attachments": []
+    }
+  ]
+}
+

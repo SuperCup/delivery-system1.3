@@ -1,0 +1,41 @@
+{
+  "matrix": {
+    "role-admin": [
+      { "module": "首页", "actions": ["查看"] },
+      { "module": "魔盒", "actions": ["查看", "新建", "编辑", "导出"] },
+      { "module": "知识库", "actions": ["查看", "新建", "编辑", "审批"] },
+      { "module": "数据仓库", "actions": ["查看", "新建", "编辑", "导出"] },
+      { "module": "工具市场", "actions": ["查看", "新建", "审批"] },
+      { "module": "权限中心", "actions": ["查看", "新建", "编辑", "审批"] },
+      { "module": "系统设置", "actions": ["查看", "编辑"] }
+    ],
+    "role-operator": [
+      { "module": "首页", "actions": ["查看"] },
+      { "module": "魔盒", "actions": ["查看", "使用"] },
+      { "module": "知识库", "actions": ["查看", "新建", "编辑"] },
+      { "module": "数据仓库", "actions": ["查看"] },
+      { "module": "工具市场", "actions": ["查看", "申请"] },
+      { "module": "权限中心", "actions": ["查看"] },
+      { "module": "系统设置", "actions": [] }
+    ],
+    "role-analyst": [
+      { "module": "首页", "actions": ["查看"] },
+      { "module": "魔盒", "actions": ["查看", "使用"] },
+      { "module": "知识库", "actions": ["查看"] },
+      { "module": "数据仓库", "actions": ["查看", "导出"] },
+      { "module": "工具市场", "actions": ["查看", "申请"] },
+      { "module": "权限中心", "actions": ["查看"] },
+      { "module": "系统设置", "actions": [] }
+    ],
+    "role-viewer": [
+      { "module": "首页", "actions": ["查看"] },
+      { "module": "魔盒", "actions": ["查看"] },
+      { "module": "知识库", "actions": ["查看"] },
+      { "module": "数据仓库", "actions": ["查看"] },
+      { "module": "工具市场", "actions": ["查看"] },
+      { "module": "权限中心", "actions": [] },
+      { "module": "系统设置", "actions": [] }
+    ]
+  }
+}
+

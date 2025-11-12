@@ -1,0 +1,119 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.pageTitle {
+  margin: 0;
+  color: #1a234a;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(31, 42, 85, 0.06);
+  border: 1px solid rgba(15, 33, 77, 0.04);
+}
+
+.scopePanel {
+  margin-top: 16px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.scopePanelTitle {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #202a55;
+}
+
+.scopePanelDesc {
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #f0f7ff;
+  border-left: 3px solid #1890ff;
+  border-radius: 4px;
+}
+
+.scopeList {
+  width: 100%;
+}
+
+.scopeCard {
+  background: #fff;
+  border: 1px solid rgba(15, 33, 77, 0.08);
+  border-radius: 8px;
+}
+
+.scopeCardTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.uploadSection {
+  margin-top: 16px;
+}
+
+.uploadHint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #f0f7ff;
+  border-radius: 4px;
+}
+
+.systemSelectionSection {
+  margin-top: 16px;
+}
+
+.batchSelector {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.batchList {
+  margin-top: 16px;
+}
+
+.batchListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.emptyBatchList {
+  padding: 40px;
+  text-align: center;
+  background: #fafafa;
+  border-radius: 4px;
+}
+
+.batchTable {
+  background: #fff;
+}
+
+.batchTable :global(.ant-table-thead > tr > th) {
+  background: #fafafa;
+  font-weight: 600;
+}
+

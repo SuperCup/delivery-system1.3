@@ -1,0 +1,75 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.filterPanel {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.platformList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.platformItem {
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.platformActive {
+  background-color: rgba(47, 84, 235, 0.12);
+  border: 1px solid rgba(47, 84, 235, 0.35);
+}
+
+.contentPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.datasetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fieldTable {
+  margin-top: 16px;
+}
+
+.useCaseList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.useCaseCard {
+  border-radius: 8px;
+  border: 1px solid rgba(5, 5, 5, 0.06);
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+

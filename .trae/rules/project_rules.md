@@ -26,15 +26,13 @@
 
 框架：React 18（推荐 Ant Design Pro） 
 
-构建工具：Vite（推荐） 或 Webpack 5
+构建工具：Webpack 5
 
 语言：TypeScript（必须，保证类型安全）
 
 状态管理：
 
 React：Redux Toolkit / Zustand
-
-Vue：Pinia
 
 路由管理：React Router v6 
 

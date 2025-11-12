@@ -1,0 +1,81 @@
+{
+  "id": "C-001",
+  "name": "达能",
+  "industry": "食品饮料",
+  "address": "上海市黄浦区南京东路100号",
+  "website": "https://www.danone.cn",
+  "description": "达能是一家专注于健康食品的跨国食品公司，致力于为消费者提供营养、健康、美味的食品和饮料产品。",
+  "contacts": [
+    {
+      "id": "CT-001",
+      "name": "张明",
+      "position": "市场总监",
+      "phone": "138-0000-0001",
+      "email": "zhangming@danone.com",
+      "department": "市场部"
+    },
+    {
+      "id": "CT-002",
+      "name": "李华",
+      "position": "品牌经理",
+      "phone": "138-0000-0002",
+      "email": "lihua@danone.com",
+      "department": "市场部"
+    },
+    {
+      "id": "CT-003",
+      "name": "王芳",
+      "position": "渠道经理",
+      "phone": "138-0000-0003",
+      "email": "wangfang@danone.com",
+      "department": "销售部"
+    },
+    {
+      "id": "CT-004",
+      "name": "刘强",
+      "position": "运营经理",
+      "phone": "138-0000-0004",
+      "email": "liuqiang@danone.com",
+      "department": "运营部"
+    },
+    {
+      "id": "CT-005",
+      "name": "陈静",
+      "position": "数据分析师",
+      "phone": "138-0000-0005",
+      "email": "chenjing@danone.com",
+      "department": "数据部"
+    },
+    {
+      "id": "CT-006",
+      "name": "赵磊",
+      "position": "项目经理",
+      "phone": "138-0000-0006",
+      "email": "zhaolei@danone.com",
+      "department": "项目组"
+    }
+  ],
+  "business": [
+    {
+      "type": "到店营销",
+      "activityCount": 3,
+      "totalAmount": 1500000,
+      "lastActivityDate": "2025-10-15"
+    },
+    {
+      "type": "即时零售",
+      "activityCount": 2,
+      "totalAmount": 800000,
+      "lastActivityDate": "2025-09-20"
+    },
+    {
+      "type": "物码营销",
+      "activityCount": 1,
+      "totalAmount": 500000,
+      "lastActivityDate": "2025-08-10"
+    }
+  ],
+  "createdAt": "2024-01-15",
+  "updatedAt": "2025-10-15"
+}
+

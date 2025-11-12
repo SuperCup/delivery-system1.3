@@ -1,0 +1,77 @@
+.fullLayout {
+  height: 100vh;
+  display: flex;
+  background: #f5f7fb;
+}
+
+.sider {
+  width: 256px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 8px 0 24px rgba(15, 33, 77, 0.08);
+  border-right: 1px solid rgba(31, 42, 85, 0.08);
+}
+
+.clientSwitcher {
+  border-bottom: 1px solid rgba(31, 42, 85, 0.06);
+  background: linear-gradient(135deg, rgba(241, 245, 255, 0.9), rgba(255, 255, 255, 0.95));
+}
+
+.menuContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 8px 24px;
+  background: linear-gradient(180deg, rgba(244, 247, 255, 0.5) 0%, #ffffff 40%);
+}
+
+.menu {
+  background: transparent;
+  border-right: none;
+  padding: 4px 4px 16px;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 32px 48px;
+  background: radial-gradient(circle at top left, #ffffff, #f7f9ff 40%, #f5f7fb 100%);
+}
+
+.sider :global(.ant-menu-light) {
+  background: transparent;
+}
+
+.sider :global(.ant-menu-light .ant-menu-item) {
+  margin: 4px 8px;
+  border-radius: 10px;
+  height: 44px;
+  line-height: 44px;
+  color: #3b4364;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.sider :global(.ant-menu-item-icon) {
+  font-size: 18px;
+  color: inherit;
+}
+
+.sider :global(.ant-menu-light .ant-menu-item:hover) {
+  color: #1c2b6f;
+  background: rgba(86, 126, 252, 0.12);
+}
+
+.sider :global(.ant-menu-light .ant-menu-item-selected) {
+  background: linear-gradient(90deg, rgba(86, 126, 252, 0.18), rgba(86, 126, 252, 0.32));
+  color: #1c2b6f;
+  box-shadow: inset 0 0 0 1px rgba(86, 126, 252, 0.22);
+}
+
+.sider :global(.ant-menu-light .ant-menu-item-selected:hover) {
+  background: linear-gradient(90deg, rgba(86, 126, 252, 0.25), rgba(86, 126, 252, 0.38));
+}
+

@@ -1,0 +1,45 @@
+{
+  "categories": [
+    {
+      "id": "brand-001",
+      "name": "康师傅品牌专区",
+      "description": "康师傅各业务线的活动案例与素材标准。",
+      "type": "品牌资产"
+    },
+    {
+      "id": "brand-002",
+      "name": "雀巢品牌专区",
+      "description": "雀巢咖啡、冰淇淋等场景营销打法与复盘。",
+      "type": "品牌资产"
+    }
+  ],
+  "items": [
+    {
+      "id": "brand-item-001",
+      "title": "康师傅抖音到店双11活动复盘",
+      "summary": "梳理活动目标、资源投放、达人矩阵合作与 ROI 表现。",
+      "tags": ["抖音到店", "康师傅", "复盘"],
+      "type": "市场",
+      "categoryId": "brand-001",
+      "owner": "到店营销部",
+      "updatedAt": "2025-11-08",
+      "views": 138,
+      "attachments": [
+        { "name": "双11复盘.pptx", "url": "/mock/files/kangshifu-douyin-review.pptx" }
+      ]
+    },
+    {
+      "id": "brand-item-002",
+      "title": "雀巢冷饮夏季即享店合作方案",
+      "summary": "即享店合作模式、冰柜陈列规范、联合营销日历与预算测算。",
+      "tags": ["雀巢", "即享店", "渠道合作"],
+      "type": "市场",
+      "categoryId": "brand-002",
+      "owner": "品牌渠道拓展",
+      "updatedAt": "2025-10-31",
+      "views": 102,
+      "attachments": []
+    }
+  ]
+}
+

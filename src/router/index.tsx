@@ -1,48 +1,54 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
 import HomePage from '../pages/home/home-page'
-import DataDeliveryPage from '../pages/data-delivery/data-delivery-page'
-import FileDeliveryPage from '../pages/file-delivery/file-delivery-page'
+import ClientsPage from '../pages/clients/clients-page'
 import MagiCorePage from '../pages/magi-core/magi-core-page'
-import AIKnowledgePage from '../pages/ai-knowledge/ai-knowledge-page'
-import AccessControlPage from '../pages/access-control/access-control-page'
-import AccountConfigPage from '../pages/account-config/account-config-page'
-import ActivityManagementPage from '../pages/activity-management/activity-management-page'
-import ActivityDetailPage from '../pages/activity-management/activity-detail-page'
-import ActivityCreatePage from '../pages/activity-management/activity-create-page'
-import DashboardPage from '../pages/dashboard/dashboard-page'
-import ChannelsPage from '../pages/channels/channels-page'
-import DeliveryPage from '../pages/delivery/delivery-page'
-import LogsPage from '../pages/logs/logs-page'
-import PackagesPage from '../pages/packages/packages-page'
-import DataCenterPage from '../pages/data-center/data-center-page'
+import KnowledgeBasePage from '../pages/knowledge-base/knowledge-base-page'
+import DataWarehousePage from '../pages/data-warehouse/data-warehouse-page'
 import ToolsMarketPage from '../pages/tools-market/tools-market-page'
-import SettlementAssistantPage from '../pages/settlement-assistant/settlement-assistant-page'
+import PermissionCenterPage from '../pages/permission-center/permission-center-page'
+import ClientModuleLayout from '../layouts/client-module-layout'
+import ClientDetailPage from '../pages/clients/client-detail-page'
+import ActivityManagementPage from '../pages/activity-management/activity-management-page'
+import ActivityCreateEditPage from '../pages/activity-management/activity-create-edit-page'
+import DataSourceManagementPage from '../pages/activity-management/data-source-management-page'
+import ClientDataDeliveryPage from '../pages/clients/client-module/data-delivery/client-data-delivery-page'
+import ClientFileDeliveryPage from '../pages/clients/client-module/file-delivery/client-file-delivery-page'
+import ClientDataAssetsPage from '../pages/clients/client-module/data-assets/client-data-assets-page'
+import ClientSettlementAssistantPage from '../pages/clients/client-module/settlement-assistant/client-settlement-assistant-page'
+import ClientSettingsPage from '../pages/clients/client-module/settings/client-settings-page'
 
 export const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Navigate to="/home" replace />} />
     <Route path="/home" element={<HomePage />} />
-    {/* 业务专区 */}
+    
+    {/* 客户列表 */}
+    <Route path="/clients" element={<ClientsPage />} />
+    
+    {/* 客户模块（带左侧菜单） */}
+    <Route path="/clients/:clientId" element={<ClientModuleLayout />}>
+      <Route index element={<Navigate to="overview" replace />} />
+      <Route path="overview" element={<ClientDetailPage />} />
+      <Route path="activities" element={<ActivityManagementPage />} />
+      <Route path="data-delivery" element={<ClientDataDeliveryPage />} />
+      <Route path="file-delivery" element={<ClientFileDeliveryPage />} />
+      <Route path="data-assets" element={<ClientDataAssetsPage />} />
+      <Route path="settlement-assistant" element={<ClientSettlementAssistantPage />} />
+      <Route path="settings" element={<ClientSettingsPage />} />
+    </Route>
+    
+    {/* 活动管理相关页面 */}
     <Route path="/activity-management" element={<ActivityManagementPage />} />
-    <Route path="/activity-management/create" element={<ActivityCreatePage />} />
-    <Route path="/activity-management/detail/:id" element={<ActivityDetailPage />} />
-    <Route path="/dashboard" element={<DashboardPage />} />
-    <Route path="/channels" element={<ChannelsPage />} />
-    <Route path="/delivery" element={<DeliveryPage />} />
-    <Route path="/logs" element={<LogsPage />} />
-    <Route path="/packages" element={<PackagesPage />} />
-    <Route path="/data-delivery" element={<DataDeliveryPage />} />
-    <Route path="/file-delivery" element={<FileDeliveryPage />} />
+    <Route path="/activity-management/create" element={<ActivityCreateEditPage />} />
+    <Route path="/activity-management/edit/:id" element={<ActivityCreateEditPage />} />
+    <Route path="/activity-management/data-sources" element={<DataSourceManagementPage />} />
+    
     <Route path="/magi-core" element={<MagiCorePage />} />
-    <Route path="/ai-knowledge" element={<AIKnowledgePage />} />
-    {/* 基础服务 */}
-    <Route path="/data-center" element={<DataCenterPage />} />
+    <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
+    <Route path="/data-warehouse" element={<DataWarehousePage />} />
     <Route path="/tools-market" element={<ToolsMarketPage />} />
-    {/* 项目支持 */}
-    <Route path="/settlement-assistant" element={<SettlementAssistantPage />} />
-    <Route path="/access-control" element={<AccessControlPage />} />
-    <Route path="/account-config" element={<AccountConfigPage />} />
-    <Route path="*" element={<Navigate to="/activity-management" replace />} />
+    <Route path="/permission-center" element={<PermissionCenterPage />} />
+    <Route path="*" element={<Navigate to="/home" replace />} />
   </Routes>
 )
 

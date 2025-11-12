@@ -1,0 +1,63 @@
+{
+  "categories": [
+    {
+      "id": "bu-001",
+      "name": "到店营销业务组",
+      "description": "到店团队的项目案例、培训材料与 SOP。",
+      "type": "业务"
+    },
+    {
+      "id": "bu-002",
+      "name": "即时零售业务组",
+      "description": "履约策略、库存协同与运营排班模板。",
+      "type": "运营"
+    },
+    {
+      "id": "bu-003",
+      "name": "物码营销业务组",
+      "description": "扫码拉新、会员私域运营的打法沉淀。",
+      "type": "运营"
+    }
+  ],
+  "items": [
+    {
+      "id": "bu-item-001",
+      "title": "天猫校园 x 康师傅校园行落地手册",
+      "summary": "包含活动日程、物料配置、社群运营话术，适配高校场景的执行规范。",
+      "tags": ["天猫校园", "康师傅", "校园活动"],
+      "type": "业务",
+      "categoryId": "bu-001",
+      "owner": "到店营销-校园团队",
+      "updatedAt": "2025-11-01",
+      "views": 72,
+      "attachments": []
+    },
+    {
+      "id": "bu-item-002",
+      "title": "美团即时零售库存联动 SOP",
+      "summary": "梳理仓内库存同步、门店补货预测及异常报警流程，附脚本模版。",
+      "tags": ["美团", "即时零售", "库存"],
+      "type": "运营",
+      "categoryId": "bu-002",
+      "owner": "即时零售运营",
+      "updatedAt": "2025-10-30",
+      "views": 108,
+      "attachments": [
+        { "name": "库存监控脚本.zip", "url": "/mock/files/stock-monitor.zip" }
+      ]
+    },
+    {
+      "id": "bu-item-003",
+      "title": "伊利物码积分商城运营方案",
+      "summary": "积分商城的权益设计、供应链配置与促活策略，附 KPI 模板。",
+      "tags": ["伊利", "积分商城", "会员运营"],
+      "type": "运营",
+      "categoryId": "bu-003",
+      "owner": "物码营销-会员运营",
+      "updatedAt": "2025-10-28",
+      "views": 94,
+      "attachments": []
+    }
+  ]
+}
+

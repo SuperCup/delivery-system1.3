@@ -10,11 +10,26 @@ async function readJson<T>(path: string): Promise<T> {
 export const ActivityService = {
   async getActivitiesByClient(clientId: string): Promise<ActivityItem[]> {
     const all = await readJson<ActivityItem[]>('/mock/activity/activities.json')
-    return all.filter((a) => a.clientId === clientId)
+    return all
+      .filter((a) => a.clientId === clientId)
+      .map((item) => ({
+        businessType: '到店营销',
+        dataScopes: [],
+        visibleContacts: [],
+        ...item,
+      }))
   },
   async getActivityById(id: string): Promise<ActivityItem | null> {
     const all = await readJson<ActivityItem[]>('/mock/activity/activities.json')
-    return all.find((a) => a.id === id) ?? null
+    const found = all.find((a) => a.id === id)
+    return found
+      ? {
+          businessType: '到店营销',
+          dataScopes: [],
+          visibleContacts: [],
+          ...found,
+        }
+      : null
   },
   async createActivity(activity: ActivityItem): Promise<ActivityItem> {
     // 模拟创建：前端态直接返回成功

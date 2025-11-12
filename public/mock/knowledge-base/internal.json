@@ -1,0 +1,65 @@
+{
+  "categories": [
+    {
+      "id": "internal-001",
+      "name": "技术运营手册",
+      "description": "交付平台核心模块的运维、监控、故障排查手册。",
+      "type": "技术"
+    },
+    {
+      "id": "internal-002",
+      "name": "业务流程标准",
+      "description": "交付项目标准化流程、审批节点与模板。",
+      "type": "业务"
+    },
+    {
+      "id": "internal-003",
+      "name": "运营增长实验库",
+      "description": "历次增长实验记录、成效及可复用方法论。",
+      "type": "运营"
+    }
+  ],
+  "items": [
+    {
+      "id": "internal-item-001",
+      "title": "交付中台核心服务容灾方案",
+      "summary": "涵盖服务分级、熔断策略、灰度发布流程及应急响应联系人列表。",
+      "tags": ["容灾", "K8s", "监控"],
+      "type": "技术",
+      "categoryId": "internal-001",
+      "owner": "技术保障团队",
+      "updatedAt": "2025-11-07",
+      "views": 86,
+      "attachments": [
+        { "name": "容灾流程图.png", "url": "/mock/files/dr-architecture.png" }
+      ]
+    },
+    {
+      "id": "internal-item-002",
+      "title": "客户入驻标准流程 V3.2",
+      "summary": "覆盖售前评估、项目立项、交付执行、验收归档的标准化模板。",
+      "tags": ["流程", "客户运营", "表单模板"],
+      "type": "业务",
+      "categoryId": "internal-002",
+      "owner": "交付 PMO",
+      "updatedAt": "2025-11-05",
+      "views": 164,
+      "attachments": [
+        { "name": "客户入驻检查清单.xlsx", "url": "/mock/files/onboarding-checklist.xlsx" }
+      ]
+    },
+    {
+      "id": "internal-item-003",
+      "title": "百威拉新 A/B 测试复盘",
+      "summary": "比较短链拉新与物码联动两套方案，沉淀关键成功要素与避坑经验。",
+      "tags": ["实验设计", "物码营销", "复盘"],
+      "type": "运营",
+      "categoryId": "internal-003",
+      "owner": "品牌增长中台",
+      "updatedAt": "2025-11-02",
+      "views": 97,
+      "attachments": []
+    }
+  ]
+}
+

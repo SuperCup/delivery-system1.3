@@ -1,0 +1,194 @@
+{
+  "datasets": [
+    {
+      "id": "dw-001",
+      "platform": "美团到店",
+      "business": "到店营销",
+      "name": "到店活动曝光事实表",
+      "releaseStatus": "已上线",
+      "fields": [
+        {
+          "id": "dw-001-f01",
+          "name": "date_key",
+          "alias": "日期",
+          "dataType": "date",
+          "description": "曝光发生日期",
+          "updateFrequency": "日同步",
+          "sourceSystem": "美团营销 API"
+        },
+        {
+          "id": "dw-001-f02",
+          "name": "campaign_id",
+          "alias": "活动编号",
+          "dataType": "string",
+          "description": "美团活动唯一标识",
+          "updateFrequency": "日同步",
+          "sourceSystem": "美团营销 API"
+        },
+        {
+          "id": "dw-001-f03",
+          "name": "exposure_uv",
+          "alias": "曝光访客数",
+          "dataType": "int",
+          "description": "当日活动曝光的去重用户数",
+          "updateFrequency": "日同步",
+          "sourceSystem": "数据仓库统计任务"
+        },
+        {
+          "id": "dw-001-f04",
+          "name": "coupon_redeem_rate",
+          "alias": "优惠券核销率",
+          "dataType": "decimal(5,2)",
+          "description": "优惠券核销次数与发放次数的比例",
+          "updateFrequency": "日同步",
+          "sourceSystem": "优惠券子系统"
+        }
+      ],
+      "useCases": [
+        {
+          "id": "dw-001-u01",
+          "title": "嘉士伯夜场投放复盘",
+          "businessUnit": "到店营销",
+          "description": "结合曝光、核销与门店客流，评估夜场投放 ROI 并输出优化建议。",
+          "owner": "王琳",
+          "lastUpdatedAt": "2025-11-06"
+        },
+        {
+          "id": "dw-001-u02",
+          "title": "门店曝光异常监控",
+          "businessUnit": "平台监控组",
+          "description": "以曝光环比下降超过 25% 为阈值，自动预警门店运营。",
+          "owner": "李旭",
+          "lastUpdatedAt": "2025-11-04"
+        }
+      ]
+    },
+    {
+      "id": "dw-002",
+      "platform": "美团即时零售",
+      "business": "即时零售",
+      "name": "即时零售履约指标表",
+      "releaseStatus": "试运行",
+      "fields": [
+        {
+          "id": "dw-002-f01",
+          "name": "order_id",
+          "alias": "订单号",
+          "dataType": "string",
+          "description": "即时零售订单唯一编号",
+          "updateFrequency": "小时同步",
+          "sourceSystem": "即时零售 OMS"
+        },
+        {
+          "id": "dw-002-f02",
+          "name": "store_code",
+          "alias": "门店编码",
+          "dataType": "string",
+          "description": "门店统一编码，可关联到门店主数据",
+          "updateFrequency": "小时同步",
+          "sourceSystem": "门店主数据"
+        },
+        {
+          "id": "dw-002-f03",
+          "name": "fulfillment_rate",
+          "alias": "履约率",
+          "dataType": "decimal(5,2)",
+          "description": "成功履约订单数除以总订单数",
+          "updateFrequency": "小时同步",
+          "sourceSystem": "即时零售 OMS"
+        },
+        {
+          "id": "dw-002-f04",
+          "name": "delivery_duration",
+          "alias": "履约时长",
+          "dataType": "int",
+          "description": "从揽件到送达的分钟数",
+          "updateFrequency": "小时同步",
+          "sourceSystem": "履约监控系统"
+        }
+      ],
+      "useCases": [
+        {
+          "id": "dw-002-u01",
+          "title": "伊利冷链履约专项",
+          "businessUnit": "即时零售",
+          "description": "监控低温产品履约时长，联动冷链仓协同，保障 SLA。",
+          "owner": "周琪",
+          "lastUpdatedAt": "2025-11-05"
+        },
+        {
+          "id": "dw-002-u02",
+          "title": "联合利华门店排班优化",
+          "businessUnit": "渠道运营组",
+          "description": "根据订单波峰和履约时长，优化门店排班与骑手配置。",
+          "owner": "刘航",
+          "lastUpdatedAt": "2025-11-02"
+        }
+      ]
+    },
+    {
+      "id": "dw-003",
+      "platform": "物码营销平台",
+      "business": "物码营销",
+      "name": "扫码互动用户视图",
+      "releaseStatus": "已上线",
+      "fields": [
+        {
+          "id": "dw-003-f01",
+          "name": "member_id",
+          "alias": "会员ID",
+          "dataType": "string",
+          "description": "用户在物码平台的唯一识别 ID",
+          "updateFrequency": "实时",
+          "sourceSystem": "会员中心"
+        },
+        {
+          "id": "dw-003-f02",
+          "name": "scan_channel",
+          "alias": "扫码渠道",
+          "dataType": "string",
+          "description": "扫码渠道（便利店、商超、夜店等）",
+          "updateFrequency": "实时",
+          "sourceSystem": "扫码事件流"
+        },
+        {
+          "id": "dw-003-f03",
+          "name": "campaign_code",
+          "alias": "活动编码",
+          "dataType": "string",
+          "description": "扫码所属活动，便于活动维度分析",
+          "updateFrequency": "实时",
+          "sourceSystem": "活动中心"
+        },
+        {
+          "id": "dw-003-f04",
+          "name": "repeat_scan_days",
+          "alias": "重复扫码间隔",
+          "dataType": "int",
+          "description": "用户再次扫码的间隔天数",
+          "updateFrequency": "实时",
+          "sourceSystem": "用户行为宽表"
+        }
+      ],
+      "useCases": [
+        {
+          "id": "dw-003-u01",
+          "title": "百威扫码拉新模型",
+          "businessUnit": "增长实验室",
+          "description": "基于扫码渠道与互动频次，构建拉新模型并推荐营销动作。",
+          "owner": "孙倩",
+          "lastUpdatedAt": "2025-11-03"
+        },
+        {
+          "id": "dw-003-u02",
+          "title": "统一积分权益精细化运营",
+          "businessUnit": "会员运营",
+          "description": "按照用户活跃度分层触达，定向推送积分商城权益。",
+          "owner": "张弛",
+          "lastUpdatedAt": "2025-10-31"
+        }
+      ]
+    }
+  ]
+}
+

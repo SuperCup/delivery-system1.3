@@ -1,0 +1,225 @@
+[
+  {
+    "platform": "微信",
+    "projects": [
+      {
+        "id": "WX-PJ-001",
+        "name": "康师傅秋季促销活动",
+        "code": "SG-250001",
+        "batches": [
+          { "id": "WX-BATCH-001", "name": "康师傅指定品满3.01减3元", "code": "12345678", "mechanismName": "满3.01元减3元" },
+          { "id": "WX-BATCH-002", "name": "康师傅茶饮满5减2元", "code": "23456789", "mechanismName": "满5元减2元" },
+          { "id": "WX-BATCH-003", "name": "康师傅方便面满10减3元", "code": "34567890", "mechanismName": "满10元减3元" }
+        ]
+      },
+      {
+        "id": "WX-PJ-002",
+        "name": "统一品牌促销活动",
+        "code": "SG-250002",
+        "batches": [
+          { "id": "WX-BATCH-004", "name": "统一阿萨姆满8减3元", "code": "45678901", "mechanismName": "满8元减3元" },
+          { "id": "WX-BATCH-005", "name": "统一老坛满12减5元", "code": "56789012", "mechanismName": "满12元减5元" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "支付宝",
+    "projects": [
+      {
+        "id": "ZFB-PJ-001",
+        "name": "康师傅秋季促销活动",
+        "code": "SG-250003",
+        "batches": [
+          { "id": "ZFB-BATCH-001", "name": "脉动满5减1元-251231", "code": "202511060082600472364079001", "mechanismName": "满5元减1元" },
+          { "id": "ZFB-BATCH-002", "name": "冰红茶满8减2元-251231", "code": "202511060082600472364079002", "mechanismName": "满8元减2元" },
+          { "id": "ZFB-BATCH-003", "name": "绿茶满10减3元-251231", "code": "202511060082600472364079003", "mechanismName": "满10元减3元" }
+        ]
+      },
+      {
+        "id": "ZFB-PJ-002",
+        "name": "伊利品牌促销活动",
+        "code": "SG-250008",
+        "batches": [
+          { "id": "ZFB-BATCH-004", "name": "纯牛奶满20减5元-251231", "code": "202511060082600472364079004", "mechanismName": "满20元减5元" },
+          { "id": "ZFB-BATCH-005", "name": "酸奶满15减3元-251231", "code": "202511060082600472364079005", "mechanismName": "满15元减3元" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "微信小店",
+    "projects": [
+      {
+        "id": "WXSHOP-PJ-001",
+        "name": "雀巢品牌促销活动",
+        "code": "SG-250004",
+        "batches": [
+          { "id": "WXSHOP-BATCH-001", "name": "雀巢咖啡满30减8元", "code": "67890123", "mechanismName": "满30元减8元" },
+          { "id": "WXSHOP-BATCH-002", "name": "雀巢奶粉满100减20元", "code": "78901234", "mechanismName": "满100元减20元" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "抖音",
+    "projects": [
+      {
+        "id": "DY-PJ-001",
+        "name": "达人探店计划",
+        "children": [
+          { "id": "DY-BATCH-001", "name": "华东口碑门店" },
+          { "id": "DY-BATCH-002", "name": "商圈爆款视频素材" }
+        ]
+      },
+      {
+        "id": "DY-PJ-002",
+        "name": "团购拉新专案",
+        "children": [
+          { "id": "DY-BATCH-003", "name": "团购券-核心商圈" },
+          { "id": "DY-BATCH-004", "name": "夜间场景权益池" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "抖音到店",
+    "projects": [
+      {
+        "id": "DYDT-PJ-001",
+        "name": "百威品牌促销活动",
+        "code": "SG-250005",
+        "batches": [
+          { "id": "DYDT-BATCH-001", "name": "百威啤酒满50减15元", "code": "89012345", "mechanismName": "满50元减15元" },
+          { "id": "DYDT-BATCH-002", "name": "科罗娜满80减20元", "code": "90123456", "mechanismName": "满80元减20元" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "美团到店",
+    "projects": [
+      {
+        "id": "MTDT-PJ-001",
+        "name": "达能品牌促销活动",
+        "code": "SG-250006",
+        "batches": [
+          { "id": "MTDT-BATCH-001", "name": "脉动满8减2元", "code": "01234567", "mechanismName": "满8元减2元" },
+          { "id": "MTDT-BATCH-002", "name": "依云矿泉水满25减5元", "code": "12340987", "mechanismName": "满25元减5元" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "天猫校园",
+    "projects": [
+      {
+        "id": "TMXY-PJ-001",
+        "name": "联合利华促销活动",
+        "code": "SG-250007",
+        "batches": [
+          { "id": "TMXY-BATCH-001", "name": "多芬洗护满40减10元", "code": "23450987", "mechanismName": "满40元减10元" },
+          { "id": "TMXY-BATCH-002", "name": "清扬洗发水满30减8元", "code": "34560987", "mechanismName": "满30元减8元" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "天猫",
+    "projects": [
+      {
+        "id": "TM-PJ-001",
+        "name": "旗舰店权益运营",
+        "children": [
+          { "id": "TM-BATCH-001", "name": "双十一主推商品池" },
+          { "id": "TM-BATCH-002", "name": "超级会员专享券" }
+        ]
+      },
+      {
+        "id": "TM-PJ-002",
+        "name": "品牌私域拉新",
+        "children": [
+          { "id": "TM-BATCH-003", "name": "高校校园团购" },
+          { "id": "TM-BATCH-004", "name": "天猫校园场景" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "京东",
+    "projects": [
+      {
+        "id": "JD-PJ-001",
+        "name": "自营旗舰推广",
+        "children": [
+          { "id": "JD-BATCH-001", "name": "双十一预售波次" },
+          { "id": "JD-BATCH-002", "name": "京东超市核心仓" }
+        ]
+      },
+      {
+        "id": "JD-PJ-002",
+        "name": "用户增长计划",
+        "children": [
+          { "id": "JD-BATCH-003", "name": "PLUS会员权益补贴" },
+          { "id": "JD-BATCH-004", "name": "新客拉新礼包" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "美团",
+    "projects": [
+      {
+        "id": "MT-PJ-001",
+        "name": "商超闪购",
+        "children": [
+          { "id": "MT-BATCH-001", "name": "一小时达核心仓" },
+          { "id": "MT-BATCH-002", "name": "夜间延时服务门店" }
+        ]
+      },
+      {
+        "id": "MT-PJ-002",
+        "name": "即时零售联合活动",
+        "children": [
+          { "id": "MT-BATCH-003", "name": "全国TOP100门店" },
+          { "id": "MT-BATCH-004", "name": "高校园区联合促销" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "京东到家",
+    "projects": [
+      {
+        "id": "JDDJ-PJ-001",
+        "name": "核心仓即时配",
+        "children": [
+          { "id": "JDDJ-BATCH-001", "name": "夜宵补货门店" },
+          { "id": "JDDJ-BATCH-002", "name": "商圈即时配大仓" }
+        ]
+      }
+    ]
+  },
+  {
+    "platform": "淘宝",
+    "projects": [
+      {
+        "id": "TB-PJ-001",
+        "name": "直播场景专区",
+        "children": [
+          { "id": "TB-BATCH-001", "name": "达人直播专享券" },
+          { "id": "TB-BATCH-002", "name": "年货节联合活动" }
+        ]
+      },
+      {
+        "id": "TB-PJ-002",
+        "name": "门店联营计划",
+        "children": [
+          { "id": "TB-BATCH-003", "name": "城配门店同仓" },
+          { "id": "TB-BATCH-004", "name": "核心店铺包邮专区" }
+        ]
+      }
+    ]
+  }
+]
+

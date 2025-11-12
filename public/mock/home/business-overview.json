@@ -1,0 +1,56 @@
+{
+  "businesses": [
+    {
+      "id": "到店营销",
+      "name": "到店营销",
+      "summary": "聚焦线下门店拉新与促活，通过微信、支付宝等平台实现联动引流。",
+      "owner": "刘晓彤",
+      "contact": "唐亦凡",
+      "metrics": [
+        { "id": "exposure", "label": "曝光量", "value": 1280, "unit": "万次", "trend": "up", "trendValue": "+12.5%" },
+        { "id": "coupon", "label": "核销率", "value": 32.6, "unit": "%", "trend": "up", "trendValue": "+3.1pp" },
+        { "id": "roi", "label": "投放ROI", "value": 3.8, "unit": "", "trend": "flat", "trendValue": "持平" }
+      ],
+      "highlights": [
+        { "id": "highlight-1", "title": "美团到店联合活动", "description": "嘉士伯联合美团推出“夜场欢聚”套餐，引流环比提升 18%" },
+        { "id": "highlight-2", "title": "支付宝品牌日", "description": "统一品牌授权运营，单日新增会员 3.2 万" }
+      ],
+      "quickLink": "/knowledge-base"
+    },
+    {
+      "id": "即时零售",
+      "name": "即时零售",
+      "summary": "覆盖美团、京东到家、饿了么等平台的一小时达业务，实现库存联动与履约监控。",
+      "owner": "赵一鸣",
+      "contact": "王珊",
+      "metrics": [
+        { "id": "order", "label": "订单量", "value": 86.4, "unit": "万单", "trend": "up", "trendValue": "+9.7%" },
+        { "id": "fulfil", "label": "履约率", "value": 97.2, "unit": "%", "trend": "down", "trendValue": "-0.4pp" },
+        { "id": "stock", "label": "库存周转", "value": 5.1, "unit": "天", "trend": "flat", "trendValue": "持平" }
+      ],
+      "highlights": [
+        { "id": "highlight-3", "title": "仓配协同优化", "description": "雀巢冷饮引入预测模型，缺货率降至 1.3%" },
+        { "id": "highlight-4", "title": "即时权益联动", "description": "伊利与美团门店合作推出到家秒杀，成交放量 23%" }
+      ],
+      "quickLink": "/data-warehouse"
+    },
+    {
+      "id": "物码营销",
+      "name": "物码营销",
+      "summary": "结合线下二维码和数字化会员，驱动扫码拉新与复购，沉淀品牌私域资产。",
+      "owner": "何嘉颖",
+      "contact": "陈晨",
+      "metrics": [
+        { "id": "activation", "label": "激活用户", "value": 42.7, "unit": "万人", "trend": "up", "trendValue": "+14.2%" },
+        { "id": "retention", "label": "30日留存", "value": 27.5, "unit": "%", "trend": "up", "trendValue": "+2.0pp" },
+        { "id": "engagement", "label": "活动参与", "value": 61.3, "unit": "%", "trend": "up", "trendValue": "+5.4pp" }
+      ],
+      "highlights": [
+        { "id": "highlight-5", "title": "康师傅扫码有礼", "description": "与抖音小程序联动，短视频曝光 6500 万次" },
+        { "id": "highlight-6", "title": "百威会员回流", "description": "串联全渠道积分，复购率环比提升 11%" }
+      ],
+      "quickLink": "/magi-core"
+    }
+  ]
+}
+

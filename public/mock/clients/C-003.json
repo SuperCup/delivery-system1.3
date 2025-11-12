@@ -1,0 +1,41 @@
+{
+  "id": "C-003",
+  "name": "康师傅",
+  "industry": "食品饮料",
+  "address": "上海市浦东新区康桥路",
+  "website": "https://www.masterkong.com.cn",
+  "description": "康师傅是中国领先的方便食品和饮料制造商，致力于为消费者提供高品质的食品和饮料产品。",
+  "contacts": [
+    {
+      "id": "CT-009",
+      "name": "孙伟",
+      "position": "市场总监",
+      "phone": "137-0000-0001",
+      "email": "sunwei@masterkong.com.cn",
+      "department": "市场部"
+    }
+  ],
+  "business": [
+    {
+      "type": "到店营销",
+      "activityCount": 5,
+      "totalAmount": 2500000,
+      "lastActivityDate": "2025-10-25"
+    },
+    {
+      "type": "即时零售",
+      "activityCount": 3,
+      "totalAmount": 1500000,
+      "lastActivityDate": "2025-09-30"
+    },
+    {
+      "type": "物码营销",
+      "activityCount": 2,
+      "totalAmount": 1000000,
+      "lastActivityDate": "2025-08-20"
+    }
+  ],
+  "createdAt": "2024-03-01",
+  "updatedAt": "2025-10-25"
+}
+

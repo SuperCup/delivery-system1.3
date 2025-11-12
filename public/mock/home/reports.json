@@ -1,0 +1,41 @@
+{
+  "reports": [
+    {
+      "id": "report-001",
+      "name": "到店营销执行周报",
+      "description": "汇总微信、支付宝到店投放曝光、到店核销等核心指标，支持门店层级钻取。",
+      "owner": "张敏（到店营销运营）",
+      "updatedAt": "2025-11-08",
+      "link": "/knowledge-base",
+      "category": "到店营销"
+    },
+    {
+      "id": "report-002",
+      "name": "即时零售履约健康度",
+      "description": "监控美团、京东到家、饿了么三大平台的订单履约率、库存可用量与渠道转化情况。",
+      "owner": "李博（即时零售分析）",
+      "updatedAt": "2025-11-07",
+      "link": "/data-warehouse",
+      "category": "即时零售"
+    },
+    {
+      "id": "report-003",
+      "name": "物码营销拉新成效",
+      "description": "统计物码扫码激活、活动触达和回流复购情况，结合品牌营销节奏输出洞察。",
+      "owner": "陈乐（物码增长）",
+      "updatedAt": "2025-11-06",
+      "link": "/magi-core",
+      "category": "物码营销"
+    },
+    {
+      "id": "report-004",
+      "name": "客户服务体验看板",
+      "description": "跟踪重点客户满意度、反馈闭环效率与交付团队工作量，辅助客户运营决策。",
+      "owner": "吴倩（客户成功）",
+      "updatedAt": "2025-11-05",
+      "link": "/permission-center",
+      "category": "客户服务"
+    }
+  ]
+}
+

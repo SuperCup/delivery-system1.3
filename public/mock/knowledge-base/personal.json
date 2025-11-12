@@ -1,0 +1,45 @@
+{
+  "categories": [
+    {
+      "id": "personal-001",
+      "name": "交付实践随记",
+      "description": "交付经理个人收集的项目经验与风险提示。",
+      "type": null
+    },
+    {
+      "id": "personal-002",
+      "name": "自动化脚本收藏",
+      "description": "常用脚本与命令集合，便于快速处理日常工作。",
+      "type": "技术"
+    }
+  ],
+  "items": [
+    {
+      "id": "personal-item-001",
+      "title": "嘉士伯门店培训注意事项",
+      "summary": "总结嘉士伯华南门店培训时的人员安排、物料准备与突发情况处理经验。",
+      "tags": ["嘉士伯", "门店培训", "风险提示"],
+      "type": "业务",
+      "categoryId": "personal-001",
+      "owner": "李思远",
+      "updatedAt": "2025-11-04",
+      "views": 45,
+      "attachments": []
+    },
+    {
+      "id": "personal-item-002",
+      "title": "交付日志快速导出脚本",
+      "summary": "PowerShell 脚本，按时间范围批量导出交付日志并生成压缩包。",
+      "tags": ["自动化", "日志", "PowerShell"],
+      "type": "技术",
+      "categoryId": "personal-002",
+      "owner": "王楚然",
+      "updatedAt": "2025-10-27",
+      "views": 63,
+      "attachments": [
+        { "name": "export-delivery-logs.ps1", "url": "/mock/files/export-delivery-logs.ps1" }
+      ]
+    }
+  ]
+}
+
