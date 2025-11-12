@@ -104,9 +104,11 @@ export const ClientModuleLayout = () => {
           />
         </div>
       </Sider>
-      <Content className={styles.content}>
-        <Outlet />
-      </Content>
+      <Layout>
+        <Content className={styles.content}>
+          <Outlet />
+        </Content>
+      </Layout>
     </Layout>
   )
 }

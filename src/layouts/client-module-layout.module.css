@@ -1,17 +1,25 @@
 .fullLayout {
-  height: 100vh;
+  height: 100%;
   display: flex;
   background: #f5f7fb;
+  overflow: hidden;
+  position: relative;
 }
 
 .sider {
   width: 256px;
+  height: 100%;
   background: #ffffff;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   box-shadow: 8px 0 24px rgba(15, 33, 77, 0.08);
   border-right: 1px solid rgba(31, 42, 85, 0.08);
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
 }
 
 .clientSwitcher {
@@ -36,6 +44,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 32px 32px 48px;
+  margin-left: 256px;
   background: radial-gradient(circle at top left, #ffffff, #f7f9ff 40%, #f5f7fb 100%);
 }
 

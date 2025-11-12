@@ -1,7 +1,6 @@
 import { Layout, Menu, theme, Avatar, Dropdown, Drawer, Badge, List, Typography, Button, message } from 'antd'
-import type { ReactNode } from 'react'
 import { useMemo, useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import styles from './basic-layout.module.css'
 import systemLogo from '../assets/systemlogo.png'
 import type { UserProfile } from '../types/auth'
@@ -14,11 +13,7 @@ import { UserOutlined, LogoutOutlined, BellOutlined, SettingOutlined } from '@an
 
 const { Header, Content } = Layout
 
-type BasicLayoutProps = {
-  children: ReactNode
-}
-
-export const BasicLayout = ({ children }: BasicLayoutProps) => {
+export const BasicLayout = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { token } = theme.useToken()
@@ -223,7 +218,9 @@ export const BasicLayout = ({ children }: BasicLayoutProps) => {
       {/* 布局主体 */}
       <Layout>
         <Layout>
-          <Content className={styles.content}>{children}</Content>
+          <Content className={styles.content}>
+            <Outlet />
+          </Content>
         </Layout>
       </Layout>
 

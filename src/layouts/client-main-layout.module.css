@@ -1,0 +1,142 @@
+/* 客户管理模块独立主布局样式 */
+.layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+/* 顶部导航栏 */
+.header {
+  background: #fff;
+  padding: 0;
+  height: 64px;
+  line-height: 64px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+  z-index: 1000;
+}
+
+.headerBar {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 0 24px;
+}
+
+/* Logo 区域 */
+.brand {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 32px;
+  flex-shrink: 0;
+}
+
+.brandLogo {
+  height: 32px;
+  width: auto;
+}
+
+/* 模块标题 */
+.moduleTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1890ff;
+  margin-right: auto;
+  user-select: none;
+}
+
+/* 右侧区域 */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+/* 返回首页按钮 */
+.backHomeBtn {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+}
+
+.backHomeBtn:hover {
+  color: #1890ff;
+}
+
+/* 通知图标 */
+.bellIcon {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.bellIcon:hover {
+  color: #1890ff;
+}
+
+/* 用户信息 */
+.userBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.userBox:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.userName {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 22px;
+}
+
+/* 主内容区域 */
+.mainContent {
+  padding: 0;
+  flex: 1;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* 消息抽屉样式 */
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.messageTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.messageTime {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.messageContent {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.messageRead {
+  opacity: 0.7;
+}
+
+.messageUnread {
+  background-color: #f0f7ff;
+}
+

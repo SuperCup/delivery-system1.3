@@ -1,0 +1,56 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.breadcrumb {
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.pageTitle {
+  margin: 0;
+  color: #1a234a;
+}
+
+.alert {
+  margin-bottom: 0;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(31, 42, 85, 0.06);
+  border: 1px solid rgba(15, 33, 77, 0.04);
+}
+
+.uploadAlert {
+  margin-bottom: 16px;
+}
+
+.mappingDesc {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.fieldsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filterForm {
+  margin-bottom: 16px;
+}
+
+.filterForm :global(.ant-form-item) {
+  margin-bottom: 16px;
+}

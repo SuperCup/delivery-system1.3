@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
+  Breadcrumb,
   Button,
   Card,
   DatePicker,
@@ -14,19 +15,18 @@ import {
   Tag,
   Typography,
   Upload,
-  TreeSelect,
   Popconfirm,
   Checkbox,
 } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
-import { InboxOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
+import { InboxOutlined, PlusOutlined, HomeOutlined } from '@ant-design/icons'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
-import styles from './activity-create-edit-page.module.css'
-import type { ActivityItem, ActivityStatus } from '../../types/activity'
-import type { BusinessType, Contact } from '../../types/client'
-import type { PlatformDataOption } from '../../types/activity-guidance'
-import { ClientActivityService } from '../../services/client-activity-service'
+import styles from './activity-form-page.module.css'
+import type { ActivityItem } from '../../../../types/activity'
+import type { BusinessType, Contact } from '../../../../types/client'
+import type { PlatformDataOption } from '../../../../types/activity-guidance'
+import { ClientActivityService } from '../../../../services/client-activity-service'
 
 const { Title, Text } = Typography
 const { RangePicker } = DatePicker
@@ -80,12 +80,11 @@ const UploadProps = {
   showUploadList: false,
 }
 
-export default function ActivityCreateEditPage() {
+export default function ActivityFormPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { id: activityId } = useParams<{ id?: string }>()
+  const { clientId, id: activityId } = useParams<{ clientId: string; id?: string }>()
   const searchParams = new URLSearchParams(location.search)
-  const clientId = searchParams.get('clientId') || ''
   const businessType = (searchParams.get('businessType') as BusinessType) || '到店营销'
   const isEdit = !!activityId
 
@@ -161,11 +160,11 @@ export default function ActivityCreateEditPage() {
       const [start, end] = values.timeRange
       const newItem: ActivityItem = {
         id: activityId || generateActivityId(),
-        clientId,
+        clientId: clientId || '',
         name: values.name,
         status: '草稿',
-        startTime: start.format('YYYY-MM-DD HH:mm:ss'),
-        endTime: end.format('YYYY-MM-DD HH:mm:ss'),
+        startTime: start.format('YYYY-MM-DD'),
+        endTime: end.format('YYYY-MM-DD'),
         platforms: values.platforms,
         batchSummary: values.platforms.map((platform) => ({
           platform,
@@ -189,7 +188,7 @@ export default function ActivityCreateEditPage() {
       }
 
       message.success(isEdit ? '活动已更新（模拟）' : '活动已创建（模拟）')
-      navigate(`/activity-management?clientId=${clientId}`)
+      navigate(`/clients/${clientId}/activities`)
     } catch (error: any) {
       if (error?.errorFields) return
       message.error(`保存失败：${error.message}`)
@@ -372,12 +371,28 @@ export default function ActivityCreateEditPage() {
 
   return (
     <div className={styles.page}>
+      <Breadcrumb
+        className={styles.breadcrumb}
+        items={[
+          {
+            href: `/clients/${clientId}/overview`,
+            title: <HomeOutlined />,
+          },
+          {
+            href: `/clients/${clientId}/activities`,
+            title: '活动管理',
+          },
+          {
+            title: isEdit ? '编辑活动' : '新建活动',
+          },
+        ]}
+      />
       <div className={styles.pageHeader}>
         <Title level={3} className={styles.pageTitle}>
           {isEdit ? '编辑活动' : '新建活动'}
         </Title>
         <Space>
-          <Button onClick={() => navigate(`/activity-management?clientId=${clientId}`)}>取消</Button>
+          <Button onClick={() => navigate(`/clients/${clientId}/activities`)}>取消</Button>
           <Button type="primary" onClick={handleSubmit} loading={loading}>
             保存
           </Button>
@@ -419,7 +434,7 @@ export default function ActivityCreateEditPage() {
             label="活动起止时间"
             rules={[{ required: true, message: '请选择活动时间范围' }]}
           >
-            <RangePicker showTime style={{ width: '100%' }} />
+            <RangePicker style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item

@@ -5,7 +5,6 @@ import {
   Card,
   Empty,
   message,
-  Select,
   Space,
   Table,
   Tabs,
@@ -14,11 +13,11 @@ import {
 } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
-import styles from './activity-management-page.module.css'
-import type { ActivityItem, ActivityStatus } from '../../types/activity'
-import type { BusinessType, Contact } from '../../types/client'
-import type { BusinessActivityGuide } from '../../types/activity-guidance'
-import { ClientActivityService } from '../../services/client-activity-service'
+import styles from './activity-list-page.module.css'
+import type { ActivityItem, ActivityStatus } from '../../../../types/activity'
+import type { BusinessType, Contact } from '../../../../types/client'
+import type { BusinessActivityGuide } from '../../../../types/activity-guidance'
+import { ClientActivityService } from '../../../../services/client-activity-service'
 
 const { Title, Text } = Typography
 
@@ -30,7 +29,7 @@ const statusColorMap: Record<ActivityStatus, string> = {
   已结束: '#b1b5c6',
 }
 
-export default function ActivityManagementPage() {
+export default function ActivityListPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const { clientId: routeClientId } = useParams<{ clientId?: string }>()
@@ -90,16 +89,17 @@ export default function ActivityManagementPage() {
     return map
   }, [contacts])
 
-  const scopeSummary = (record: ActivityItem): string => {
-    if (!record.dataScopes || record.dataScopes.length === 0) {
-      return '—'
-    }
-    const systemCount = record.dataScopes.filter((s) => s.sourceType === 'system').length
-    const manualCount = record.dataScopes.filter((s) => s.sourceType === 'manual').length
-    const parts: string[] = []
-    if (systemCount > 0) parts.push(`系统圈选 ${systemCount} 个平台`)
-    if (manualCount > 0) parts.push(`人工上传 ${manualCount} 个平台`)
-    return parts.join('，')
+  // 获取平台对应的批次数量
+  const getPlatformBatchCount = (platform: string, record: ActivityItem): number => {
+    const batchSummary = record.batchSummary?.find((item) => item.platform === platform)
+    return batchSummary?.count || 0
+  }
+
+  // 格式化日期，只显示日期部分
+  const formatDate = (dateTime: string): string => {
+    if (!dateTime) return '—'
+    // 如果包含时间，只取日期部分
+    return dateTime.split(' ')[0]
   }
 
   const columns: ColumnsType<ActivityItem> = [
@@ -132,9 +132,9 @@ export default function ActivityManagementPage() {
       width: 220,
       render: (_, record) => (
         <div className={styles.period}>
-          <span>{record.startTime}</span>
+          <span>{formatDate(record.startTime)}</span>
           <span className={styles.periodDivider}>~</span>
-          <span>{record.endTime}</span>
+          <span>{formatDate(record.endTime)}</span>
         </div>
       ),
     },
@@ -143,21 +143,19 @@ export default function ActivityManagementPage() {
       dataIndex: 'platforms',
       key: 'platforms',
       width: 220,
-      render: (platforms: string[]) => (
+      render: (platforms: string[], record: ActivityItem) => (
         <Space size={[8, 8]} wrap>
-          {platforms.map((platform) => (
-            <Tag key={platform} className={styles.platformTag}>
-              {platform}
-            </Tag>
-          ))}
+          {platforms.map((platform) => {
+            const batchCount = getPlatformBatchCount(platform, record)
+            return (
+              <Tag key={platform} className={styles.platformTag}>
+                {platform}
+                {batchCount > 0 && <span className={styles.batchCount}>({batchCount})</span>}
+              </Tag>
+            )
+          })}
         </Space>
       ),
-    },
-    {
-      title: '数据范围',
-      key: 'scope',
-      width: 260,
-      render: (_, record) => <Text>{scopeSummary(record)}</Text>,
     },
     {
       title: '可见联系人',
@@ -188,11 +186,11 @@ export default function ActivityManagementPage() {
   ]
 
   const handleCreate = () => {
-    navigate(`/activity-management/create?clientId=${clientId}&businessType=${activeType}`)
+    navigate(`/clients/${clientId}/activities/create?businessType=${activeType}`)
   }
 
   const handleEdit = (record: ActivityItem) => {
-    navigate(`/activity-management/edit/${record.id}?clientId=${clientId}`)
+    navigate(`/clients/${clientId}/activities/edit/${record.id}`)
   }
 
   return (
@@ -245,7 +243,7 @@ export default function ActivityManagementPage() {
                     <Button
                       onClick={() =>
                         navigate(
-                          `/activity-management/data-sources?clientId=${clientId}&businessType=${type}`,
+                          `/clients/${clientId}/activities/data-sources?businessType=${type}`,
                         )
                       }
                       disabled={!clientId}
@@ -277,3 +275,4 @@ export default function ActivityManagementPage() {
     </div>
   )
 }
+

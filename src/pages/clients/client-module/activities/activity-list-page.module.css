@@ -1,0 +1,83 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.pageTitle {
+  margin: 0;
+  color: #1a234a;
+}
+
+.tableCard {
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(31, 42, 85, 0.06);
+  border: 1px solid rgba(15, 33, 77, 0.04);
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.guideAlert {
+  margin-bottom: 0;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.guideDescription {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.emptyWrap {
+  padding: 48px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.table {
+  margin-top: 0;
+}
+
+.period {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.periodDivider {
+  color: rgba(32, 42, 85, 0.45);
+  margin: 0 4px;
+}
+
+.platformTag {
+  margin: 0;
+  font-size: 12px;
+}
+
+.batchCount {
+  margin-left: 4px;
+  font-weight: 600;
+  color: #1890ff;
+}
+
