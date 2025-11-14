@@ -1,0 +1,54 @@
+.page {
+  padding: 0;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.statCard {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  box-shadow: 0 4px 16px rgba(22, 119, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.section {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.taskItem {
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.taskItem:hover {
+  background: #fafafa;
+}
+
+.taskItem:last-child {
+  border-bottom: none;
+}
+
+.stageItem {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.stageItem:last-child {
+  border-bottom: none;
+}
+

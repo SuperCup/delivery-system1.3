@@ -225,3 +225,13 @@
 .clientCard :global(.ant-card-extra):hover {
   color: #1677ff;
 }
+
+/* 任务列表 */
+.taskItem {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.taskItem:last-child {
+  border-bottom: none;
+}

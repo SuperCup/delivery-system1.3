@@ -4,78 +4,99 @@
   gap: 16px;
 }
 
+.introCard :global(.ant-card-body) {
+  padding: 24px;
+}
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.searchBar {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+.filterTips {
+  margin-top: 12px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.categoryTabs :global(.ant-tabs-nav) {
+  margin: 0;
+}
+
+.categoryTabs :global(.ant-tabs-tab) {
+  padding: 8px 24px;
+  font-size: 15px;
+}
+
+.categoryTabs :global(.ant-tabs-ink-bar) {
+  height: 3px;
+  border-radius: 999px;
 }
 
 .cardGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
 }
 
 .agentCard {
-  display: flex;
-  flex-direction: column;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.agentCard :global(.ant-card-body) {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+.agentCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
 }
 
 .agentCard :global(.ant-card-cover) {
-  height: 160px;
+  height: 180px;
   overflow: hidden;
 }
 
 .agentCover {
   width: 100%;
-  height: 160px;
+  height: 180px;
   object-fit: cover;
 }
 
-.agentStats {
+.cardBody {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agentTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.agentDesc {
+  color: #5f6c8e;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 44px;
   margin-bottom: 12px;
 }
 
-.agentUsage {
+.agentMeta {
   display: flex;
-  gap: 8px;
-  align-items: center;
-  color: var(--ant-color-text-secondary);
-}
-
-.tagList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.cardFooter {
-  display: flex;
-  gap: 8px;
   align-items: center;
   justify-content: space-between;
   margin-top: 8px;
 }
 
-.statusDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.agentUsage {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.agentMeta :global(.ant-btn) {
+  border-radius: 999px;
+  padding: 0 16px;
 }
 

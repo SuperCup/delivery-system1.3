@@ -19,6 +19,8 @@ import ClientFileDeliveryPage from '../pages/clients/client-module/file-delivery
 import ClientDataAssetsPage from '../pages/clients/client-module/data-assets/client-data-assets-page'
 import ClientSettlementAssistantPage from '../pages/clients/client-module/settlement-assistant/client-settlement-assistant-page'
 import ClientSettingsPage from '../pages/clients/client-module/settings/client-settings-page'
+import DaodianPage from '../pages/business-process/daodian-page'
+import TasksPage from '../pages/business-process/tasks-page'
 
 export const AppRoutes = () => (
   <Routes>
@@ -36,6 +38,10 @@ export const AppRoutes = () => (
       
       {/* 客户列表页面也使用主系统布局 */}
       <Route path="/clients" element={<ClientsPage />} />
+      
+      {/* 业务流程管理 */}
+      <Route path="/business-process/daodian" element={<DaodianPage />} />
+      <Route path="/business-process/tasks" element={<TasksPage />} />
     </Route>
     
     {/* 客户管理模块 - 使用独立的 ClientMainLayout */}

@@ -1,99 +1,88 @@
 {
   "tools": [
     {
-      "id": "tool-excel",
-      "name": "Excel 导出助手",
-      "category": "数据处理",
-      "status": "已内置",
-      "supportedPlatforms": ["微信", "美团到店", "饿了么"],
-      "audiences": ["项目经理", "数据分析师"],
-      "description": "将交付系统中的活动数据一键导出为带格式的 Excel，支持多 Sheet 模板。",
-      "usageGuide": "在报表详情页点击“导出助手”按钮，即可选择模板导出。",
-      "latestVersion": "v2.3.4",
-      "lastUpdatedAt": "2025-11-06",
-      "previewUrl": "https://example.com/tools/excel-export",
-      "changelog": [
-        {
-          "version": "v2.3.4",
-          "releasedAt": "2025-11-06",
-          "highlights": ["新增支持物码营销字段模板", "提升导出性能，平均耗时降低 30%"]
-        },
-        {
-          "version": "v2.2.0",
-          "releasedAt": "2025-09-12",
-          "highlights": ["新增导出前预览功能", "支持字段别名配置"]
-        }
-      ]
-    },
-    {
-      "id": "tool-mapper",
-      "name": "字段映射器",
-      "category": "数据治理",
-      "status": "可安装",
-      "supportedPlatforms": ["京东到家", "美团即时零售"],
-      "audiences": ["数据工程师", "BI 管理员"],
-      "description": "可视化配置多平台字段映射，自动生成同步脚本并校验字段类型一致性。",
-      "usageGuide": "安装后在“数据仓库”页面右上角进入配置，完成字段映射。",
-      "latestVersion": "v1.6.1",
-      "lastUpdatedAt": "2025-11-04",
-      "previewUrl": "https://example.com/tools/field-mapper",
-      "changelog": [
-        {
-          "version": "v1.6.1",
-          "releasedAt": "2025-11-04",
-          "highlights": ["增加字段血缘图谱展示", "新增对京东到家库存接口的映射模版"]
-        },
-        {
-          "version": "v1.5.0",
-          "releasedAt": "2025-08-18",
-          "highlights": ["支持批量导入映射关系", "提供冲突校验报告下载"]
-        }
-      ]
-    },
-    {
-      "id": "tool-compare",
-      "name": "差异对比助手",
-      "category": "分析效率",
-      "status": "可安装",
-      "supportedPlatforms": ["微信", "抖音到店", "支付宝"],
-      "audiences": ["运营分析师", "品牌经理"],
-      "description": "在同一界面对比各平台的活动表现，自动标记异常波动并给出提示。",
-      "usageGuide": "安装后在首页“我的报表”点击“差异对比”入口使用。",
-      "latestVersion": "v0.9.8",
-      "lastUpdatedAt": "2025-11-01",
-      "previewUrl": "https://example.com/tools/comparison",
-      "changelog": [
-        {
-          "version": "v0.9.8",
-          "releasedAt": "2025-11-01",
-          "highlights": ["新增达能、百威两大品牌监控模板", "优化异常波动阈值配置"]
-        }
-      ]
-    },
-    {
-      "id": "tool-report",
-      "name": "报表模板中心",
-      "category": "报表管理",
+      "id": "tool-split-order",
+      "name": "拆单工具",
+      "category": "工具",
       "status": "可安装",
       "supportedPlatforms": ["全平台"],
-      "audiences": ["项目经理", "品牌负责人"],
-      "description": "集中管理公司内部各类报表模板，一键套用风格标准，支持预约生成。",
-      "usageGuide": "安装后可在“我的报表”模块直接选择模板应用。",
-      "latestVersion": "v1.2.0",
-      "lastUpdatedAt": "2025-10-26",
-      "previewUrl": "https://example.com/tools/report-center",
-      "changelog": [
-        {
-          "version": "v1.2.0",
-          "releasedAt": "2025-10-26",
-          "highlights": ["新增品牌看板模板 6 套", "支持预约生成 PDF 并自动发送邮件"]
-        },
-        {
-          "version": "v1.1.0",
-          "releasedAt": "2025-08-05",
-          "highlights": ["支持模板收藏和团队共享", "新增导入预览功能"]
-        }
-      ]
+      "audiences": [],
+      "description": "Windows 应用，需要本地安装。在工具窗口上传文件后，选择条件，工具自动处理生成结果。",
+      "usageGuide": "下载并安装后，打开应用上传文件，选择拆分条件，生成结果。",
+      "latestVersion": "v1.0.0",
+      "lastUpdatedAt": "2025-11-10",
+      "previewUrl": "https://example.com/tools/split-order",
+      "changelog": []
+    },
+    {
+      "id": "tool-meituan-bill-sync",
+      "name": "美团品牌通账单同步",
+      "category": "账单同步",
+      "status": "可安装",
+      "supportedPlatforms": ["美团到店"],
+      "audiences": [],
+      "description": "同步美团品牌通账单，支持按日期与门店导入校验。",
+      "usageGuide": "配置授权信息后选择时间范围执行同步。",
+      "latestVersion": "v1.0.0",
+      "lastUpdatedAt": "2025-11-10",
+      "previewUrl": "https://example.com/tools/meituan-bill-sync",
+      "changelog": []
+    },
+    {
+      "id": "tool-eleme-xingyupan-bill-sync",
+      "name": "饿了么星云盘账单同步",
+      "category": "账单同步",
+      "status": "可安装",
+      "supportedPlatforms": ["饿了么"],
+      "audiences": [],
+      "description": "同步星云盘账单，支持增量与全量更新。",
+      "usageGuide": "配置账号后选择同步模式，开始导入。",
+      "latestVersion": "v1.0.0",
+      "lastUpdatedAt": "2025-11-10",
+      "previewUrl": "https://example.com/tools/eleme-xingyupan-bill-sync",
+      "changelog": []
+    },
+    {
+      "id": "tool-alipay-bill-sync",
+      "name": "支付宝账单同步",
+      "category": "账单同步",
+      "status": "可安装",
+      "supportedPlatforms": ["支付宝"],
+      "audiences": [],
+      "description": "同步支付宝账单，自动对齐账期并校验金额。",
+      "usageGuide": "配置企业账号后选择账期范围，点击开始。",
+      "latestVersion": "v1.0.0",
+      "lastUpdatedAt": "2025-11-10",
+      "previewUrl": "https://example.com/tools/alipay-bill-sync",
+      "changelog": []
+    },
+    {
+      "id": "tool-wechat-bulk-activation",
+      "name": "微信批量激活",
+      "category": "运营工具",
+      "status": "可安装",
+      "supportedPlatforms": ["微信"],
+      "audiences": [],
+      "description": "批量激活活动码或链接，支持结果导出。",
+      "usageGuide": "上传待激活清单，校验后一键执行。",
+      "latestVersion": "v1.0.0",
+      "lastUpdatedAt": "2025-11-10",
+      "previewUrl": "https://example.com/tools/wechat-bulk-activation",
+      "changelog": []
+    },
+    {
+      "id": "tool-nfc-campaign-sync",
+      "name": "碰一碰活动信息同步",
+      "category": "运营工具",
+      "status": "可安装",
+      "supportedPlatforms": ["全平台"],
+      "audiences": [],
+      "description": "同步碰一碰设备的活动信息并更新至系统。",
+      "usageGuide": "连接设备后选择活动，执行信息同步。",
+      "latestVersion": "v1.0.0",
+      "lastUpdatedAt": "2025-11-10",
+      "previewUrl": "https://example.com/tools/nfc-campaign-sync",
+      "changelog": []
     }
   ]
 }

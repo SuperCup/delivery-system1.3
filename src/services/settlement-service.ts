@@ -16,7 +16,11 @@ export async function getSettlementOverview(): Promise<SettlementOverview | null
     return {
       lastRun: String(raw.lastRun ?? ''),
       rules: Array.isArray(raw.rules)
-        ? raw.rules.map((r) => ({ id: String(r.id), name: String(r.name), status: r.status }))
+        ? raw.rules.map((r) => ({
+            id: String(r.id),
+            name: String(r.name),
+            status: (r.status === '正常' || r.status === '待完善' ? r.status : '正常') as '正常' | '待完善',
+          }))
         : [],
     }
   } catch (e) {

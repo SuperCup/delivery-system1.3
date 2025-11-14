@@ -5,14 +5,14 @@ import type { ColumnsType } from 'antd/es/table'
 import type { DeliveryTask } from '../../types/delivery'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTasks } from '../../store/delivery-slice'
-import type { RootState } from '../../store'
+import type { RootState, AppDispatch } from '../../store'
 
 export default function DeliveryPage() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const { tasks, loading, error } = useSelector((s: RootState) => s.delivery)
 
   useEffect(() => {
-    dispatch(fetchTasks() as unknown as ReturnType<typeof fetchTasks>)
+    dispatch(fetchTasks())
   }, [dispatch])
 
   const columns: ColumnsType<DeliveryTask> = [

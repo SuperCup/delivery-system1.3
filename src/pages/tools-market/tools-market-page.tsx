@@ -1,18 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   Card,
-  List,
   Tag,
   Button,
   Select,
   Input,
-  Drawer,
   Space,
   Typography,
-  Descriptions,
-  Timeline,
-  Badge,
   Empty,
+  Modal,
+  Pagination,
 } from 'antd'
 import { getTools } from '../../services/tools-market-service'
 import type { ToolItem } from '../../types/tools'
@@ -21,17 +18,14 @@ import styles from './tools-market-page.module.css'
 const { Search } = Input
 const { Text } = Typography
 
-const statusColor = {
-  已内置: 'green',
-  可安装: 'blue',
-} as const
-
 const ToolsMarketPage = () => {
   const [tools, setTools] = useState<ToolItem[]>([])
   const [keyword, setKeyword] = useState('')
   const [category, setCategory] = useState<string>('全部类别')
   const [platforms, setPlatforms] = useState<string[]>([])
-  const [activeTool, setActiveTool] = useState<ToolItem | null>(null)
+  const [usageGuide, setUsageGuide] = useState<string | null>(null)
+  const [page, setPage] = useState(1)
+  const pageSize = 6
 
   useEffect(() => {
     getTools().then(setTools)
@@ -66,6 +60,15 @@ const ToolsMarketPage = () => {
     })
   }, [tools, keyword, category, platforms])
 
+  useEffect(() => {
+    setPage(1)
+  }, [keyword, category, platforms])
+
+  const pagedTools = useMemo(() => {
+    const start = (page - 1) * pageSize
+    return filteredTools.slice(start, start + pageSize)
+  }, [filteredTools, page])
+
   return (
     <div className={styles.page}>
       <Card
@@ -78,13 +81,13 @@ const ToolsMarketPage = () => {
           <Search
             placeholder="搜索工具名称或介绍"
             allowClear
-            style={{ width: 260 }}
+            className={styles.searchInput}
             onSearch={setKeyword}
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
           <Select
-            style={{ width: 200 }}
+            className={styles.categorySelect}
             value={category}
             onChange={setCategory}
             options={categoryOptions.map((option) => ({ label: option, value: option }))}
@@ -92,7 +95,7 @@ const ToolsMarketPage = () => {
           <Select
             mode="multiple"
             allowClear
-            style={{ minWidth: 240 }}
+            className={styles.platformSelect}
             placeholder="选择适用平台"
             value={platforms}
             onChange={setPlatforms}
@@ -101,104 +104,71 @@ const ToolsMarketPage = () => {
         </div>
       </Card>
 
-      <Card bordered={false}>
+      <Card bordered={false} className={styles.section}>
         {filteredTools.length === 0 ? (
           <Empty description="暂无符合条件的工具" />
         ) : (
-          <List
-            grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 3 }}
-            dataSource={filteredTools}
-            renderItem={(tool) => (
-              <List.Item>
-                <Card className={styles.toolCard} title={tool.name} hoverable>
-                  <div className={styles.toolMeta}>
-                    <Tag color={statusColor[tool.status]}>{tool.status}</Tag>
-                    <Text type="secondary">最近更新：{tool.lastUpdatedAt}</Text>
-                  </div>
+          <>
+            <div className={styles.toolsGrid}>
+              {pagedTools.map((tool) => (
+                <Card
+                  key={tool.id}
+                  className={styles.toolCard}
+                  title={
+                    <div className={styles.cardTitle}>
+                      <span className={styles.cardName}>{tool.name}</span>
+                      <Text type="secondary" className={styles.cardUpdated}>
+                        最近更新：{tool.lastUpdatedAt}
+                      </Text>
+                    </div>
+                  }
+                  hoverable
+                  bordered={false}
+                >
                   <div className={styles.tagGroup}>
-                    <Badge color="#1677ff" text={tool.category} />
                     {tool.supportedPlatforms.map((platform) => (
-                      <Tag key={platform} color="geekblue">
+                      <Tag key={platform} className={styles.capsuleTag} color="geekblue">
                         {platform}
                       </Tag>
                     ))}
                   </div>
-                  <Text type="secondary">{tool.description}</Text>
-                  <div>
-                    <Text type="secondary">适用人群：</Text>
-                    <div className={styles.tagGroup}>
-                      {tool.audiences.map((audience) => (
-                        <Tag key={audience} bordered>
-                          {audience}
-                        </Tag>
-                      ))}
-                    </div>
-                  </div>
+                  <Text type="secondary" className={styles.descText}>
+                    {tool.description}
+                  </Text>
                   <div className={styles.cardFooter}>
                     <Space>
                       <Text type="secondary">版本：{tool.latestVersion}</Text>
                     </Space>
                     <Space>
-                      <Button type="link" size="small" onClick={() => setActiveTool(tool)}>
-                        预览
-                      </Button>
-                      <Button type="primary" disabled={tool.status === '已内置'}>
-                        {tool.status === '已内置' ? '已部署' : '申请安装'}
+                      <Button type="primary" onClick={() => setUsageGuide(tool.usageGuide)}>
+                        查看使用方法
                       </Button>
                     </Space>
                   </div>
                 </Card>
-              </List.Item>
-            )}
-          />
+              ))}
+            </div>
+            <div className={styles.paginationWrapper}>
+              <Pagination
+                current={page}
+                pageSize={pageSize}
+                total={filteredTools.length}
+                onChange={(p) => setPage(p)}
+                showSizeChanger={false}
+              />
+            </div>
+          </>
         )}
       </Card>
 
-      <Drawer
-        width={520}
-        open={!!activeTool}
-        title={activeTool?.name}
-        onClose={() => setActiveTool(null)}
+      <Modal
+        open={!!usageGuide}
+        title="使用方法"
+        onCancel={() => setUsageGuide(null)}
+        footer={null}
       >
-        {activeTool && (
-          <div className={styles.previewContent}>
-            <Descriptions column={1} size="small" bordered>
-              <Descriptions.Item label="分类">{activeTool.category}</Descriptions.Item>
-              <Descriptions.Item label="适用平台">
-                {activeTool.supportedPlatforms.join('、')}
-              </Descriptions.Item>
-              <Descriptions.Item label="适用人群">
-                {activeTool.audiences.join('、')}
-              </Descriptions.Item>
-              <Descriptions.Item label="使用指引">{activeTool.usageGuide}</Descriptions.Item>
-            </Descriptions>
-            <Card title="工具介绍">
-              <Text>{activeTool.description}</Text>
-            </Card>
-            <Card title="版本迭代说明">
-              <Timeline
-                items={activeTool.changelog.map((item) => ({
-                  children: (
-                    <Space direction="vertical">
-                      <Text strong>
-                        {item.version} · {item.releasedAt}
-                      </Text>
-                      <ul style={{ paddingLeft: 20, margin: 0 }}>
-                        {item.highlights.map((highlight) => (
-                          <li key={highlight}>{highlight}</li>
-                        ))}
-                      </ul>
-                    </Space>
-                  ),
-                }))}
-              />
-            </Card>
-            <Button type="primary" href={activeTool.previewUrl} target="_blank" rel="noreferrer">
-              前往工具主页
-            </Button>
-          </div>
-        )}
-      </Drawer>
+        <Typography.Paragraph>{usageGuide}</Typography.Paragraph>
+      </Modal>
     </div>
   )
 }

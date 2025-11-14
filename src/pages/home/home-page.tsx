@@ -9,8 +9,7 @@ import {
   Typography,
   Space,
   Alert,
-  Divider,
-  Tooltip,
+  List,
   Empty,
   Table,
 } from 'antd'
@@ -20,6 +19,7 @@ import {
   ArrowDownOutlined,
   DragOutlined,
   InfoCircleOutlined,
+  ClockCircleOutlined,
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -45,9 +45,10 @@ import type {
   StatCard,
   ClientSummary,
   ReportCard as HomeReportCard,
-  BusinessOverviewCard,
+  Todo,
 } from '../../types/home'
 import { HomeService } from '../../services/home-service'
+import StandardBusinessOverviewPage from '../../components/standard-business-process/standard-business-overview-page'
 
 const { Title, Text } = Typography
 
@@ -114,7 +115,8 @@ export default function HomePage() {
   const [clients, setClients] = useState<ClientSummary[]>([])
   const [loading, setLoading] = useState(false)
   const [reports, setReports] = useState<HomeReportCard[]>([])
-  const [businessOverview, setBusinessOverview] = useState<BusinessOverviewCard[]>([])
+  const [todos, setTodos] = useState<Todo[]>([])
+  
   const navigate = useNavigate()
 
   const sensors = useSensors(
@@ -140,16 +142,16 @@ export default function HomePage() {
     const loadData = async () => {
       setLoading(true)
       try {
-        const [overviewData, clientsData, reportsData, businessData] = await Promise.all([
+        const [overviewData, clientsData, reportsData, messagesData] = await Promise.all([
           HomeService.getDashboardOverview(),
           HomeService.getClientSummaries(),
           HomeService.getHomeReports(),
-          HomeService.getBusinessOverview(),
+          HomeService.getHomeMessages(),
         ])
         setOverview(overviewData)
         setClients(clientsData)
         setReports(reportsData.reports)
-        setBusinessOverview(businessData.businesses)
+        setTodos(messagesData.todos)
       } catch (error) {
         const err = error as Error
         message.error(`加载首页数据失败：${err.message}`)
@@ -354,67 +356,69 @@ export default function HomePage() {
         </Col>
       </Row>
 
-      {/* 三大业务 */}
-      <Card 
-        title={<Title level={5} style={{ margin: 0 }}>三大业务运行概览</Title>}
-        className={styles.section}
-        bordered={false}
-        extra={<Button type="link" size="small">业务指标配置</Button>}
-      >
-        {businessOverview.length === 0 ? (
-          <Empty description="暂无业务概览数据" />
-        ) : (
-        <Row gutter={[16, 16]}>
-            {businessOverview.map((biz) => (
-              <Col key={biz.id} xs={24} md={12} lg={8}>
-                <Card className={styles.businessCard} hoverable>
-                  <div className={styles.businessHeader}>
-                    <Space direction="vertical" size={4}>
-                      <Title level={5} style={{ margin: 0 }}>
-                        {biz.name}
-                      </Title>
-                      <Text type="secondary">{biz.summary}</Text>
-                    </Space>
-                    <Space direction="vertical" size={2} align="end">
-                      <Tag color="blue">{biz.owner}</Tag>
-                      <Text type="secondary">对接人：{biz.contact}</Text>
-                    </Space>
-                  </div>
-                  <Divider dashed style={{ margin: '12px 0' }} />
-                  <div className={styles.businessMetrics}>
-                    {biz.metrics.map((metric) => (
-                      <div key={metric.id} className={styles.businessMetric}>
-                        <Text type="secondary">{metric.label}</Text>
-                        <div className={styles.metricValue}>
-                          <span className={styles.metricNumber}>{metric.value}</span>
-                          <span className={styles.metricUnit}>{metric.unit}</span>
-                        </div>
-                        <Tooltip title="环比趋势">
-                          <Tag color={metric.trend === 'up' ? 'green' : metric.trend === 'down' ? 'red' : 'default'}>
-                            {metric.trendValue}
+      {/* 三大业务运行概览 */}
+      <Row gutter={[16, 16]}>
+        <Col xs={24} lg={24}>
+          <Card
+            title={<Title level={5} style={{ margin: 0 }}>业务管理</Title>}
+            className={styles.section}
+            bordered={false}
+            extra={<Button type="link" size="small">流程配置</Button>}
+          >
+            <StandardBusinessOverviewPage variant="embedded" />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* 我的任务 */}
+      <Row gutter={[16, 16]}>
+        <Col xs={24} lg={24}>
+          <Card
+            title={
+              <div>
+                <Title level={5} style={{ margin: 0 }}>我的任务</Title>
+                <Text type="secondary" style={{ fontSize: 12 }}>最近任务</Text>
+              </div>
+            }
+            className={styles.section}
+            bordered={false}
+            extra={<Button type="link" size="small" onClick={() => navigate('/business-process/tasks')}>查看全部 →</Button>}
+          >
+            {loading ? (
+              <Text type="secondary">加载中...</Text>
+            ) : todos.length === 0 ? (
+              <Empty description="暂无任务" />
+            ) : (
+              <List
+                dataSource={todos.slice(0, 1)}
+                renderItem={(todo) => (
+                  <List.Item className={styles.taskItem}>
+                    <Space direction="vertical" style={{ width: '100%' }} size={4}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Space>
+                          <Text strong>{todo.title}</Text>
+                          <Tag color={todo.status === 'pending' ? 'default' : todo.status === 'in-progress' ? 'processing' : 'success'}>
+                            {todo.status === 'pending' ? '待处理' : todo.status === 'in-progress' ? '进行中' : '已完成'}
                           </Tag>
-                        </Tooltip>
+                        </Space>
                       </div>
-                    ))}
-                  </div>
-                  <Divider dashed style={{ margin: '12px 0' }} />
-                  <div className={styles.businessHighlights}>
-                    {biz.highlights.map((highlight) => (
-                      <div key={highlight.id} className={styles.highlightItem}>
-                        <Text strong>{highlight.title}</Text>
-                        <Text type="secondary">{highlight.description}</Text>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <Text type="secondary" style={{ fontSize: 12 }}>
+                          {todo.category} · 到店营销
+                        </Text>
+                        <Space size={4}>
+                          <ClockCircleOutlined style={{ fontSize: 12, color: '#8c8c8c' }} />
+                          <Text type="secondary" style={{ fontSize: 12 }}>{todo.dueDate}</Text>
+                        </Space>
                       </div>
-                    ))}
-                  </div>
-                  <Button type="link" size="small" onClick={() => navigate(biz.quickLink)}>
-                    查看业务详情
-              </Button>
-                </Card>
-            </Col>
-          ))}
-        </Row>
-        )}
-      </Card>
+                    </Space>
+                  </List.Item>
+                )}
+              />
+            )}
+          </Card>
+        </Col>
+      </Row>
     </div>
   )
 }
