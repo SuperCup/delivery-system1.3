@@ -1,0 +1,81 @@
+{
+  "id": "company-root",
+  "name": "精明购",
+  "type": "company",
+  "children": [
+    {
+      "id": "person-ken-zhang",
+      "name": "Ken Zhang(张凯)",
+      "type": "person",
+      "title": "CEO"
+    },
+    {
+      "id": "dept-cmo",
+      "name": "CMO",
+      "type": "department",
+      "children": []
+    },
+    {
+      "id": "dept-purchase",
+      "name": "购物者及渠道数字化运营事业部",
+      "type": "department",
+      "children": []
+    },
+    {
+      "id": "dept-o2o",
+      "name": "O2O数字化营销事业部",
+      "type": "department",
+      "children": []
+    },
+    {
+      "id": "dept-store",
+      "name": "门店数字化营销事业部",
+      "type": "department",
+      "children": []
+    },
+    {
+      "id": "dept-innovation",
+      "name": "创新业务事业群",
+      "type": "department",
+      "children": []
+    },
+    {
+      "id": "dept-new-marketing",
+      "name": "新营销事业部",
+      "type": "department",
+      "children": []
+    },
+    {
+      "id": "dept-operation",
+      "name": "运营事业部",
+      "type": "department",
+      "children": []
+    },
+    {
+      "id": "dept-product",
+      "name": "产品及运营交付中心",
+      "type": "department",
+      "children": [
+        {
+          "id": "person-gao-yunfeng",
+          "name": "高云峰",
+          "type": "person",
+          "title": "产品总监"
+        },
+        {
+          "id": "group-self-product",
+          "name": "自有产品组",
+          "type": "group",
+          "children": []
+        },
+        {
+          "id": "group-data-product",
+          "name": "数据产品组",
+          "type": "group",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
+

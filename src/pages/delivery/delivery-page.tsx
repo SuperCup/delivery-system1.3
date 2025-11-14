@@ -12,7 +12,7 @@ export default function DeliveryPage() {
   const { tasks, loading, error } = useSelector((s: RootState) => s.delivery)
 
   useEffect(() => {
-    dispatch(fetchTasks() as any)
+    dispatch(fetchTasks() as unknown as ReturnType<typeof fetchTasks>)
   }, [dispatch])
 
   const columns: ColumnsType<DeliveryTask> = [

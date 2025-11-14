@@ -1,6 +1,6 @@
-import { Layout, Menu, Avatar, Dropdown, Badge, Drawer, List, Typography, Button, message } from 'antd'
+import { Layout, Avatar, Dropdown, Badge, Drawer, List, Typography, Button, message } from 'antd'
 import { useMemo, useState, useEffect } from 'react'
-import { useNavigate, useLocation, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 import { UserOutlined, LogoutOutlined, BellOutlined, SettingOutlined, HomeOutlined } from '@ant-design/icons'
 import type { UserProfile } from '../types/auth'
 import { AuthService } from '../services/auth-service'
@@ -19,7 +19,6 @@ const { Paragraph, Text } = Typography
  */
 export const ClientMainLayout = () => {
   const navigate = useNavigate()
-  const location = useLocation()
   const [user, setUser] = useState<UserProfile | null>(null)
   const [messagesDrawerVisible, setMessagesDrawerVisible] = useState(false)
   const [homeMessages, setHomeMessages] = useState<HomeMessages | null>(null)

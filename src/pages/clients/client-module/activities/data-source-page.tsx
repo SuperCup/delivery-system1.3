@@ -489,7 +489,7 @@ export default function DataSourcePage() {
           },
           {
             href: `/clients/${clientId}/activities`,
-            title: '活动管理',
+            title: '客户看板',
           },
           {
             title: '源数据管理',

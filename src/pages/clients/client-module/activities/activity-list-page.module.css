@@ -32,6 +32,11 @@
   margin-bottom: 0;
 }
 
+.guideAlert :global(.ant-alert-description) {
+  padding: 0;
+  margin: 0;
+}
+
 .actionBar {
   display: flex;
   justify-content: flex-start;
@@ -43,9 +48,27 @@
 .guideDescription {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0;
   font-size: 13px;
   line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+.tipsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+}
+
+.tipItem {
+  display: block;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
 }
 
 .emptyWrap {

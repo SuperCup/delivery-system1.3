@@ -21,7 +21,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return { hasError: true, error }
   }
 
-  componentDidCatch(_error: Error, _info: unknown) {
+  componentDidCatch() {
     // 可以在此处接入日志上报
     // console.error('ErrorBoundary caught:', error, info)
   }

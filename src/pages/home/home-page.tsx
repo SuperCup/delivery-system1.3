@@ -9,11 +9,12 @@ import {
   Typography,
   Space,
   Alert,
-  List,
   Divider,
   Tooltip,
   Empty,
+  Table,
 } from 'antd'
+import { BrandsDisplay } from '../../components/brands-display/brands-display'
 import { 
   ArrowUpOutlined, 
   ArrowDownOutlined,
@@ -43,7 +44,6 @@ import type {
   DashboardOverview,
   StatCard,
   ClientSummary,
-  Message as HomeMessage,
   ReportCard as HomeReportCard,
   BusinessOverviewCard,
 } from '../../types/home'
@@ -113,7 +113,6 @@ export default function HomePage() {
   const [overview, setOverview] = useState<DashboardOverview | null>(null)
   const [clients, setClients] = useState<ClientSummary[]>([])
   const [loading, setLoading] = useState(false)
-  const [messages, setMessages] = useState<HomeMessage[]>([])
   const [reports, setReports] = useState<HomeReportCard[]>([])
   const [businessOverview, setBusinessOverview] = useState<BusinessOverviewCard[]>([])
   const navigate = useNavigate()
@@ -141,16 +140,14 @@ export default function HomePage() {
     const loadData = async () => {
       setLoading(true)
       try {
-        const [overviewData, clientsData, messagesData, reportsData, businessData] = await Promise.all([
+        const [overviewData, clientsData, reportsData, businessData] = await Promise.all([
           HomeService.getDashboardOverview(),
           HomeService.getClientSummaries(),
-          HomeService.getHomeMessages(),
           HomeService.getHomeReports(),
           HomeService.getBusinessOverview(),
         ])
         setOverview(overviewData)
         setClients(clientsData)
-        setMessages(messagesData.messages)
         setReports(reportsData.reports)
         setBusinessOverview(businessData.businesses)
       } catch (error) {
@@ -199,7 +196,7 @@ export default function HomePage() {
 
       {/* 页面说明 */}
       <Alert
-        description="统计范围为过去十二个月，在PMS有未结束项目且您是项目成员的客户，与该客户在交付中台创建的活动。"
+        description="统计范围为过去十二个月，在PMS有未结束项目且您是项目成员的客户。"
         type="info"
         icon={<InfoCircleOutlined />}
         showIcon
@@ -258,84 +255,101 @@ export default function HomePage() {
         </Col>
       </Row>
 
-      {/* 消息与公告 + 我的报表 */}
+      {/* 我的看板 */}
       <Row gutter={[16, 16]}>
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={24}>
           <Card
-            title={<Title level={5} style={{ margin: 0 }}>消息 / 公告</Title>}
-            className={styles.section}
-            bordered={false}
-          >
-            <List<HomeMessage>
-              dataSource={messages.slice(0, 5)}
-              locale={{ emptyText: '暂无消息公告' }}
-              renderItem={(item) => (
-                <List.Item
-                  key={item.id}
-                  className={item.isRead ? styles.messageRead : styles.messageUnread}
-                >
-                  <List.Item.Meta
-                    title={
-                      <div className={styles.messageTitle}>
-                        <Space size={8}>
-                          <Tag color={item.type === 'warning' ? 'gold' : item.type === 'error' ? 'red' : item.type === 'success' ? 'green' : 'blue'}>
-                            {item.type.toUpperCase()}
-                          </Tag>
-                          <Text strong={!item.isRead}>{item.title}</Text>
-                        </Space>
-                        <span className={styles.messageTime}>{item.time}</span>
-                      </div>
-                    }
-                    description={
-                      <div className={styles.messageContent}>
-                        <Text type="secondary">{item.content}</Text>
-                      </div>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} lg={12}>
-          <Card
-            title={<Title level={5} style={{ margin: 0 }}>我的报表</Title>}
+            title={<Title level={5} style={{ margin: 0 }}>我的看板</Title>}
             className={styles.section}
             bordered={false}
             extra={
-              <Button type="link" size="small" onClick={() => navigate('/data-warehouse')}>
-                报表中心
+              <Button type="link" size="small" onClick={() => navigate('/report-center')}>
+                全部看板
               </Button>
             }
           >
-            <List<HomeReportCard>
-              dataSource={reports}
-              locale={{ emptyText: '暂无报表' }}
-              renderItem={(report) => (
-                <List.Item key={report.id}>
-                  <List.Item.Meta
-                    title={
-                      <Space>
-                        <Button type="link" onClick={() => navigate(report.link)}>
-                          {report.name}
-                        </Button>
-                        <Tag>{report.category}</Tag>
-                      </Space>
-                    }
-                    description={
-                      <div>
-                        <Text type="secondary">{report.description}</Text>
-                        <div style={{ marginTop: 4 }}>
-                          <Text type="secondary">
-                            负责人：{report.owner} · 更新：{report.updatedAt}
-                          </Text>
-                        </div>
-                      </div>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
+            {loading ? (
+              <Text type="secondary">加载中...</Text>
+            ) : reports.length === 0 ? (
+              <Empty description="暂无看板" />
+            ) : (
+              <Table
+                dataSource={reports.slice(0, 5)}
+                rowKey="id"
+                pagination={false}
+                size="small"
+                columns={[
+                  {
+                    title: '看板链接名称',
+                    dataIndex: 'name',
+                    key: 'name',
+                    width: 200,
+                    render: (text: string) => (
+                      <Button type="link" style={{ padding: 0 }}>
+                        {text}
+                      </Button>
+                    ),
+                  },
+                  {
+                    title: '所属品牌',
+                    dataIndex: 'brands',
+                    key: 'brands',
+                    width: 200,
+                    render: (brands: string[]) => <BrandsDisplay brands={brands} maxDisplay={3} />,
+                  },
+                  {
+                    title: '链接有效期',
+                    dataIndex: 'validity',
+                    key: 'validity',
+                    width: 120,
+                  },
+                  {
+                    title: '链接来源',
+                    dataIndex: 'source',
+                    key: 'source',
+                    width: 100,
+                  },
+                  {
+                    title: '链接依赖数据源',
+                    dataIndex: 'dataSource',
+                    key: 'dataSource',
+                    width: 150,
+                  },
+                  {
+                    title: '创建时间',
+                    dataIndex: 'createdAt',
+                    key: 'createdAt',
+                    width: 180,
+                  },
+                  {
+                    title: '创建人',
+                    dataIndex: 'createdBy',
+                    key: 'createdBy',
+                    width: 120,
+                  },
+                  {
+                    title: '操作',
+                    key: 'actions',
+                    width: 100,
+                    fixed: 'right',
+                    render: () => (
+                      <Button
+                        type="link"
+                        size="small"
+                        onClick={() =>
+                          window.open(
+                            'https://quickbi.ismartgo.cn/token3rd/dashboard/view/pc.htm?pageId=2b2a4ccf-582e-4072-a98e-f6411df63f68&accessTicket=76ff1515-8996-4659-b057-460e87cdf378&dd_orientation=auto',
+                            '_blank',
+                          )
+                        }
+                      >
+                        预览
+                      </Button>
+                    ),
+                  },
+                ]}
+              />
+            )}
           </Card>
         </Col>
       </Row>

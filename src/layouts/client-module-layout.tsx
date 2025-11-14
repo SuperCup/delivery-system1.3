@@ -45,7 +45,7 @@ export const ClientModuleLayout = () => {
       {
         key: `/clients/${clientId}/activities`,
         icon: <ThunderboltOutlined />,
-        label: '活动管理',
+        label: '客户看板',
       },
       {
         key: `/clients/${clientId}/data-delivery`,

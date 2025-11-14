@@ -87,8 +87,9 @@ export function useActivityCreate(activeClientId: string) {
       if (publish) await ActivityService.publishActivity(id)
       message.success(publish ? '保存并发布成功（模拟）' : '保存成功（模拟）')
       return id
-    } catch (e: any) {
-      message.error(`创建失败：${e.message}`)
+    } catch (e: unknown) {
+      const err = e as Error
+      message.error(`创建失败：${err.message}`)
       return null
     } finally {
       setLoading(false)

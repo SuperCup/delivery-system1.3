@@ -53,8 +53,9 @@ export default function ClientDetailPage() {
         setInsights(insightsData)
         setAnalyses(analysesData)
         setCases(casesData)
-      } catch (e: any) {
-        message.error(`加载客户详情失败：${e.message}`)
+      } catch (e: unknown) {
+        const err = e as Error
+        message.error(`加载客户详情失败：${err.message}`)
       } finally {
         setLoading(false)
       }

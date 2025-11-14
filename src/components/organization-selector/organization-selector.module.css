@@ -1,0 +1,22 @@
+.container {
+  width: 100%;
+}
+
+.treeContainer {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.treeContainer :global(.ant-tree) {
+  background: transparent;
+}
+
+.treeContainer :global(.ant-tree-node-content-wrapper) {
+  display: flex;
+  align-items: center;
+}
+

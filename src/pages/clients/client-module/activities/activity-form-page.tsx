@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Breadcrumb,
   Button,
@@ -23,7 +23,6 @@ import { InboxOutlined, PlusOutlined, HomeOutlined } from '@ant-design/icons'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import styles from './activity-form-page.module.css'
-import type { ActivityItem } from '../../../../types/activity'
 import type { BusinessType, Contact } from '../../../../types/client'
 import type { PlatformDataOption } from '../../../../types/activity-guidance'
 import { ClientActivityService } from '../../../../services/client-activity-service'
@@ -108,8 +107,9 @@ export default function ActivityFormPage() {
         ])
         setPlatformOptions(optionList)
         setContacts(contactList)
-      } catch (error: any) {
-        message.error(`加载数据失败：${error.message}`)
+      } catch (error: unknown) {
+        const err = error as Error
+        message.error(`加载数据失败：${err.message}`)
       }
     }
     init()
@@ -147,51 +147,22 @@ export default function ActivityFormPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchedPlatforms.join(',')])
 
-  const generateActivityId = () => {
-    const now = new Date()
-    const month = String(now.getMonth() + 1).padStart(2, '0')
-    const seq = Math.floor(Math.random() * 900 + 100)
-    return `A-${now.getFullYear()}${month}-${seq}`
-  }
-
   const handleSubmit = async () => {
+    setLoading(true)
     try {
-      const values = await form.validateFields()
-      const [start, end] = values.timeRange
-      const newItem: ActivityItem = {
-        id: activityId || generateActivityId(),
-        clientId: clientId || '',
-        name: values.name,
-        status: '草稿',
-        startTime: start.format('YYYY-MM-DD'),
-        endTime: end.format('YYYY-MM-DD'),
-        platforms: values.platforms,
-        batchSummary: values.platforms.map((platform) => ({
-          platform,
-          count: values.scopes[platform]?.batches?.length || 0,
-        })),
-        createdBy: '客户成功团队',
-        createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-        businessType: values.businessType,
-        dataScopes: values.platforms.map((platform) => {
-          const scope = values.scopes?.[platform] || { sourceType: 'system', batches: [] }
-          return {
-            platform,
-            sourceType: scope.sourceType || 'system',
-            systemSelection: scope.sourceType === 'system' ? (scope.batches || []).map((b) => b.batchId) : [],
-            uploadFile: scope.uploadFile,
-          }
-        }),
-        visibleContacts: values.visibleContacts ?? [],
-        description: '',
-        lastUpdatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      }
+      await form.validateFields()
+      // 模拟保存操作
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       message.success(isEdit ? '活动已更新（模拟）' : '活动已创建（模拟）')
       navigate(`/clients/${clientId}/activities`)
-    } catch (error: any) {
-      if (error?.errorFields) return
-      message.error(`保存失败：${error.message}`)
+    } catch (error: unknown) {
+      const err = error as { errorFields?: unknown }
+      if (err?.errorFields) return
+      const errorMessage = error instanceof Error ? error.message : '保存失败'
+      message.error(`保存失败：${errorMessage}`)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -236,7 +207,7 @@ export default function ActivityFormPage() {
     const currentScopes = form.getFieldValue('scopes') || {}
     const currentBatches = currentScopes[currentPlatform]?.batches || []
 
-    let newBatches: BatchItem[] = []
+    const newBatches: BatchItem[] = []
     
     // 遍历所有选中的项目
     selectedProjectIds.forEach((projectId) => {
@@ -380,7 +351,7 @@ export default function ActivityFormPage() {
           },
           {
             href: `/clients/${clientId}/activities`,
-            title: '活动管理',
+            title: '客户看板',
           },
           {
             title: isEdit ? '编辑活动' : '新建活动',

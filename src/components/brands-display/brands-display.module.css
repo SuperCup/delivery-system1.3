@@ -1,0 +1,39 @@
+.brandsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.brandTag {
+  margin: 0;
+}
+
+.moreTag {
+  margin: 0;
+  cursor: pointer;
+  background: #f0f0f0;
+  border-color: #d9d9d9;
+  color: #595959;
+  transition: all 0.3s;
+}
+
+.moreTag:hover {
+  background: #1890ff;
+  border-color: #1890ff;
+  color: #fff;
+}
+
+.modalBrands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.brandTagLarge {
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+

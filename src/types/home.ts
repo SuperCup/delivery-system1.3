@@ -66,11 +66,15 @@ export type HomeMessages = {
 export type ReportCard = {
   id: string
   name: string
-  description: string
-  owner: string
-  updatedAt: string
-  link: string
-  category: string
+  brands: string[] // 所属品牌（可多个）
+  validity: '永久' | string // 链接有效期，可以是"永久"或具体日期
+  source: string // 链接来源，如"QBI"
+  dataSource: string // 链接依赖数据源，如"数仓"
+  createdAt: string // 创建时间
+  createdBy: string // 创建人
+  visibleTo: string[] // 可见人ID列表
+  link?: string // 链接地址（可选，用于跳转）
+  sortOrder?: number // 排序顺序
 }
 
 export type BusinessMetric = {

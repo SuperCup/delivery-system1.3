@@ -28,6 +28,8 @@ import type {
   IndustryInsight,
   BusinessAnalysis,
   MarketingCase,
+  ClientTask,
+  ClientRecommendation,
 } from '../../../../types/client'
 import { ClientService } from '../../../../services/client-service'
 
@@ -137,7 +139,7 @@ export default function ClientOverviewPage() {
           <Descriptions.Item label="小程序版本">{clientDetail?.version}</Descriptions.Item>
           <Descriptions.Item label="运营模式">
             <Space>
-              {clientDetail?.operationModes.map((mode) => (
+              {clientDetail?.operationModes?.map((mode: string) => (
                 <Tag key={mode} color="cyan">
                   {mode}
                 </Tag>
@@ -146,7 +148,7 @@ export default function ClientOverviewPage() {
           </Descriptions.Item>
           <Descriptions.Item label="运营人员" span={3}>
             <Space>
-              {clientDetail?.operators.map((op) => (
+              {clientDetail?.operators?.map((op: string) => (
                 <Tag key={op}>{op}</Tag>
               ))}
             </Space>
@@ -159,7 +161,7 @@ export default function ClientOverviewPage() {
         {clientDetail?.tasks && clientDetail.tasks.length > 0 ? (
           <List
             dataSource={clientDetail.tasks}
-            renderItem={(task) => (
+            renderItem={(task: ClientTask) => (
               <List.Item
                 actions={[
                   <Tag
@@ -189,7 +191,7 @@ export default function ClientOverviewPage() {
       <Card title="经营推荐" loading={loading} className={styles.section}>
         {clientDetail?.recommendations && clientDetail.recommendations.length > 0 ? (
           <Row gutter={[16, 16]}>
-            {clientDetail.recommendations.map((rec) => (
+            {clientDetail.recommendations.map((rec: ClientRecommendation) => (
               <Col key={rec.id} xs={24} sm={12} md={8}>
                 <Card size="small" hoverable className={styles.recommendCard}>
                   <Title level={5}>{rec.title}</Title>
@@ -210,7 +212,7 @@ export default function ClientOverviewPage() {
       <Card title="能力推荐" loading={loading} className={styles.section}>
         {clientDetail?.capabilities && clientDetail.capabilities.length > 0 ? (
           <Space wrap>
-            {clientDetail.capabilities.map((cap) => (
+            {clientDetail.capabilities.map((cap: string) => (
               <Tag key={cap} color="geekblue">
                 {cap}
               </Tag>

@@ -21,6 +21,28 @@ export interface Contact {
   department?: string
 }
 
+export interface ClientTask {
+  id: string
+  title: string
+  status: '已完成' | '进行中' | '待开始'
+  dueDate: string
+}
+
+export interface ClientRecommendation {
+  id: string
+  title: string
+  description: string
+}
+
+export interface YesterdayMetrics {
+  dau: number
+  dauTrend: 'up' | 'down'
+  newUsers: number
+  newUsersTrend: 'up' | 'down'
+  avgDuration: number
+  retention: number
+}
+
 export interface ClientDetail {
   id: string
   name: string
@@ -32,6 +54,13 @@ export interface ClientDetail {
   business: BusinessOverview[]
   createdAt?: string
   updatedAt?: string
+  version?: string
+  operationModes?: string[]
+  operators?: string[]
+  tasks?: ClientTask[]
+  recommendations?: ClientRecommendation[]
+  capabilities?: string[]
+  yesterdayMetrics?: YesterdayMetrics
 }
 
 export interface IndustryInsight {
@@ -40,6 +69,8 @@ export interface IndustryInsight {
   content: string
   publishDate: string
   source?: string
+  category?: string
+  publishedAt?: string
 }
 
 export interface BusinessAnalysis {
@@ -49,6 +80,9 @@ export interface BusinessAnalysis {
   summary: string
   publishDate: string
   downloadUrl?: string
+  topic?: string
+  businessLine?: string
+  analyzedAt?: string
 }
 
 export interface MarketingCase {
@@ -64,4 +98,6 @@ export interface MarketingCase {
     roi?: number
   }
   tags?: string[]
+  industry?: string
+  publishedAt?: string
 }

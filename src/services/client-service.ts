@@ -36,6 +36,13 @@ export class ClientService {
   }
 
   /**
+   * 获取客户洞察（别名方法）
+   */
+  static async getClientInsights(clientId: string): Promise<IndustryInsight[]> {
+    return this.getIndustryInsights(clientId)
+  }
+
+  /**
    * 获取业务分析报告
    */
   static async getBusinessAnalyses(clientId: string): Promise<BusinessAnalysis[]> {
@@ -49,6 +56,13 @@ export class ClientService {
   }
 
   /**
+   * 获取客户分析（别名方法）
+   */
+  static async getClientAnalyses(clientId: string): Promise<BusinessAnalysis[]> {
+    return this.getBusinessAnalyses(clientId)
+  }
+
+  /**
    * 获取营销案例
    */
   static async getMarketingCases(clientId: string): Promise<MarketingCase[]> {
@@ -59,6 +73,13 @@ export class ClientService {
       throw new Error(`获取营销案例失败: ${response.statusText}`)
     }
     return response.json()
+  }
+
+  /**
+   * 获取客户案例（别名方法）
+   */
+  static async getClientCases(clientId: string): Promise<MarketingCase[]> {
+    return this.getMarketingCases(clientId)
   }
 }
 

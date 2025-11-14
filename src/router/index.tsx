@@ -7,6 +7,7 @@ import ClientsPage from '../pages/clients/clients-page'
 import MagiCorePage from '../pages/magi-core/magi-core-page'
 import KnowledgeBasePage from '../pages/knowledge-base/knowledge-base-page'
 import DataWarehousePage from '../pages/data-warehouse/data-warehouse-page'
+import ReportCenterPage from '../pages/report-center/report-center-page'
 import ToolsMarketPage from '../pages/tools-market/tools-market-page'
 import PermissionCenterPage from '../pages/permission-center/permission-center-page'
 import ClientDetailPage from '../pages/clients/client-detail-page'
@@ -29,6 +30,7 @@ export const AppRoutes = () => (
       <Route path="/magi-core" element={<MagiCorePage />} />
       <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
       <Route path="/data-warehouse" element={<DataWarehousePage />} />
+      <Route path="/report-center" element={<ReportCenterPage />} />
       <Route path="/tools-market" element={<ToolsMarketPage />} />
       <Route path="/permission-center" element={<PermissionCenterPage />} />
       

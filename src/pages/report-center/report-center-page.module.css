@@ -1,0 +1,137 @@
+.page {
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: 100%;
+}
+
+.breadcrumb {
+  padding: 0 4px;
+  margin-bottom: 16px;
+}
+
+/* 标题和操作按钮区域 */
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 筛选区域 */
+.filterSection {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.filterRow {
+  width: 100%;
+}
+
+.filterItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterActions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 全局预览模式 */
+.previewModeCard {
+  height: calc(100vh - 180px);
+  display: flex;
+  flex-direction: column;
+}
+
+.previewModeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.previewModeContent {
+  flex: 1;
+  height: 0;
+}
+
+.previewListCol {
+  height: 100%;
+}
+
+.previewFrameCol {
+  height: 100%;
+}
+
+.reportListCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reportListCard :global(.ant-card-body) {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.reportList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.reportListItem {
+  cursor: pointer;
+  padding: 12px 16px !important;
+  transition: all 0.3s;
+  border-left: 3px solid transparent;
+}
+
+.reportListItem:hover {
+  background: #f5f5f5;
+}
+
+.reportListItemActive {
+  background: #e6f7ff !important;
+  border-left-color: #1890ff !important;
+}
+
+.reportListItemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.reportBrand {
+  font-size: 12px;
+}
+
+.previewFrameCard {
+  height: 100%;
+}
+
+.previewFrame {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  border: none;
+  border-radius: 4px;
+}
+
+.noPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
+

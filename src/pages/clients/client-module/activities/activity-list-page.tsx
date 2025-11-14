@@ -67,8 +67,9 @@ export default function ActivityListPage() {
         if (actList.length > 0) {
           setActiveType(actList[0].businessType ?? '到店营销')
         }
-      } catch (error: any) {
-        message.error(`加载数据失败：${error.message}`)
+      } catch (error: unknown) {
+        const err = error as Error
+        message.error(`加载数据失败：${err.message}`)
       } finally {
         setLoading(false)
       }
@@ -197,7 +198,7 @@ export default function ActivityListPage() {
     <div className={styles.page}>
       <div className={styles.pageHeader}>
         <Title level={3} className={styles.pageTitle}>
-          活动管理
+          客户看板
         </Title>
         <Button
           type="primary"
@@ -219,15 +220,17 @@ export default function ActivityListPage() {
               <div className={styles.tabContent}>
                 {guides[type] && (
                   <Alert
-                    type="info"
-                    showIcon
-                    message={guides[type]?.summary}
                     description={
                       <div className={styles.guideDescription}>
                         {guides[type]?.previewTips && guides[type]!.previewTips!.length > 0 && (
-                          <div style={{ marginTop: 8 }}>
-                            <Text strong>特别提示：</Text>
-                            <Text>{guides[type]?.previewTips?.join('；')}</Text>
+                          <div className={styles.tipsContent}>
+                            {guides[type]!.previewTips!.flatMap((tip, tipIndex) =>
+                              tip.split('；').map((part, partIndex) => (
+                                <Text key={`${tipIndex}-${partIndex}`} className={styles.tipItem}>
+                                  {part}
+                                </Text>
+                              )),
+                            )}
                           </div>
                         )}
                       </div>

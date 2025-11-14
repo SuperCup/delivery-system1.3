@@ -121,8 +121,9 @@ export default function ClientsPage() {
         const clientsData = await HomeService.getClientSummaries()
         setClients(clientsData)
         setFilteredClients(clientsData)
-      } catch (e: any) {
-        message.error(`加载客户数据失败：${e.message}`)
+      } catch (e: unknown) {
+        const err = e as Error
+        message.error(`加载客户数据失败：${err.message}`)
       } finally {
         setLoading(false)
       }

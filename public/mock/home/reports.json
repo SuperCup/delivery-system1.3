@@ -2,40 +2,159 @@
   "reports": [
     {
       "id": "report-001",
-      "name": "到店营销执行周报",
-      "description": "汇总微信、支付宝到店投放曝光、到店核销等核心指标，支持门店层级钻取。",
-      "owner": "张敏（到店营销运营）",
-      "updatedAt": "2025-11-08",
-      "link": "/knowledge-base",
-      "category": "到店营销"
+      "name": "牵牛花仓店数据分析",
+      "brands": ["康师傅"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-06-26 14:09:11",
+      "createdBy": "黎燕苹",
+      "visibleTo": ["company-root"],
+      "sortOrder": 1
     },
     {
       "id": "report-002",
-      "name": "即时零售履约健康度",
-      "description": "监控美团、京东到家、饿了么三大平台的订单履约率、库存可用量与渠道转化情况。",
-      "owner": "李博（即时零售分析）",
-      "updatedAt": "2025-11-07",
-      "link": "/data-warehouse",
-      "category": "即时零售"
+      "name": "美团仓店数据采集概览",
+      "brands": ["嘉士伯", "康师傅"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-06-26 14:12:43",
+      "createdBy": "黎燕苹",
+      "visibleTo": ["dept-product", "dept-o2o"],
+      "sortOrder": 2
     },
     {
       "id": "report-003",
-      "name": "物码营销拉新成效",
-      "description": "统计物码扫码激活、活动触达和回流复购情况，结合品牌营销节奏输出洞察。",
-      "owner": "陈乐（物码增长）",
-      "updatedAt": "2025-11-06",
-      "link": "/magi-core",
-      "category": "物码营销"
+      "name": "美团城市热榜看板",
+      "brands": ["康师傅", "统一"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-07-16 18:04:00",
+      "createdBy": "黎燕苹",
+      "visibleTo": ["person-gao-yunfeng", "group-data-product"],
+      "sortOrder": 3
     },
     {
       "id": "report-004",
+      "name": "到店营销执行周报",
+      "brands": ["统一", "百威", "雀巢"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-11-05 10:30:00",
+      "createdBy": "郑文龙",
+      "visibleTo": ["company-root"],
+      "sortOrder": 4
+    },
+    {
+      "id": "report-005",
+      "name": "即时零售履约健康度",
+      "brands": ["百威", "达能"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-11-07 15:20:00",
+      "createdBy": "张敏",
+      "visibleTo": ["dept-product"],
+      "sortOrder": 5
+    },
+    {
+      "id": "report-006",
+      "name": "物码营销拉新成效",
+      "brands": ["雀巢", "伊利", "联合利华"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-11-06 09:15:00",
+      "createdBy": "李博",
+      "visibleTo": ["dept-innovation", "dept-new-marketing"],
+      "sortOrder": 6
+    },
+    {
+      "id": "report-007",
       "name": "客户服务体验看板",
-      "description": "跟踪重点客户满意度、反馈闭环效率与交付团队工作量，辅助客户运营决策。",
-      "owner": "吴倩（客户成功）",
-      "updatedAt": "2025-11-05",
-      "link": "/permission-center",
-      "category": "客户服务"
+      "brands": ["达能"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-11-05 14:45:00",
+      "createdBy": "陈乐",
+      "visibleTo": ["company-root"],
+      "sortOrder": 7
+    },
+    {
+      "id": "report-008",
+      "name": "微信支付账单分析",
+      "brands": ["伊利", "康师傅"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-10-28 16:30:00",
+      "createdBy": "吴倩",
+      "visibleTo": ["dept-store"],
+      "sortOrder": 8
+    },
+    {
+      "id": "report-009",
+      "name": "支付宝到店活动监控",
+      "brands": ["康师傅", "统一", "百威", "雀巢"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-10-25 11:20:00",
+      "createdBy": "黎燕苹",
+      "visibleTo": ["dept-product", "dept-store"],
+      "sortOrder": 9
+    },
+    {
+      "id": "report-010",
+      "name": "抖音到店数据概览",
+      "brands": ["联合利华"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-10-20 13:50:00",
+      "createdBy": "郑文龙",
+      "visibleTo": ["company-root"],
+      "sortOrder": 10
+    },
+    {
+      "id": "report-011",
+      "name": "美团到店活动分析",
+      "brands": ["嘉士伯", "百威"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-10-18 10:10:00",
+      "createdBy": "张敏",
+      "visibleTo": ["dept-o2o"],
+      "sortOrder": 11
+    },
+    {
+      "id": "report-012",
+      "name": "天猫校园数据看板",
+      "brands": ["统一"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-10-15 09:30:00",
+      "createdBy": "李博",
+      "visibleTo": ["dept-product"],
+      "sortOrder": 12
+    },
+    {
+      "id": "report-013",
+      "name": "即时零售渠道转化分析",
+      "brands": ["百威", "达能", "伊利"],
+      "validity": "永久",
+      "source": "QBI",
+      "dataSource": "数仓",
+      "createdAt": "2025-10-12 14:00:00",
+      "createdBy": "陈乐",
+      "visibleTo": ["dept-operation"],
+      "sortOrder": 13
     }
   ]
 }
-

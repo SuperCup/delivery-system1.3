@@ -3,15 +3,20 @@ import type { SettlementOverview } from '../types/settlement'
 
 const URL = '/mock/settlement/overview.json'
 
+interface RawSettlementData {
+  lastRun?: string
+  rules?: Array<{ id: unknown; name: unknown; status: string }>
+}
+
 export async function getSettlementOverview(): Promise<SettlementOverview | null> {
   try {
     const res = await fetchWithTimeout(URL, { timeout: 3000 })
     if (!res.ok) throw new Error(`加载结算助手失败: ${res.status}`)
-    const raw = (await res.json()) as any
+    const raw = (await res.json()) as RawSettlementData
     return {
       lastRun: String(raw.lastRun ?? ''),
       rules: Array.isArray(raw.rules)
-        ? raw.rules.map((r: any) => ({ id: String(r.id), name: String(r.name), status: r.status }))
+        ? raw.rules.map((r) => ({ id: String(r.id), name: String(r.name), status: r.status }))
         : [],
     }
   } catch (e) {
