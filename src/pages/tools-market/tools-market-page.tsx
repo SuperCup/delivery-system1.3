@@ -125,16 +125,18 @@ const ToolsMarketPage = () => {
                   hoverable
                   bordered={false}
                 >
-                  <div className={styles.tagGroup}>
-                    {tool.supportedPlatforms.map((platform) => (
-                      <Tag key={platform} className={styles.capsuleTag} color="geekblue">
-                        {platform}
-                      </Tag>
-                    ))}
+                  <div className={styles.contentArea}>
+                    <div className={styles.tagGroup}>
+                      {tool.supportedPlatforms.map((platform) => (
+                        <Tag key={platform} className={styles.capsuleTag} color="geekblue">
+                          {platform}
+                        </Tag>
+                      ))}
+                    </div>
+                    <Text type="secondary" className={styles.descText}>
+                      {tool.description}
+                    </Text>
                   </div>
-                  <Text type="secondary" className={styles.descText}>
-                    {tool.description}
-                  </Text>
                   <div className={styles.cardFooter}>
                     <Space>
                       <Text type="secondary">版本：{tool.latestVersion}</Text>
