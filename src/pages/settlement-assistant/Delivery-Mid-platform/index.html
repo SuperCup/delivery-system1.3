@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业务中台</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #F5F7FA;
+        }
+        .nav-header {
+            height: 64px;
+            background: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .nav-logo {
+            color: #FF673C;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+        }
+        .nav-user {
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 24px;
+            background: #F8FAFC;
+            transition: all 0.2s;
+        }
+        .nav-user:hover {
+            background: #F1F5F9;
+        }
+        .nav-menu {
+            width: 170px;
+            top: 64px;
+            height: calc(100vh - 64px);
+            background: white;
+            border-right: 1px solid #E5E7EB;
+        }
+        .client-sidebar {
+            width: 304px;
+            left: 170px;
+            top: 64px;
+            height: calc(100vh - 64px);
+            background: white;
+            border-right: 1px solid #E5E7EB;
+        }
+        .main-content {
+            position: fixed;
+            left: 474px;
+            top: 64px;
+            right: 0;
+            bottom: 0;
+            background: #F5F7FA;
+            overflow-y: auto;
+        }
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+        .menu-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            color: #4B5563;
+            transition: all 0.3s;
+        }
+        .menu-item:hover {
+            background: #F3F4F6;
+        }
+        .menu-item.active {
+            background: #EBF5FF;
+            color: #2563EB;
+        }
+        .menu-item i {
+            margin-right: 12px;
+        }
+        .client-item {
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .client-item:hover {
+            background: #F3F4F6;
+        }
+        .client-item.active {
+            background: #EBF5FF;
+            color: #2563EB;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="nav-header fixed top-0 left-0 right-0 z-50">
+        <div class="flex items-center justify-between px-6 h-full">
+            <div class="flex items-center">
+                <h1 class="nav-logo">业务中台</h1>
+            </div>
+            <div class="nav-user cursor-pointer">
+                <div class="w-7 h-7 bg-white rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-user text-gray-500 text-sm"></i>
+                </div>
+                <span class="text-gray-700 font-medium">赵大明</span>
+                <i class="fas fa-chevron-down text-gray-400 ml-2 text-xs"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 左侧菜单 -->
+    <nav class="nav-menu fixed">
+        <div class="flex flex-col">
+            <a href="#" class="menu-item active">
+                <i class="fas fa-calculator"></i>
+                <span>结算助手</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-database"></i>
+                <span>数据支付</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-file-alt"></i>
+                <span>文件支付</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>账号管理</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-robot"></i>
+                <span>AI知识库</span>
+            </a>
+            <a href="project-process/project-process-management.html" class="menu-item">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>项目流程管理</span>
+                        </a>
+                        <a href="project-process/daojia-process-flow.html" class="menu-item">
+                            <i class="fas fa-home"></i>
+                            <span>到家项目流程</span>
+                        </a>
+                        <a href="daojia-operations/retailops-navigator.html" class="menu-item">
+                            <i class="fas fa-compass"></i>
+                            <span>到家运营执行与交付标准</span>
+                        </a>
+        </div>
+    </nav>
+
+    <!-- 客户侧边栏 -->
+    <aside class="client-sidebar fixed overflow-y-auto">
+        <div class="p-6">
+            <h2 class="text-xl font-bold mb-6">服务客户</h2>
+            <div class="relative mb-6">
+                <input type="text" 
+                       placeholder="请输入客户名称" 
+                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <div class="space-y-2">
+                <div class="client-item active">
+                    <i class="fas fa-building mr-3"></i>
+                    <span>达能</span>
+                </div>
+                <div class="client-item">
+                    <i class="fas fa-building mr-3"></i>
+                    <span>笔巢</span>
+                </div>
+                <div class="client-item">
+                    <i class="fas fa-building mr-3"></i>
+                    <span>嘉士伯</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区 -->
+    <main class="main-content">
+        <div class="p-8 flex items-center justify-center min-h-full">
+            <div class="content-card">
+                <div class="flex flex-col space-y-6">
+                    <button onclick="window.open('https://dwoc9ny9k74.feishu.cn/docx/E9dWdkKAnoXDioxGmyuctR0bnPg', '_blank')" 
+                            class="w-full py-4 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2">
+                        <i class="fas fa-info-circle"></i>
+                        <span>业务流程介绍</span>
+                    </button>
+                    <button onclick="window.location.href='settlement-task/pms-internal-settlement.html'" 
+                            class="w-full py-4 bg-[#005EFF] text-white rounded-lg bg-blue-600 transition-colors flex items-center justify-center space-x-2">
+                        <i class="fas fa-calculator"></i>
+                        <span>PMS内部结算单管理</span>
+                    </button>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        当前页面为示例页面，功能上线后，会在PMS结算单后，增加一个按钮跳转对应流程，同时，在生成外部结算任务时，会发送提醒消息给到任务环节中的跟进人（同一人跟进多个环节，只接收一次）
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 客户选择
+        document.querySelectorAll('.client-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.client-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1507 @@
+/* 模板列表样式 */
+.template-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+/* 导航卡片样式 */
+.nav-card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #E5E7EB;
+}
+
+.nav-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-card.active {
+    background-color: #E6F0FF;
+    border-color: #005EFF;
+}
+
+.nav-card .icon {
+    color: #005EFF;
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.nav-card .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.nav-card .description {
+    font-size: 14px;
+    color: #6B7280;
+}
+
+/* 模板卡片样式 */
+.template-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.template-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 流程名称样式 */
+.template-card h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 状态标签样式 */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* 流程说明样式 */
+.template-card .description {
+    color: #6B7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* 结算主体和科目样式 */
+.template-card .settlement-info {
+    margin-bottom: 16px;
+}
+
+.template-card .settlement-info p {
+    margin-bottom: 4px;
+}
+
+/* 流程环节样式 */
+.template-card .process-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.template-card .process-tag {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* 操作栏样式 */
+.template-card .action-bar {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #E5E7EB;
+}
+
+.template-card .action-button {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.template-card .action-button:hover {
+    background-color: #F3F4F6;
+}
+
+.template-card .action-button i {
+    margin-right: 4px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .template-card {
+        margin-bottom: 16px;
+    }
+    
+    .template-card h4 {
+        font-size: 16px;
+    }
+    
+    .template-card .action-button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}
+
+.template-header {
+    padding: 16px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.template-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.settlement-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.settlement-tag {
+    padding: 4px 8px;
+    background-color: #E6F0FF;
+    color: #005EFF;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+.settlement-tag:hover::after {
+    content: attr(data-info);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1F2937;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.template-body {
+    padding: 16px;
+    flex: 1;
+}
+
+.process-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.process-cell {
+    padding: 8px;
+    background-color: #F3F4F6;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.process-cell:hover {
+    background-color: #E5E7EB;
+}
+
+.template-footer {
+    padding: 16px;
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+    color: #6B7280;
+}
+
+.template-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.template-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.action-button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #f3f4f6;
+}
+
+/* 标签页样式 */
+.tab-active {
+    background-color: #E6F0FF !important;
+}
+
+.template-content {
+    min-height: 600px;
+}
+
+/* 响应式调整 */
+@media (max-width: 1920px) {
+    .template-card {
+        width: 280px;
+        min-width: 280px;
+    }
+}
+
+/* 创建模板模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.modal-close {
+    color: #718096;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #4a5568;
+}
+
+.modal-body {
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4299e1;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #4299e1;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2b6cb0;
+}
+
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: #4a5568;
+}
+
+.btn-secondary:hover {
+    background-color: #cbd5e0;
+}
+
+/* 环节管理样式 */
+.process-type-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    color: #4B5563;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.process-type-btn:hover {
+    background: #F3F4F6;
+    transform: translateY(-1px);
+}
+
+.process-type-btn.active {
+    background: #E6F0FF;
+    border-color: #005EFF;
+    color: #005EFF;
+}
+
+.process-type-icon {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.process-type-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #005EFF;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: normal;
+}
+
+.process-type-hint {
+    font-size: 12px;
+    color: #6B7280;
+    padding: 2px 8px;
+    background: #F3F4F6;
+    border-radius: 4px;
+}
+
+.default-content-btn {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    color: #4B5563;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    gap: 8px;
+}
+
+.default-content-btn:hover {
+    background: #F3F4F6;
+    transform: translateY(-1px);
+}
+
+.default-content-btn i {
+    font-size: 14px;
+}
+
+/* 资料准备环节卡片样式 */
+.material-process-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.material-process-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.material-process-card .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.material-process-card .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.material-process-card .description {
+    color: #6B7280;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.material-process-card .materials-list {
+    border-top: 1px solid #E5E7EB;
+    padding-top: 12px;
+}
+
+.material-process-card .material-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background: #F9FAFB;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.material-process-card .material-item:last-child {
+    margin-bottom: 0;
+}
+
+.material-process-card .material-name {
+    flex: 1;
+    font-size: 14px;
+    color: #374151;
+}
+
+.material-process-card .material-status {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #E5E7EB;
+    color: #4B5563;
+}
+
+.material-process-card .material-status.required {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+/* 结算确认环节卡片样式 */
+.confirmation-process-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.confirmation-process-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-process-card .trigger-type {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: #F3F4F6;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #4B5563;
+    margin-bottom: 12px;
+}
+
+.confirmation-process-card .trigger-type i {
+    margin-right: 4px;
+}
+
+.confirmation-process-card .confirmation-methods {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.confirmation-process-card .confirmation-method {
+    padding: 4px 8px;
+    background: #E6F0FF;
+    color: #005EFF;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* 操作说明卡片样式 */
+.instruction-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.instruction-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.instruction-card .steps-list {
+    margin-top: 12px;
+    padding-left: 24px;
+}
+
+.instruction-card .step-item {
+    position: relative;
+    padding-left: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #4B5563;
+}
+
+.instruction-card .step-item:before {
+    content: "";
+    position: absolute;
+    left: -24px;
+    top: 8px;
+    width: 16px;
+    height: 16px;
+    background: #E6F0FF;
+    border: 2px solid #005EFF;
+    border-radius: 50%;
+}
+
+.instruction-card .step-item:after {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 24px;
+    bottom: -16px;
+    width: 2px;
+    background: #E5E7EB;
+}
+
+.instruction-card .step-item:last-child:after {
+    display: none;
+}
+
+/* 表单样式增强 */
+.form-radio {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #D1D5DB;
+    transition: all 0.2s ease;
+}
+
+.form-radio:checked {
+    border-color: #005EFF;
+    background-color: #005EFF;
+}
+
+.form-radio:hover {
+    border-color: #005EFF;
+}
+
+.step-input {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.step-input .step-number {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F3F4F6;
+    border-radius: 50%;
+    font-size: 12px;
+    color: #4B5563;
+}
+
+.step-input .step-content {
+    flex: 1;
+}
+
+.step-input .step-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.step-input .step-action-btn {
+    padding: 4px;
+    color: #6B7280;
+    transition: all 0.2s ease;
+}
+
+.step-input .step-action-btn:hover {
+    color: #111827;
+}
+
+/* 资料列表容器样式 */
+#materialList {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    padding: 20px;
+}
+
+/* 资料卡片样式 */
+.material-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    min-width: 0; /* 防止内容溢出 */
+}
+
+.material-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.material-card .content {
+    flex: 1;
+    padding: 20px;
+    min-width: 0; /* 防止内容溢出 */
+}
+
+.material-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.material-card .info-item {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #6b7280;
+    width: 100%;
+    overflow: hidden;
+}
+
+.material-card .info-label {
+    font-weight: 500;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.material-card .info-value {
+    color: #374151;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.material-card .actions {
+    padding: 12px 16px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.material-card .action-button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+}
+
+.material-card .edit-btn {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.material-card .edit-btn:hover {
+    background-color: #d1d5db;
+}
+
+.material-card .delete-btn {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.material-card .delete-btn:hover {
+    background-color: #fecaca;
+}
+
+/* 资料类型标签样式 */
+.material-type-tag {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.type-common {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.type-bu {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.type-headquarters {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+}
+
+/* 搜索框样式 */
+#materialSearch {
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+#materialSearch:focus {
+    width: 400px;
+}
+
+/* 资料卡片标题区域样式 */
+.material-card .content > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.material-card h4 {
+    margin: 0;
+    flex: 1;
+    margin-right: 8px;
+}
+
+/* 标签样式 */
+.tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-right: 4px;
+    background: #E6F0FF;
+    color: #005EFF;
+}
+
+.tag:last-child {
+    margin-right: 0;
+}
+
+/* 表单复选框样式 */
+.form-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid #D1D5DB;
+    transition: all 0.2s ease;
+}
+
+.form-checkbox:checked {
+    background-color: #005EFF;
+    border-color: #005EFF;
+}
+
+.form-checkbox:hover {
+    border-color: #005EFF;
+}
+
+/* 结算确认卡片样式 */
+.confirmation-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.confirmation-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-card .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.confirmation-card .info-item {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.confirmation-card .info-label {
+    width: 100px;
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.confirmation-card .info-value {
+    flex: 1;
+    color: #111827;
+    font-size: 14px;
+}
+
+/* 流程说明卡片样式 */
+.process-instruction-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.process-instruction-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.process-instruction-card .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.process-instruction-card .content {
+    color: #4B5563;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* 模态框表单样式 */
+.process-form {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 20px;
+}
+
+.process-form::-webkit-scrollbar {
+    width: 6px;
+}
+
+.process-form::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 3px;
+}
+
+.process-form::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 3px;
+}
+
+.process-form::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+}
+
+/* 内容头部样式 */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.content-header h3 {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.add-content-btn {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: #005EFF;
+    color: white;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.add-content-btn:hover {
+    background: #0047CC;
+    transform: translateY(-1px);
+}
+
+.add-content-btn i {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+/* 模板内容区域样式 */
+.template-content {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.template-content.hidden {
+    display: none;
+}
+
+/* 资料样例预览样式 */
+.preview-content {
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+.preview-container {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    background: #f9fafb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: #6b7280;
+}
+
+.preview-loading i {
+    font-size: 24px;
+}
+
+.preview-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: #ef4444;
+    text-align: center;
+}
+
+.preview-error i {
+    font-size: 32px;
+}
+
+#previewFrame {
+    width: 100%;
+    height: 600px;
+    border: none;
+}
+
+#previewImage {
+    max-width: 100%;
+    max-height: 600px;
+    object-fit: contain;
+}
+
+/* 修改资料样例链接样式 */
+.material-card .example-link {
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.material-card .example-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* 状态标签样式 */
+.status-active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-inactive {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+/* 环节标签样式 */
+.process-tag {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.process-material {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.process-confirmation {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.process-customer {
+    background-color: #e9d5ff;
+    color: #6b21a8;
+}
+
+.process-pms {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.process-stamp {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* 网格布局 */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 资料类型标签样式 */
+.material-type-tag {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.type-common {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.type-bu {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.type-headquarters {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+}
+
+/* 搜索框样式 */
+#materialSearch {
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+#materialSearch:focus {
+    width: 400px;
+}
+
+/* 资料卡片标题区域样式 */
+.material-card .content > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.material-card h4 {
+    margin: 0;
+    flex: 1;
+    margin-right: 8px;
+}
+
+/* 响应式调整 */
+@media (max-width: 1920px) {
+    #materialList {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1440px) {
+    #materialList {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    #materialList {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    #materialList {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+/* 环节列表样式 */
+#processList {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    padding: 20px;
+}
+
+/* 环节卡片样式 */
+.process-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    min-width: 0;
+}
+
+.process-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.process-card .content {
+    flex: 1;
+    padding: 20px;
+    min-width: 0;
+}
+
+.process-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.process-card .info-item {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #6b7280;
+    width: 100%;
+    overflow: hidden;
+}
+
+.process-card .info-label {
+    font-weight: 500;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.process-card .info-value {
+    color: #374151;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.process-card .materials-list {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.process-card .material-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background: #f9fafb;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.process-card .material-item:last-child {
+    margin-bottom: 0;
+}
+
+.process-card .material-name {
+    flex: 1;
+    font-size: 14px;
+    color: #374151;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.process-card .actions {
+    padding: 12px 16px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.process-card .action-button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+}
+
+.process-card .edit-btn {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.process-card .edit-btn:hover {
+    background-color: #d1d5db;
+}
+
+.process-card .delete-btn {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.process-card .delete-btn:hover {
+    background-color: #fecaca;
+}
+
+/* 环节类型标签样式 */
+.process-type-tag {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.process-type-material {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.process-type-confirmation {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.process-type-customer {
+    background-color: #e9d5ff;
+    color: #6b21a8;
+}
+
+/* 环节创建抽屉样式 */
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.drawer-content {
+    background: white;
+    width: 500px;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.drawer-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9fafb;
+}
+
+.drawer-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.drawer-body {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.drawer-footer {
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #f9fafb;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+}
+
+.required {
+    color: #dc2626;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #005eff;
+    box-shadow: 0 0 0 3px rgba(0, 94, 255, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.type-specific-fields {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #005eff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0052d9;
+}
+
+.btn-secondary {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+}

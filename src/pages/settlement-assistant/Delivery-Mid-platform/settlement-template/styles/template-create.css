@@ -1,0 +1,217 @@
+/* 通用按钮样式 */
+.btn-primary {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 
+           transition-colors duration-200 flex items-center;
+}
+
+.btn-secondary {
+    @apply px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 
+           transition-colors duration-200 flex items-center;
+}
+
+/* 流程项样式 */
+.process-item {
+    @apply mb-2;
+}
+
+.process-item-card {
+    @apply bg-white border rounded-lg p-4 mb-4 cursor-move relative hover:shadow-md 
+           transition-shadow duration-200;
+}
+
+.process-item-card.dragging {
+    @apply opacity-50 border-dashed;
+}
+
+.process-item-card.selected {
+    @apply ring-2 ring-blue-500;
+}
+
+/* 流程类型特定样式 */
+.process-item-card[data-type="material"] {
+    @apply border-blue-200;
+}
+
+.process-item-card[data-type="confirmation"] {
+    @apply border-green-200;
+}
+
+.process-item-card[data-type="customer"] {
+    @apply border-purple-200;
+}
+
+.process-item-card[data-type="pms"] {
+    @apply border-orange-200;
+}
+
+.process-item-card[data-type="stamp"] {
+    @apply border-red-200;
+}
+
+/* 拖拽目标区域样式 */
+.drag-over {
+    @apply border-blue-500 bg-blue-50;
+}
+
+/* 属性面板样式 */
+.property-form {
+    @apply space-y-4;
+}
+
+.form-group {
+    @apply space-y-2;
+}
+
+.form-label {
+    @apply block text-sm font-medium text-gray-700;
+}
+
+.form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 
+           focus:border-blue-500 transition-colors duration-200;
+}
+
+.form-select {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 
+           focus:border-blue-500 transition-colors duration-200;
+}
+
+.form-checkbox {
+    @apply rounded border-gray-300 text-blue-600 focus:ring-blue-500;
+}
+
+/* 模态框样式 */
+.modal {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+.modal-content {
+    @apply bg-white rounded-lg shadow-xl w-[800px] max-h-[80vh] overflow-hidden;
+}
+
+.modal-header {
+    @apply flex items-center justify-between p-4 border-b;
+}
+
+.modal-body {
+    @apply p-6 overflow-y-auto;
+}
+
+.modal-close {
+    @apply text-gray-400 hover:text-gray-600 transition-colors duration-200;
+}
+
+/* 拖拽提示样式 */
+.drag-indicator {
+    @apply absolute -left-2 top-1/2 transform -translate-y-1/2 w-1 h-12 bg-blue-500 
+           rounded-full opacity-0 transition-opacity duration-200;
+}
+
+.process-item-card:hover .drag-indicator {
+    @apply opacity-100;
+}
+
+/* 占位提示样式 */
+.process-placeholder,
+.property-placeholder {
+    @apply flex flex-col items-center justify-center text-gray-400;
+}
+
+.process-placeholder i,
+.property-placeholder i {
+    @apply text-4xl mb-2;
+}
+
+/* 动画效果 */
+.fade-enter {
+    @apply opacity-0;
+}
+
+.fade-enter-active {
+    @apply opacity-100 transition-opacity duration-300;
+}
+
+.fade-exit {
+    @apply opacity-100;
+}
+
+.fade-exit-active {
+    @apply opacity-0 transition-opacity duration-300;
+}
+
+/* 响应式调整 */
+@media (max-width: 1600px) {
+    .container {
+        @apply max-w-[1400px];
+    }
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+    @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors duration-200;
+}
+
+/* 工具提示 */
+.tooltip {
+    @apply absolute invisible opacity-0 bg-gray-900 text-white text-xs rounded py-1 px-2 
+           transition-all duration-200 z-50;
+}
+
+.has-tooltip:hover .tooltip {
+    @apply visible opacity-100;
+}
+
+/* 左侧环节选择区域样式 */
+.w-64 {
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+    position: relative;
+}
+
+/* 环节类型组样式 */
+.process-type-group {
+    margin-bottom: 1.5rem;
+}
+
+/* 吸顶容器样式 */
+.sticky-container {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.sticky-container.hidden {
+    display: none;
+}
+
+/* 环节项样式 */
+.process-item {
+    cursor: move;
+    margin-bottom: 0.5rem;
+}
+
+.process-item:last-child {
+    margin-bottom: 0;
+}
+
+/* 拖拽相关样式 */
+.process-item.dragging {
+    opacity: 0.5;
+}
+
+#processContainer.drag-over {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+} 

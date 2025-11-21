@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外部结算单管理</title>
+    <link href="../styles/task-tracking.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .btn-primary {
+            @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-all duration-200 shadow-sm hover:shadow-md;
+        }
+        .btn-secondary {
+            @apply px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center space-x-2 transition-all duration-200;
+        }
+        .btn-outline {
+            @apply px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center space-x-2 transition-all duration-200;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 面包屑导航 -->
+        <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-4">
+            <a href="../index.html" class="hover:text-blue-600 transition-colors">
+                <i class="fas fa-home mr-1"></i>业务中台
+            </a>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+            <a href="pms-internal-settlement.html" class="hover:text-blue-600 transition-colors">
+                PMS内部结算单管理
+            </a>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+            <span class="text-gray-800 font-medium">外部结算单管理</span>
+        </nav>
+        
+        <!-- 页面标题和操作按钮 -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">外部结算单管理</h1>
+            <div class="flex items-center space-x-3">
+                <!-- 创建功能已删除 -->
+            </div>
+        </div>
+
+        <!-- 说明 -->
+        <div class="mb-4 p-4 bg-white rounded-lg text-sm text-gray-700">
+            <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+            结算经理可以将同一客户的多个内部结算单创建为一个外部结算单，支持多层级分配和差异化资料准备。
+        </div>
+
+        <!-- 外部结算单列表 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">外部结算单列表</h2>
+                <div class="flex space-x-2">
+                    <input type="text" id="searchInput" placeholder="搜索客户/PO/外部结算单号" class="px-3 py-2 border rounded-md w-64">
+                    <button onclick="filterMergedList()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        <i class="fas fa-search mr-1"></i>查询
+                    </button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">外部结算单号</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">客户名称</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PO/合同号</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">包含内部结算单数</th>
+                            <th class="px-4 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">待确认金额</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">已确认金额</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">子任务数</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">子任务状态</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="mergedSettlementList">
+                        <!-- 数据由JS动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建功能已删除 -->
+
+    <!-- 查看详情弹窗 -->
+    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-6xl p-8 relative max-h-screen overflow-y-auto">
+            <button onclick="closeDetailModal()" class="absolute top-3 right-4 text-gray-400 hover:text-blue-500 text-2xl font-bold">&times;</button>
+            <h2 class="text-xl font-bold mb-6">外部结算单详情</h2>
+            <div id="detailContent">
+                <!-- 详情内容 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 示例数据
+        const mergedSettlements = [
+            {
+                id: 'MG-25001',
+                customer: '嘉士伯',
+                poNumber: 'PO-2025-001',
+                internalCount: 3,
+                pendingAmount: 500000.00,
+                confirmedAmount: 50000.00,
+                subTaskCount: 5,
+                subTaskStatus: {
+                    '进行中': 3,
+                    '已完成': 2,
+                    '已放弃': 0,
+                    '已超期': 0
+                },
+                createTime: '2025-01-15',
+                internalSettlements: [
+                    { id: 'BS-25028456', name: '嘉士伯饿了么2月核销结算单', amount: 200000.00 },
+                    { id: 'BS-25028459', name: '嘉士伯饿了么2月核销结算单', amount: 200000.00 },
+                    { id: 'BS-25028461', name: '嘉士伯2月淘鲜达活动结算单', amount: 150000.00 }
+                ],
+                buAllocations: [
+                    { buName: '华东事业部', amount: 100000.00, status: '待确认', template: '精明购标准模板' },
+                    { buName: '华南事业部', amount: 100000.00, status: '已确认', template: '服务费总部结算' },
+                    { buName: '华中事业部', amount: 100000.00, status: '待确认', template: '核销费区域结算' },
+                    { buName: '华北事业部', amount: 100000.00, status: '待确认', template: '湖南核销费结算' },
+                    { buName: '西南事业部', amount: 100000.00, status: '待确认', template: 'RTB费用结算' }
+                ]
+            }
+        ];
+
+        // 可选的内部结算单数据
+        const availableInternalSettlements = [
+            { id: 'BS-25028456', name: '嘉士伯饿了么2月核销结算单', customer: '嘉士伯', amount: 200000.00, selected: false },
+            { id: 'BS-25028459', name: '嘉士伯饿了么2月核销结算单', customer: '嘉士伯', amount: 200000.00, selected: false },
+            { id: 'BS-25028461', name: '嘉士伯2月淘鲜达活动结算单', customer: '嘉士伯', amount: 300000.00, selected: false },
+            { id: 'BS-25028460', name: '嘉士伯饿了么3月广告结算单', customer: '嘉士伯', amount: 50000.00, selected: false }
+        ];
+
+        // 事业部模板数据
+        const buTemplates = [
+            { id: 1, name: '精明购标准模板' },
+            { id: 2, name: '服务费总部结算' },
+            { id: 3, name: '核销费区域结算' },
+            { id: 4, name: '湖南核销费结算' },
+            { id: 5, name: '华中核销费结算' },
+            { id: 6, name: 'RTB费用结算' }
+        ];
+
+        let buAllocations = [];
+
+        // 渲染合并结算单列表
+        function renderMergedList() {
+            const tbody = document.getElementById('mergedSettlementList');
+            tbody.innerHTML = '';
+            
+            mergedSettlements.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-blue-50 transition';
+                tr.innerHTML = `
+                    <td class="px-4 py-2 whitespace-nowrap font-medium">${item.id}</td>
+                    <td class="px-4 py-2 whitespace-nowrap">${item.customer}</td>
+                    <td class="px-4 py-2 whitespace-nowrap">${item.poNumber}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-center">${item.internalCount}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-right">¥${item.pendingAmount.toLocaleString()}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-right">¥${item.confirmedAmount.toLocaleString()}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-center">${item.subTaskCount}</td>
+                    <td class="px-4 py-2 whitespace-nowrap">
+                        <div class="flex flex-wrap gap-1">
+                            ${Object.entries(item.subTaskStatus).map(([status, count]) => 
+                                count > 0 ? `<span class="px-2 py-1 text-xs rounded-full ${
+                                    status === '已完成' ? 'bg-green-100 text-green-800' :
+                                    status === '进行中' ? 'bg-blue-100 text-blue-800' :
+                                    status === '已放弃' ? 'bg-red-100 text-red-800' :
+                                    'bg-orange-100 text-orange-800'
+                                }">${status}(${count})</span>` : ''
+                            ).join('')}
+                        </div>
+                    </td>
+                    <td class="px-4 py-2 whitespace-nowrap">${item.createTime}</td>
+                    <td class="px-4 py-2 whitespace-nowrap">
+                        <button onclick="viewDetail(${index})" class="text-blue-600 hover:underline mr-2">详情</button>
+                        <button onclick="manageSubTasks(${index})" class="text-green-600 hover:underline">管理子任务</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 创建功能相关函数已删除
+
+        // 创建功能相关函数已全部删除
+
+        // 查看详情
+        function viewDetail(index) {
+            const item = mergedSettlements[index];
+            const content = `
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">基本信息</h3>
+                        <div class="space-y-2">
+                            <div><strong>外部结算单号：</strong>${item.id}</div>
+                            <div><strong>客户名称：</strong>${item.customer}</div>
+                            <div><strong>PO/合同号：</strong>${item.poNumber}</div>
+                            <div><strong>待确认金额：</strong>¥${item.pendingAmount.toLocaleString()}</div>
+                    <div><strong>已确认金额：</strong>¥${item.confirmedAmount.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">包含的内部结算单</h3>
+                        <div class="space-y-2">
+                            ${item.internalSettlements.map(s => `
+                                <div class="p-2 border rounded">
+                                    <div class="font-medium">${s.name}</div>
+                                    <div class="text-sm text-gray-500">${s.id} - ¥${s.amount.toLocaleString()}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-4">事业部分配情况</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">事业部</th>
+                                    <th class="px-4 py-2 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase">分配金额</th>
+                                    <th class="px-4 py-2 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">使用模板</th>
+                                    <th class="px-4 py-2 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">确认状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${item.buAllocations.map(bu => `
+                                    <tr>
+                                        <td class="px-4 py-2">${bu.buName}</td>
+                                        <td class="px-4 py-2 text-right">¥${bu.amount.toLocaleString()}</td>
+                                        <td class="px-4 py-2">${bu.template}</td>
+                                        <td class="px-4 py-2">
+                                            <span class="px-2 py-1 text-xs rounded-full ${
+                                                bu.status === '已确认' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                            }">${bu.status}</span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailContent').innerHTML = content;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        // 关闭详情弹窗
+        function closeDetailModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        // 管理子任务
+        function manageSubTasks(index) {
+            // 跳转到子任务管理页面
+            window.location.href = `task-management.html?mergeId=${mergedSettlements[index].id}`;
+        }
+
+        // 编辑合并结算单
+        function editMerged(index) {
+            alert('编辑功能待实现');
+        }
+
+        // 重置表单
+        function resetMergeForm() {
+            document.getElementById('customerSelect').value = '';
+            document.getElementById('poNumber').value = '';
+            document.getElementById('totalAmount').value = '';
+            document.getElementById('headquartersAmount').value = '';
+            document.getElementById('buAmount').value = '';
+            availableInternalSettlements.forEach(item => item.selected = false);
+            buAllocations = [];
+            renderBUAllocations();
+        }
+
+        // 筛选列表
+        function filterMergedList() {
+            // 实现筛选逻辑
+            renderMergedList();
+        }
+
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            renderMergedList();
+            
+            // 检查是否有从内部结算单页面传递的选中ID
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedIds = urlParams.get('selectedIds');
+            if (selectedIds) {
+                const ids = selectedIds.split(',');
+                preloadSelectedSettlements(ids);
+            }
+        });
+        
+        // 预加载选中的结算单
+        function preloadSelectedSettlements(selectedIds) {
+            // 模拟从PMS获取选中结算单的详细信息
+            const mockSettlements = [
+                {
+                    id: 'BS-25028461',
+                    name: '微信支付2025-04-08活动结算单',
+                    project: '2025年嘉士伯2月到家活动',
+                    product: '到店数字化营销>微信支付',
+                    income: 80000,
+                    confirmed: 75000,
+                    unconfirmed: 5000
+                },
+                {
+                    id: 'BS-25028462',
+                    name: '微信支付2025-04-09活动结算单',
+                    project: '2025年嘉士伯2月到家活动',
+                    product: '到店数字化营销>微信支付',
+                    income: 60000,
+                    confirmed: 55000,
+                    unconfirmed: 5000
+                }
+            ];
+            
+            const selectedSettlements = mockSettlements.filter(s => selectedIds.includes(s.id));
+            
+            if (selectedSettlements.length > 0) {
+                // 自动打开创建合并弹窗并预填数据
+                openMergeModal();
+                
+                // 预填客户信息
+                const customer = selectedSettlements[0].name.split('2025')[0] || '嘉士伯';
+                document.getElementById('customerSelect').value = '嘉士伯';
+                
+                // 预填PO号
+                document.getElementById('poNumber').value = `PO-2025-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+                
+                // 预选对应的内部结算单
+                selectedIds.forEach(id => {
+                    const index = availableInternalSettlements.findIndex(item => item.id === id);
+                    if (index !== -1) {
+                        availableInternalSettlements[index].selected = true;
+                        const checkbox = document.getElementById(`internal_${index}`);
+                        if (checkbox) checkbox.checked = true;
+                    }
+                });
+                
+                // 重新计算总金额
+                calculateTotalAmount();
+                
+                // 显示提示信息
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'mt-4 p-3 bg-blue-50 rounded';
+                infoDiv.innerHTML = `
+                    <h4 class="font-medium text-blue-800 mb-2">已预选的结算单：</h4>
+                    ${selectedSettlements.map(s => `
+                        <div class="text-sm text-blue-700">
+                            ${s.id} - ${s.name} (¥${s.income.toLocaleString()})
+                        </div>
+                    `).join('')}
+                `;
+                
+                const modal = document.getElementById('mergeModal');
+                const form = modal.querySelector('.grid.grid-cols-2.gap-4').parentElement;
+                form.appendChild(infoDiv);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务详情</title>
+    <link href="../styles/task-tracking.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="js/guidance.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 页面标题和返回按钮 -->
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center">
+                <button onclick="window.history.back()" class="mr-4 text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-lg font-bold">任务详情</h2>
+            </div>
+            <div class="flex space-x-4">
+                <button id="completeTaskBtn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                    <i class="fas fa-check mr-2"></i>完成任务
+                </button>
+                <button id="deleteTaskBtn" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                    <i class="fas fa-trash mr-2"></i>删除任务
+                </button>
+            </div>
+        </div>
+
+        <!-- 任务基本信息 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">任务信息</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <div class="space-y-2">
+                        <p><span class="text-gray-600">任务名称：</span><span id="taskName">示例结算任务</span></p>
+                        <p><span class="text-gray-600">关联项目：</span><span id="projectName">示例项目</span></p>
+                        <p><span class="text-gray-600">关联结算单：</span><span id="settlementOrder">示例结算单</span></p>
+                        <p><span class="text-gray-600">创建时间：</span><span id="createTime">2024-01-01</span></p>
+                        <p><span class="text-gray-600">创建人：</span><span id="createdBy">系统管理员</span></p>
+                    </div>
+                </div>
+                <div>
+
+                    <div class="space-y-2">
+                        <p><span class="text-gray-600">目标结算金额：</span><span id="targetAmount">¥500,000.00</span></p>
+                        <div class="flex items-start">
+                            <div>
+                                <p><span class="text-gray-600">实际结算金额：</span><span id="actualAmount">¥450,000.00</span></p>
+                                <p class="text-xs text-gray-500 mt-1">当前任务中所有确认结算环节的金额总和</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="text-sm text-gray-600 mb-2">结算进度</div>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex space-x-1" id="progressDots">
+                                    <!-- 进度条将通过JavaScript动态生成 -->
+                                </div>
+                                <span class="text-sm text-gray-600" id="progressText">60%</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-2">已完成 <span id="completedSteps">3</span>/<span id="totalSteps">5</span> 个环节</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="space-y-2">
+                        <p><span class="text-gray-600">当前状态：</span><span id="taskStatus" class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">进行中</span></p>
+                        <p><span class="text-gray-600">当前环节：</span><span id="currentStep">资料审核</span></p>
+                        <p><span class="text-gray-600">负责人：</span><span id="currentOwner">张三</span></p>
+                        <p><span class="text-gray-600">处理周期：</span><span id="processCycle">3天</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 任务时间线 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">任务流程</h3>
+            <div class="timeline space-y-6" id="taskTimeline">
+                <!-- 时间线将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 完成任务确认模态框 -->
+    <div id="completeTaskModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">完成任务确认</h3>
+                <button id="closeCompleteModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-700">还有未完成的环节，确定要完成这个任务吗？完成后的任务将无法修改。</p>
+            </div>
+            <div class="flex justify-end">
+                <button id="cancelComplete" class="mr-2 px-4 py-2 text-gray-600 hover:text-gray-800">
+                    取消
+                </button>
+                <button id="confirmComplete" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                    确认完成
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除任务确认模态框 -->
+    <div id="deleteTaskModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">删除任务确认</h3>
+                <button id="closeDeleteModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-700">确定要删除这个任务吗？删除后的任务将无法恢复。</p>
+            </div>
+            <div class="flex justify-end">
+                <button id="cancelDelete" class="mr-2 px-4 py-2 text-gray-600 hover:text-gray-800">
+                    取消
+                </button>
+                <button id="confirmDelete" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                    确认删除
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 指引抽屉 -->
+    <div id="guidanceDrawer" class="fixed right-0 top-0 h-full w-96 bg-white shadow-lg transform transition-transform duration-300 ease-in-out translate-x-full">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">环节指引</h3>
+            <button onclick="closeGuidanceDrawer()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4 overflow-y-auto h-[calc(100%-48px)]">
+            <div id="guidanceContent">
+                <!-- 指引内容将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 提醒确认弹窗 -->
+    <div id="remindModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">提醒确认</h3>
+                <button onclick="closeRemindModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-700">已通过企微消息，提醒当前环节负责人：<span id="remindFollowerName" class="font-medium"></span></p>
+            </div>
+            <div class="flex justify-end">
+                <button onclick="closeRemindModal()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载任务详情
+            function loadTaskDetail() {
+                // 这里应该是从API获取任务详情
+                const task = {
+                    id: 1,
+                    name: '总部服务费、广告费结算',
+                    projects: [
+                        { name: '2025年嘉士伯3月到家活动', code: 'SG-250173' }
+                    ],
+                    settlementOrder: 'BS-25028418',
+                    progress: 60,
+                    status: 'in_progress',
+                    currentProcess: {
+                        id: 1,
+                        name: '核销明细',
+                        type: 'material',
+                        follower: '张三',
+                        cycle: '3天',
+                        viewable: true
+                    },
+                    processes: [
+                        {
+                            id: 1,
+                            name: 'PO',
+                            follower: '张三',
+                            cycle: '3天',
+                            status: 'completed',
+                            materials: [
+                                {
+                                    name: 'PO文档',
+                                    status: 'uploaded',
+                                    file: 'PO文档.xlsx',
+                                    updateTime: '2024-03-18 10:00'
+                                }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            name: '合同',
+                            follower: '张三',
+                            cycle: '3天',
+                            status: 'completed',
+                            materials: [
+                                {
+                                    name: '合同扫描件',
+                                    status: 'uploaded',
+                                    file: '合同.pdf',
+                                    updateTime: '2024-03-21 10:00'
+                                }
+                            ]
+                        },
+                        {
+                            id: 3,
+                            name: '核销明细',
+                            follower: '张三',
+                            cycle: '3天',
+                            status: 'completed',
+                            materials: [
+                                {
+                                    name: '3月美团核销明细',
+                                    status: 'uploaded',
+                                    file: '3月美团核销明细.xlsx',
+                                    updateTime: '2024-03-21 15:30'
+                                }
+                            ]
+                        },
+                        {
+                            id: 4,
+                            name: '资源位截图',
+                            follower: '赵六',
+                            cycle: '2天',
+                            status: 'pending',
+                            materials: [
+                                {
+                                    name: '资源位截图',
+                                    status: 'pending'
+                                }
+                            ]
+                        },
+                        {
+                            id: 5,
+                            name: '总部Owen确认',
+                            follower: '李四',
+                            cycle: '2天',
+                            status: 'pending',
+                            materials: [
+                                {
+                                    name: '确认邮件',
+                                    status: 'pending'
+                                }
+                            ]
+                        },
+                        {
+                            id: 6,
+                            name: 'TM上传资料',
+                            follower: '王五',
+                            cycle: '5天',
+                            status: 'pending',
+                            materials: [
+                                {
+                                    name: '系统截图',
+                                    status: 'pending'
+                                }
+                            ]
+                        }
+                    ],
+                    createdAt: '2024-03-15T10:00:00',
+                    createdBy: '系统管理员',
+                    targetAmount: 500000,
+                    actualAmount: 450000
+                };
+
+                // 更新基本信息
+                document.getElementById('taskName').textContent = task.name;
+                document.getElementById('projectName').textContent = task.projects[0].name;
+                document.getElementById('settlementOrder').textContent = task.settlementOrder;
+                document.getElementById('createTime').textContent = formatDate(task.createdAt);
+                document.getElementById('createdBy').textContent = task.createdBy;
+                document.getElementById('targetAmount').textContent = formatAmount(task.targetAmount);
+                document.getElementById('actualAmount').textContent = formatAmount(task.actualAmount);
+                
+                // 更新进度条
+                const progressDots = document.getElementById('progressDots');
+                const totalSteps = task.processes.length;
+                const completedSteps = task.processes.filter(p => p.status === 'completed').length;
+                
+                progressDots.innerHTML = Array.from({ length: totalSteps }, (_, i) => `
+                    <div class="w-4 h-2 rounded ${i < completedSteps ? 'bg-blue-600' : 'bg-gray-200'}"></div>
+                `).join('');
+                
+                const progress = Math.round((completedSteps / totalSteps) * 100);
+                document.getElementById('progressText').textContent = `${progress}%`;
+                document.getElementById('completedSteps').textContent = completedSteps;
+                document.getElementById('totalSteps').textContent = totalSteps;
+                
+                document.getElementById('taskStatus').textContent = getStatusText(task.status);
+                document.getElementById('currentStep').textContent = task.currentProcess.name;
+                document.getElementById('currentOwner').textContent = task.currentProcess.follower;
+                document.getElementById('processCycle').textContent = task.currentProcess.cycle;
+
+                // 更新时间线
+                const timeline = document.getElementById('taskTimeline');
+                timeline.innerHTML = task.processes.map(step => `
+                    <div class="timeline-item ${step.status}">
+                        <div class="timeline-item-content p-4 border border-gray-100 rounded-lg">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-lg font-semibold">${step.name}</h4>
+                                <span class="px-2 py-1 text-xs rounded-full ${
+                                    step.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                                }">
+                                    ${step.status === 'completed' ? '已完成' : '待完成'}
+                                </span>
+                            </div>
+                            <div class="mt-2 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <p>负责人：${step.follower}</p>
+                                    <button onclick="remindFollower('${step.follower}')" class="ml-2 px-2 py-0.5 text-xs bg-yellow-100 text-yellow-700 rounded-full hover:bg-yellow-200 flex items-center">
+                                        <i class="fas fa-bell mr-1"></i>
+                                        提醒
+                                    </button>
+                                </div>
+                                <p>处理周期：${step.cycle}</p>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="font-medium">必要资料</div>
+                                        <button onclick="openGuidanceDrawer('${step.name}')" class="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 flex items-center">
+                                            <i class="fas fa-question-circle mr-1"></i>
+                                            查看指引
+                                        </button>
+                                </div>
+                                <div class="space-y-3">
+                                    ${step.materials.map(material => `
+                                        <div class="p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <span class="font-medium">${material.name}</span>
+                                            </div>
+                                            ${material.status === 'uploaded' ? `
+                                                <div class="flex items-center justify-between text-sm">
+                                                    <div class="flex items-center">
+                                                        <i class="far fa-file-excel text-green-500 mr-1"></i>
+                                                        <span class="text-blue-600 hover:underline cursor-pointer" onclick="previewFile('${material.file}')">
+                                                            ${material.file}
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <button class="text-red-600 hover:text-red-800" onclick="deleteFile('${material.name}')">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">更新时间：${material.updateTime}</div>
+                                            ` : `
+                                                <div class="relative">
+                                                    <div class="flex items-center justify-center w-full">
+                                                        <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                                <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                                                <p class="mb-2 text-sm text-gray-500">
+                                                                    <span class="font-semibold">点击上传</span> 或拖拽文件到此处
+                                                                </p>
+                                                                <p class="text-xs text-gray-500">
+                                                                    ${getFileTypeDescription(material.name)}
+                                                                </p>
+                                                            </div>
+                                                            <input type="file" class="hidden" 
+                                                                onchange="uploadFile(this, '${step.id}', '${material.name}')"
+                                                                accept="${getFileAcceptType(material.name)}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            `}
+                                            ${step.name === '总部Owen确认' && material.name === '确认邮件' ? `
+                                                <div class="mt-4">
+                                                    <div class="mb-2">
+                                                        <label class="block text-sm font-medium text-gray-700">确认金额</label>
+                                                        <div class="mt-1 flex items-center space-x-2">
+                                                            <div class="relative flex-1">
+                                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                                    <span class="text-gray-500 sm:text-sm">¥</span>
+                                                                </div>
+                                                                <input type="number" 
+                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" 
+                                                                    placeholder="请输入确认金额"
+                                                                    value="${material.confirmedAmount || ''}"
+                                                                    onchange="updateConfirmedAmount('${step.id}', '${material.name}', this.value)">
+                                                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                                                    <span class="text-gray-500 sm:text-sm">元</span>
+                                                                </div>
+                                                            </div>
+                                                            <button onclick="submitConfirmation('${step.id}')" 
+                                                                class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center whitespace-nowrap">
+                                                                <i class="fas fa-check mr-1"></i>
+                                                                提交确认
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            ${step.name === 'TM上传资料' && step.status !== 'completed' ? `
+                                <div class="mt-4 flex justify-end">
+                                    <button onclick="completeTMStep('${step.id}')" 
+                                        class="px-3 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center">
+                                        <i class="fas fa-check mr-1"></i>
+                                        确认完成
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // 格式化日期
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            // 获取状态文本
+            function getStatusText(status) {
+                switch (status) {
+                    case 'in_progress':
+                        return '进行中';
+                    case 'completed':
+                        return '已完成';
+                    case 'overdue':
+                        return '已超期';
+                    case 'abandoned':
+                        return '已放弃';
+                    default:
+                        return '未知状态';
+                }
+            }
+
+            // 获取文件接受类型
+            function getFileAcceptType(materialName) {
+                switch (materialName) {
+                    case 'PO文档':
+                    case '3月美团核销明细':
+                        return '.xlsx,.xls';
+                    case '合同扫描件':
+                        return '.pdf';
+                    case '核销证明':
+                        return '.pdf,.jpg,.png';
+                    case '资源位截图':
+                    case '系统截图':
+                        return '.jpg,.png';
+                    case '确认邮件':
+                        return '.eml,.msg';
+                    default:
+                        return '*';
+                }
+            }
+
+            // 获取文件类型描述
+            function getFileTypeDescription(materialName) {
+                switch (materialName) {
+                    case 'PO文档':
+                    case '3月美团核销明细':
+                        return '支持 .xlsx, .xls 格式';
+                    case '合同扫描件':
+                        return '支持 .pdf 格式';
+                    case '核销证明':
+                        return '支持 .pdf, .jpg, .png 格式';
+                    case '资源位截图':
+                    case '系统截图':
+                        return '支持 .jpg, .png 格式';
+                    case '确认邮件':
+                        return '支持 .eml, .msg 格式';
+                    default:
+                        return '支持所有文件格式';
+                }
+            }
+
+            // 上传文件
+            function uploadFile(input, stepId, materialName) {
+                const file = input.files[0];
+                if (!file) return;
+
+                // 显示上传进度
+                const parent = input.closest('.relative');
+                const progressDiv = document.createElement('div');
+                progressDiv.className = 'mt-2 w-full bg-gray-200 rounded-full h-2.5';
+                progressDiv.innerHTML = `
+                    <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                `;
+                parent.appendChild(progressDiv);
+
+                // 模拟上传进度
+                let progress = 0;
+                const progressBar = progressDiv.querySelector('.bg-blue-600');
+                const interval = setInterval(() => {
+                    progress += 10;
+                    progressBar.style.width = `${progress}%`;
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            progressDiv.remove();
+                            // TODO: 实现文件上传逻辑
+                            console.log('上传文件:', {
+                                stepId,
+                                materialName,
+                                fileName: file.name
+                            });
+                            // 重新加载任务详情
+                            loadTaskDetail();
+                        }, 500);
+                    }
+                }, 200);
+            }
+
+            // 预览文件
+            function previewFile(fileName) {
+                // TODO: 实现文件预览逻辑
+                console.log('预览文件:', fileName);
+            }
+
+            // 删除文件
+            function deleteFile(materialName) {
+                if (confirm(`确定要删除${materialName}吗？`)) {
+                    // TODO: 实现文件删除逻辑
+                    console.log('删除文件:', materialName);
+                    loadTaskDetail();
+                }
+            }
+
+            // 更新确认金额
+            function updateConfirmedAmount(stepId, materialName, amount) {
+                // TODO: 实现确认金额更新逻辑
+                console.log('更新确认金额:', {
+                    stepId,
+                    materialName,
+                    amount
+                });
+            }
+
+            // 打开完成任务确认模态框
+            document.getElementById('completeTaskBtn').addEventListener('click', function() {
+                document.getElementById('completeTaskModal').style.display = 'block';
+            });
+
+            // 关闭完成任务确认模态框
+            document.getElementById('closeCompleteModal').addEventListener('click', function() {
+                document.getElementById('completeTaskModal').style.display = 'none';
+            });
+
+            document.getElementById('cancelComplete').addEventListener('click', function() {
+                document.getElementById('completeTaskModal').style.display = 'none';
+            });
+
+            // 确认完成任务
+            document.getElementById('confirmComplete').addEventListener('click', function() {
+                // 这里添加完成任务的逻辑
+                console.log('完成任务');
+                document.getElementById('completeTaskModal').style.display = 'none';
+                loadTaskDetail();
+            });
+
+            // 打开删除任务确认模态框
+            document.getElementById('deleteTaskBtn').addEventListener('click', function() {
+                document.getElementById('deleteTaskModal').style.display = 'block';
+            });
+
+            // 关闭删除任务确认模态框
+            document.getElementById('closeDeleteModal').addEventListener('click', function() {
+                document.getElementById('deleteTaskModal').style.display = 'none';
+            });
+
+            document.getElementById('cancelDelete').addEventListener('click', function() {
+                document.getElementById('deleteTaskModal').style.display = 'none';
+            });
+
+            // 确认删除任务
+            document.getElementById('confirmDelete').addEventListener('click', function() {
+                // 这里添加删除任务的逻辑
+                console.log('删除任务');
+                document.getElementById('deleteTaskModal').style.display = 'none';
+                window.location.href = 'task-management.html';
+            });
+
+            // 格式化金额显示
+            function formatAmount(amount) {
+                return amount ? `¥${amount.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-';
+            }
+
+            // 提交确认金额
+            function submitConfirmation(stepId) {
+                const step = task.processes.find(p => p.id === stepId);
+                if (!step) return;
+
+                const material = step.materials.find(m => m.name === '确认邮件');
+                if (!material || !material.confirmedAmount) {
+                    alert('请先输入确认金额');
+                    return;
+                }
+
+                // TODO: 实现确认金额提交逻辑
+                console.log('提交确认金额:', {
+                    stepId,
+                    amount: material.confirmedAmount
+                });
+                
+                // 更新界面
+                step.status = 'completed';
+                loadTaskDetail();
+            }
+
+            // 完成TM上传资料环节
+            function completeTMStep(stepId) {
+                const step = task.processes.find(p => p.id === stepId);
+                if (!step) return;
+
+                // 检查是否所有材料都已上传
+                const hasPendingMaterials = step.materials.some(m => m.status !== 'uploaded');
+                if (hasPendingMaterials) {
+                    alert('请先上传所有必要资料');
+                    return;
+                }
+
+                // TODO: 实现完成环节的逻辑
+                console.log('完成TM上传资料环节:', stepId);
+                
+                // 更新界面
+                step.status = 'completed';
+                loadTaskDetail();
+            }
+
+            // 打开指引抽屉
+            function openGuidanceDrawer(stepName) {
+                const drawer = document.getElementById('guidanceDrawer');
+                const content = document.getElementById('guidanceContent');
+                
+                // 根据环节名称生成指引内容
+                content.innerHTML = getGuidanceContent(stepName);
+                
+                drawer.classList.remove('translate-x-full');
+            }
+
+            // 关闭指引抽屉
+            function closeGuidanceDrawer() {
+                const drawer = document.getElementById('guidanceDrawer');
+                drawer.classList.add('translate-x-full');
+            }
+
+            // 获取指引内容
+            function getGuidanceContent(stepName) {
+                switch (stepName) {
+                    case 'PO':
+                        return `
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">环节说明</h4>
+                                    <p class="text-gray-600">PO文档是采购订单的正式文件，用于记录采购交易的具体信息。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料获取方式</h4>
+                                    <p class="text-gray-600">1. 从采购系统导出PO文档<br>2. 联系采购部门获取PO文件<br>3. 从供应商处获取PO确认文件</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料员样例</h4>
+                                    <div class="mt-2">
+                                        <a href="#" onclick="previewFile('PO样例.xlsx')" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="far fa-file-excel text-green-500 mr-1"></i>
+                                            PO样例.xlsx
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    case '合同':
+                        return `
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">环节说明</h4>
+                                    <p class="text-gray-600">合同文件是双方达成协议的法律文件，需要包含完整的合同内容和签字盖章。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料获取方式</h4>
+                                    <p class="text-gray-600">1. 从法务部门获取合同原件<br>2. 从档案室调取合同副本<br>3. 联系供应商获取合同扫描件</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料员样例</h4>
+                                    <div class="mt-2">
+                                        <a href="#" onclick="previewFile('合同样例.pdf')" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="far fa-file-pdf text-red-500 mr-1"></i>
+                                            合同样例.pdf
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    case '核销明细':
+                        return `
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">环节说明</h4>
+                                    <p class="text-gray-600">核销明细文件记录了费用核销的具体信息，需要包含完整的核销数据和证明文件。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料获取方式</h4>
+                                    <p class="text-gray-600">1. 从财务系统导出核销明细<br>2. 联系财务部门获取核销文件<br>3. 从供应商处获取核销确认</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料员样例</h4>
+                                    <div class="mt-2">
+                                        <a href="#" onclick="previewFile('核销明细样例.xlsx')" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="far fa-file-excel text-green-500 mr-1"></i>
+                                            核销明细样例.xlsx
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    case '资源位截图':
+                        return `
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">环节说明</h4>
+                                    <p class="text-gray-600">资源位截图用于证明广告投放的位置和效果，需要包含完整的资源位信息。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料获取方式</h4>
+                                    <p class="text-gray-600">1. 从广告平台截图<br>2. 现场拍摄资源位照片<br>3. 从供应商处获取投放证明</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">资料员样例</h4>
+                                    <div class="mt-2">
+                                        <a href="#" onclick="previewFile('资源位截图样例.jpg')" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="far fa-file-image text-blue-500 mr-1"></i>
+                                            资源位截图样例.jpg
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    case '总部Owen确认':
+                        return `
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">环节说明</h4>
+                                    <p class="text-gray-600">总部确认环节需要Owen对结算金额进行最终确认。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">确认方</h4>
+                                    <p class="text-gray-600">总部结算经理 Owen</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">确认方式</h4>
+                                    <p class="text-gray-600">1. 邮件确认<br>2. 系统确认<br>3. 书面确认</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">确认模板</h4>
+                                    <div class="mt-2">
+                                        <a href="#" onclick="previewFile('确认邮件模板.eml')" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="far fa-envelope text-yellow-500 mr-1"></i>
+                                            确认邮件模板.eml
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    case 'TM上传资料':
+                        return `
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">环节说明</h4>
+                                    <p class="text-gray-600">TM系统资料上传环节需要将结算资料上传至TM系统。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-2">操作说明</h4>
+                                    <div class="mt-2">
+                                        <a href="#" onclick="previewFile('TM系统操作指南.pdf')" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="far fa-file-pdf text-red-500 mr-1"></i>
+                                            TM系统操作指南.pdf
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    default:
+                        return '<p class="text-gray-600">暂无指引信息</p>';
+                }
+            }
+
+            // 提醒负责人
+            function remindFollower(followerName) {
+                const modal = document.getElementById('remindModal');
+                document.getElementById('remindFollowerName').textContent = followerName;
+                modal.classList.remove('hidden');
+            }
+
+            // 关闭提醒弹窗
+            function closeRemindModal() {
+                const modal = document.getElementById('remindModal');
+                modal.classList.add('hidden');
+            }
+
+            // 初始化加载任务详情
+            loadTaskDetail();
+        });
+    </script>
+</body>
+</html> 

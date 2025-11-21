@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结算模板管理</title>
+    <link href="styles/template-list.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- 引入抽屉js -->
+    <script src="scripts/drawer.js"></script>
+</head>
+<body class="bg-[#F9FAFB] min-w-[1920px]">
+    <!-- 页面内容 -->
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-lg w-full h-[912px] p-6">
+            <!-- 面包屑导航 -->
+            <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-4">
+                <a href="../index.html" class="hover:text-blue-600 transition-colors">
+                    <i class="fas fa-home mr-1"></i>业务中台
+                </a>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <span class="text-gray-800 font-medium">结算模板管理</span>
+            </nav>
+
+            <!-- 标题和操作区 -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-bold">结算模板管理</h2>
+                <a href="template-create.html" class="bg-[#005EFF] text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i>新建流程
+                </a>
+            </div>
+
+            <!-- 模板阵列列表 -->
+            <div id="templateArrayContent" class="template-content">
+                <div class="content-header">
+                    <h3 class="text-lg font-semibold">流程列表</h3>
+                    <div class="flex gap-4">
+                        <a href="process-management.html" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+                            <i class="fas fa-tasks mr-2"></i>环节管理
+                        </a>
+                        <a href="template-create.html" class="add-content-btn">
+                            <i class="fas fa-plus"></i> 新建流程
+                        </a>
+                    </div>
+                </div>
+                <div class="mb-4 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        流程启用后，业务人员在PMS创建结算单后，系统会根据结算单对应的结算科目信息，匹配适用的流程，并拆分生成多个子结算任务，业务人员可以找到自己在流程中的跟进环节，完成资料补齐，与必要确认动作。
+                    </p>
+                </div>
+                <div class="overflow-x-auto">
+                    <div class="flex space-x-4 min-w-max" id="templateList">
+                        <!-- 模板卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <!-- 引入脚本 -->
+    <script src="scripts/template-list.js"></script>
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded'); // 调试日志
+            // 加载模板列表
+            loadTemplates();
+        });
+    </script>
+</body>
+</html>

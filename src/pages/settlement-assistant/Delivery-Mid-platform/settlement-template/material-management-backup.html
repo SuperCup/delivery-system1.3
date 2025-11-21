@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资料管理</title>
+    <link href="styles/template-list.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- 引入抽屉js -->
+    <script src="scripts/drawer.js"></script>
+</head>
+<body class="bg-[#F9FAFB] min-w-[1920px]">
+    <!-- 页面内容 -->
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-lg w-full h-[912px] p-6">
+            <!-- 面包屑导航 -->
+            <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-4">
+                <a href="../index.html" class="hover:text-blue-600 transition-colors">
+                    <i class="fas fa-home mr-1"></i>业务中台
+                </a>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <a href="template-list.html" class="hover:text-blue-600 transition-colors">
+                    结算模板管理
+                </a>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <span class="text-gray-800 font-medium">资料管理</span>
+            </nav>
+
+            <!-- 标题和操作区 -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center">
+                    <button onclick="window.history.back()" class="mr-4 text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <h2 class="text-lg font-bold">资料管理</h2>
+                </div>
+                <button onclick="showDocumentCreateDrawer()" class="bg-[#005EFF] text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i>新增资料
+                </button>
+            </div>
+
+            <!-- 资料管理列表 -->
+            <div id="materialContent" class="template-content">
+                <div class="content-header">
+                    <h3 class="text-lg font-semibold">资料列表</h3>
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <input type="text" id="materialSearch" placeholder="搜索资料名称" 
+                                class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                        </div>
+                        <button onclick="showDocumentCreateDrawer()" class="add-content-btn">
+                            <i class="fas fa-plus"></i> 新增资料
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-4 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        请整理结算流程中需要准备的资料，并设置资料的获取方式，资料样例，便于流程中需要准备该资料的人员更清晰的知晓，如何获取与整理符合规范的资料。
+                    </p>
+                </div>
+                <div id="materialList" class="grid grid-cols-4 gap-4">
+                    <!-- 资料列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 资料样例预览模态框 -->
+    <div id="materialPreviewModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">资料样例预览</h3>
+                <button id="closeMaterialPreviewModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="materialPreviewContent" class="preview-content">
+                <!-- 预览内容将在这里显示 -->
+                <div class="preview-container">
+                    <div class="preview-loading hidden">
+                        <i class="fas fa-spinner fa-spin"></i> 加载中...
+                    </div>
+                    <div class="preview-error hidden">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>无法预览该文件类型或文件不存在</p>
+                    </div>
+                    <iframe id="previewFrame" class="hidden"></iframe>
+                    <img id="previewImage" class="hidden">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="scripts/template-list.js"></script>
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Material management page loaded');
+            // 确保资料列表容器存在
+            const materialList = document.getElementById('materialList');
+            if (materialList) {
+                console.log('Material list container found');
+            } else {
+                console.error('Material list container not found');
+            }
+        });
+    </script>
+</body>
+</html>

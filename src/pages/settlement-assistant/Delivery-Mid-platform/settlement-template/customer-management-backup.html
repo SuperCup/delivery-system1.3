@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户管理</title>
+    <link href="styles/template-list.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- 引入抽屉js -->
+    <script src="scripts/drawer.js"></script>
+</head>
+<body class="bg-[#F9FAFB] min-w-[1920px]">
+    <!-- 页面内容 -->
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-lg w-full h-[912px] p-6">
+            <!-- 面包屑导航 -->
+            <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-4">
+                <a href="../index.html" class="hover:text-blue-600 transition-colors">
+                    <i class="fas fa-home mr-1"></i>业务中台
+                </a>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <a href="template-list.html" class="hover:text-blue-600 transition-colors">
+                    结算模板管理
+                </a>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <span class="text-gray-800 font-medium">客户管理</span>
+            </nav>
+
+            <!-- 标题和操作区 -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center">
+                    <button onclick="window.history.back()" class="mr-4 text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <h2 class="text-lg font-bold">客户管理</h2>
+                </div>
+                <button onclick="showCustomerCreateDrawer()" class="bg-[#005EFF] text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i>新增客户
+                </button>
+            </div>
+
+            <!-- 客户管理列表 -->
+            <div id="customerContent" class="template-content">
+                <div class="content-header">
+                    <h3 class="text-lg font-semibold">客户管理</h3>
+                    <button onclick="showCustomerCreateDrawer()" class="add-content-btn">
+                        <i class="fas fa-plus"></i> 新增客户
+                    </button>
+                </div>
+                <div class="mb-4 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        请时刻保持对客户的跟进，如有信息变动，请及时更新。
+                    </p>
+                </div>
+                <div class="grid grid-cols-3 gap-4" id="customerList">
+                    <!-- 客户列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="scripts/template-list.js"></script>
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Customer management page loaded');
+            // 确保客户列表容器存在
+            const customerList = document.getElementById('customerList');
+            if (customerList) {
+                console.log('Customer list container found');
+            } else {
+                console.error('Customer list container not found');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结算任务管理</title>
+    <link href="../styles/task-tracking.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .btn-primary {
+            @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-all duration-200 shadow-sm hover:shadow-md;
+        }
+        .btn-secondary {
+            @apply px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center space-x-2 transition-all duration-200;
+        }
+        .btn-outline {
+            @apply px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center space-x-2 transition-all duration-200;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 面包屑导航 -->
+        <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-4">
+            <a href="../index.html" class="hover:text-blue-600 transition-colors">
+                <i class="fas fa-home mr-1"></i>业务中台
+            </a>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+            <a href="pms-internal-settlement.html" class="hover:text-blue-600 transition-colors">
+                PMS内部结算单管理
+            </a>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+            <a href="settlement-merge.html" class="hover:text-blue-600 transition-colors">
+                外部结算单管理
+            </a>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+            <span class="text-gray-800 font-medium">结算任务管理</span>
+        </nav>
+        
+        <!-- 页面标题 -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">结算任务管理</h1>
+        </div>
+
+        <!-- 搜索和筛选 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-2">
+            <div class="flex flex-wrap items-center mb-4">
+                <div class="flex-1 min-w-[240px] mr-4 mb-2">
+                    <div class="relative">
+                        <input type="text" id="taskNameFilter" class="w-full px-3 py-2 border rounded-md pl-10" placeholder="搜索项目编号或名称">
+                        <span class="absolute left-3 top-2.5 text-gray-400"><i class="fas fa-search"></i></span>
+                    </div>
+                </div>
+                <div class="flex-1 min-w-[240px] mr-4 mb-2">
+                    <div class="relative">
+                        <input type="text" id="settlementNoFilter" class="w-full px-3 py-2 border rounded-md pl-10" placeholder="搜索关联结算单">
+                        <span class="absolute left-3 top-2.5 text-gray-400"><i class="fas fa-file-invoice"></i></span>
+                    </div>
+                </div>
+                <div class="flex space-x-2 mb-2">
+                    <div class="flex items-center mr-4">
+                        <input type="checkbox" id="relatedToMeFilter" class="mr-2">
+                        <label for="relatedToMeFilter" class="text-sm text-gray-600">仅显示与我相关</label>
+                    </div>
+                    <button id="refreshBtn" class="flex items-center px-4 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50">
+                        <i class="fas fa-sync-alt mr-1"></i>刷新
+                    </button>
+
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="flex items-center p-4 bg-white border rounded-lg shadow-sm">
+                    <div class="flex-1">
+                        <div class="text-gray-500 text-sm">进行中</div>
+                        <div class="text-2xl font-bold text-gray-800" id="stat-in-progress">1</div>
+                    </div>
+                    <span class="text-blue-400 text-2xl"><i class="fas fa-spinner fa-spin"></i></span>
+                </div>
+                <div class="flex items-center p-4 bg-white border rounded-lg shadow-sm">
+                    <div class="flex-1">
+                        <div class="text-gray-500 text-sm">已完成</div>
+                        <div class="text-2xl font-bold text-gray-800" id="stat-completed">1</div>
+                    </div>
+                    <span class="text-green-400 text-2xl"><i class="fas fa-check-circle"></i></span>
+                </div>
+                <div class="flex items-center p-4 bg-white border rounded-lg shadow-sm">
+                    <div class="flex-1">
+                        <div class="text-gray-500 text-sm">已超期</div>
+                        <div class="text-2xl font-bold text-gray-800" id="stat-overdue">2</div>
+                    </div>
+                    <span class="text-red-400 text-2xl"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+                <div class="flex items-center p-4 bg-white border rounded-lg shadow-sm">
+                    <div class="flex-1">
+                        <div class="text-gray-500 text-sm">已放弃</div>
+                        <div class="text-2xl font-bold text-gray-800" id="stat-abandoned">0</div>
+                    </div>
+                    <span class="text-gray-400 text-2xl"><i class="fas fa-ban"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 p-4 bg-white rounded-lg">
+            <div class="text-sm text-gray-700">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                    <div>
+                        <div class="mb-2">1、任务中的环节可并行推进，当前环节按流程中拖拽顺序显示。</div>
+                        <div>2、实际结算金额需要在完成任务时填写，完成任务需要到任务详情中，检查所有环节信息都配置正确，并提交完成确认。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 任务列表 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                任务名称
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                关联项目
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                关联结算单
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                进度
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                当前环节
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                目标结算金额
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                实际结算金额
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                创建时间
+                            </th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky right-0 bg-white z-20">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="taskList">
+                        <!-- 任务列表将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 环节详情模态框 -->
+    <div id="processDetailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">环节详情</h3>
+                <button onclick="closeProcessDetailModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <h4 class="text-sm font-medium mb-2">当前环节</h4>
+                <div id="currentProcess" class="p-2 bg-gray-50 rounded-lg"></div>
+            </div>
+            <div>
+                <h4 class="text-sm font-medium mb-2">任务流程</h4>
+                <div id="processList" class="space-y-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 放弃任务模态框 -->
+    <div id="abandonModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">放弃任务</h3>
+                <button onclick="closeAbandonModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">放弃原因</label>
+                <textarea id="abandonReason" class="w-full px-3 py-2 border rounded-md" rows="4" required></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button onclick="closeAbandonModal()" class="mr-2 px-4 py-2 text-gray-600 hover:text-gray-800">
+                    取消
+                </button>
+                <button onclick="confirmAbandon()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                    确认放弃
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 打卡模态框 -->
+    <div id="checkInModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">完成当前环节</h3>
+                <button onclick="closeCheckInModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="checkInForm" class="mb-4">
+                <!-- 表单内容将根据环节类型动态生成 -->
+            </form>
+            <div class="flex justify-end">
+                <button onclick="closeCheckInModal()" class="mr-2 px-4 py-2 text-gray-600 hover:text-gray-800">
+                    取消
+                </button>
+                <button onclick="submitCheckIn()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                    提交
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/task-management.js"></script>
+</body>
+</html>

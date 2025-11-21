@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>到家运营执行与交付标准 - 业务交付引导系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .module-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .stage-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .stage-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left-color: #3B82F6;
+        }
+        .step-item {
+            transition: all 0.2s ease;
+        }
+        .step-item:hover {
+            background-color: #F3F4F6;
+        }
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .flowchart-node {
+            position: relative;
+        }
+        .flowchart-connector {
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            width: 40px;
+            height: 2px;
+            background: #E5E7EB;
+        }
+        .search-highlight {
+            background-color: #FEF3C7;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-sm border-b px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-2xl font-bold text-gray-900">
+                    <i class="fas fa-compass text-blue-500 mr-2"></i>
+                    到家运营执行与交付标准
+                </h1>
+                <span class="text-sm text-gray-500">零售运营导航系统</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" id="globalSearch" placeholder="搜索步骤或模块..." 
+                           class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <button id="viewToggle" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-th-large mr-2"></i>卡片视图
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 py-8">
+        <!-- 主页面内容 -->
+        <div id="homePage">
+            <!-- 流程顺序指引 -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 mb-8">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">第1步</span>
+                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium">第2步</span>
+                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">第3步</span>
+                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">第4步</span>
+                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full font-medium">第5步</span>
+                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-medium">第6步</span>
+                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium">第7步</span>
+                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full font-medium">第8步</span>
+                    </div>
+                </div>
+                <p class="text-center text-gray-600">按照业务流程顺序执行，确保项目顺利推进</p>
+            </div>
+
+            <!-- 模块导航 - 卡片视图 -->
+            <div id="cardView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+                <!-- 业务规划 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="business-planning">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        1
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-chart-line text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">核心模块</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">业务规划</h3>
+                    <p class="text-white/80 text-sm mb-4">年度规划、目标制定、策略制定</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">2个阶段</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- 项目启动 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="project-launch" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        2
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-rocket text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">核心模块</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">项目启动</h3>
+                    <p class="text-white/80 text-sm mb-4">制定项目计划，提交CPS方案，启动项目执行</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">3个阶段</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- 平台入驻 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="platform-entry" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        3
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-store text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">基础运营</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">平台入驻</h3>
+                    <p class="text-white/80 text-sm mb-4">资料提交、审核、授权</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">3个步骤</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- 商品维护 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="product-maintenance" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        4
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-box text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">基础运营</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">商品维护</h3>
+                    <p class="text-white/80 text-sm mb-4">信息维护、图片上传、审核上线</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">4个步骤</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- 活动运营 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="campaign-operations" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        5
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-bullhorn text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">核心运营</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">活动运营</h3>
+                    <p class="text-white/80 text-sm mb-4">提报、配置、监测、调整</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">6个阶段</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- 数据报表 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="data-reports" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        6
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-chart-bar text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">数据分析</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">数据报表</h3>
+                    <p class="text-white/80 text-sm mb-4">标准报表、定制报表、自动推送</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">3个类型</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- 结算 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="settlement" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        7
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-calculator text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">财务结算</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">结算</h3>
+                    <p class="text-white/80 text-sm mb-4">内部结算、客户结算、清账</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">3个阶段</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- 增值服务 -->
+                <div class="module-card text-white p-6 rounded-lg shadow-lg cursor-pointer relative" data-module="value-added" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        8
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-star text-3xl"></i>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">高级服务</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">增值服务</h3>
+                    <p class="text-white/80 text-sm mb-4">整合营销、创意设计、效果广告</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs">5个服务</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 流程图视图 -->
+            <div id="flowchartView" class="hidden bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">项目生命周期流程图</h3>
+                <div class="overflow-x-auto">
+                    <div class="flex items-center space-x-8 min-w-max pb-4">
+                        <div class="flowchart-node bg-blue-100 p-4 rounded-lg text-center min-w-32">
+                            <i class="fas fa-chart-line text-2xl text-blue-500 mb-2"></i>
+                            <div class="font-semibold text-sm">业务规划</div>
+                            <div class="flowchart-connector"></div>
+                        </div>
+                        <div class="flowchart-node bg-green-100 p-4 rounded-lg text-center min-w-32">
+                            <i class="fas fa-store text-2xl text-green-500 mb-2"></i>
+                            <div class="font-semibold text-sm">平台入驻</div>
+                            <div class="flowchart-connector"></div>
+                        </div>
+                        <div class="flowchart-node bg-purple-100 p-4 rounded-lg text-center min-w-32">
+                            <i class="fas fa-box text-2xl text-purple-500 mb-2"></i>
+                            <div class="font-semibold text-sm">商品维护</div>
+                            <div class="flowchart-connector"></div>
+                        </div>
+                        <div class="flowchart-node bg-pink-100 p-4 rounded-lg text-center min-w-32">
+                            <i class="fas fa-bullhorn text-2xl text-pink-500 mb-2"></i>
+                            <div class="font-semibold text-sm">活动运营</div>
+                            <div class="flowchart-connector"></div>
+                        </div>
+                        <div class="flowchart-node bg-yellow-100 p-4 rounded-lg text-center min-w-32">
+                            <i class="fas fa-chart-bar text-2xl text-yellow-500 mb-2"></i>
+                            <div class="font-semibold text-sm">数据报表</div>
+                            <div class="flowchart-connector"></div>
+                        </div>
+                        <div class="flowchart-node bg-indigo-100 p-4 rounded-lg text-center min-w-32">
+                            <i class="fas fa-calculator text-2xl text-indigo-500 mb-2"></i>
+                            <div class="font-semibold text-sm">结算</div>
+                            <div class="flowchart-connector"></div>
+                        </div>
+                        <div class="flowchart-node bg-red-100 p-4 rounded-lg text-center min-w-32">
+                            <i class="fas fa-star text-2xl text-red-500 mb-2"></i>
+                            <div class="font-semibold text-sm">增值服务</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模块详情页面 -->
+        <div id="modulePage" class="hidden">
+            <div class="flex items-center mb-6">
+                <button id="backToHome" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg mr-4 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>返回首页
+                </button>
+                <h2 id="moduleTitle" class="text-3xl font-bold text-gray-900"></h2>
+            </div>
+
+            <!-- 模块进度 -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">项目进度</h3>
+                    <button id="startProject" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-play mr-2"></i>开始项目
+                    </button>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                    <div id="progressBar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600">
+                    <span>进度: <span id="progressText">0%</span></span>
+                    <span>完成: <span id="completedSteps">0</span> / <span id="totalSteps">0</span> 步骤</span>
+                </div>
+            </div>
+
+            <!-- 阶段卡片容器 -->
+            <div id="stageContainer" class="space-y-6">
+                <!-- 动态生成阶段卡片 -->
+            </div>
+        </div>
+
+        <!-- 模板中心 -->
+        <div id="templateCenter" class="hidden bg-white rounded-lg shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">模板中心</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="templateGrid">
+                <!-- 动态生成模板卡片 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模块数据
+        const moduleData = {
+            'business-planning': {
+                title: '业务规划',
+                icon: 'fas fa-chart-line',
+                stages: [
+                    {
+                        title: '年度业务规划',
+                        status: 'pending',
+                        steps: [
+                            { text: '信息收集与市场调研', completed: false, template: '市场调研模板.xlsx' },
+                            { text: '目标制定与KPI设定', completed: false, template: 'KPI设定模板.xlsx' },
+                            { text: '策略制定与路径规划', completed: false, template: '策略规划模板.pptx' },
+                            { text: '行动计划制定', completed: false, template: '行动计划模板.xlsx' },
+                            { text: '规划PPT制作与交付', completed: false, template: '业务规划PPT模板.pptx' }
+                        ],
+                        tips: '确保目标可量化、可执行，策略要与公司整体战略保持一致',
+                        responsible: '战略规划组',
+                        faq: [
+                            { q: '如何设定合理的KPI目标？', a: '基于历史数据和市场趋势，设定挑战性但可实现的目标' },
+                            { q: '策略制定需要考虑哪些因素？', a: '市场环境、竞争态势、资源配置、风险评估等' }
+                        ]
+                    },
+                    {
+                        title: '年度复盘',
+                        status: 'pending',
+                        steps: [
+                            { text: '指标数据收集与分析', completed: false, template: '数据分析模板.xlsx' },
+                            { text: '目标达成情况对比', completed: false, template: '目标对比模板.xlsx' },
+                            { text: '问题识别与原因分析', completed: false, template: '问题分析模板.xlsx' },
+                            { text: '改进建议制定', completed: false, template: '改进建议模板.docx' },
+                            { text: '复盘PPT制作与汇报', completed: false, template: '复盘PPT模板.pptx' }
+                        ],
+                        tips: '复盘要客观真实，重点关注可改进的环节和具体行动方案',
+                        responsible: '数据分析组',
+                        faq: [
+                            { q: '复盘的重点应该放在哪里？', a: '重点分析未达成目标的原因和可改进的具体措施' },
+                            { q: '如何确保复盘的有效性？', a: '制定具体的改进行动计划，并设定跟踪机制' }
+                        ]
+                    }
+                ]
+            },
+            'project-launch': {
+                title: '项目启动',
+                icon: 'fas fa-rocket',
+                stages: [
+                    {
+                        title: '项目计划制定',
+                        status: 'pending',
+                        steps: [
+                            { text: '项目范围定义', completed: false, template: '项目范围模板.docx' },
+                            { text: '时间计划安排', completed: false, template: '项目时间表.xlsx' },
+                            { text: '资源需求评估', completed: false, template: '资源评估表.xlsx' },
+                            { text: '里程碑设定', completed: false, template: '里程碑计划.xlsx' }
+                        ],
+                        tips: '项目计划要详细具体，确保所有关键节点都有明确的时间安排',
+                        responsible: '项目经理',
+                        faq: [
+                            { q: '如何合理评估项目时间？', a: '基于类似项目经验，考虑风险缓冲时间' },
+                            { q: '资源需求如何确定？', a: '根据项目范围和复杂度，评估人力、物力、财力需求' }
+                        ]
+                    },
+                    {
+                        title: 'CPS方案提交',
+                        status: 'pending',
+                        steps: [
+                            { text: 'CPS策略制定', completed: false, template: 'CPS策略模板.pptx' },
+                            { text: '佣金结构设计', completed: false, template: '佣金结构表.xlsx' },
+                            { text: '合作伙伴筛选', completed: false, template: '合作伙伴评估表.xlsx' },
+                            { text: '方案审核提交', completed: false, template: 'CPS方案模板.docx' }
+                        ],
+                        tips: 'CPS方案要考虑市场竞争力和盈利平衡，确保可持续发展',
+                        responsible: '商务拓展组',
+                        faq: [
+                            { q: 'CPS佣金比例如何设定？', a: '参考行业标准，结合自身利润空间和市场竞争情况' },
+                            { q: '如何选择合适的CPS合作伙伴？', a: '评估伙伴的流量质量、转化能力和品牌匹配度' }
+                        ]
+                    },
+                    {
+                        title: '团队组建与启动',
+                        status: 'pending',
+                        steps: [
+                            { text: '团队成员确定', completed: false, template: '团队架构图.xlsx' },
+                            { text: '角色职责分配', completed: false, template: '职责分工表.docx' },
+                            { text: '启动会议召开', completed: false, template: '启动会议议程.docx' },
+                            { text: '项目正式启动', completed: false, template: null }
+                        ],
+                        tips: '确保每个团队成员都清楚自己的职责和项目目标',
+                        responsible: '项目经理',
+                        faq: [
+                            { q: '如何确保团队协作效率？', a: '建立清晰的沟通机制和定期汇报制度' },
+                            { q: '启动会议应该包含哪些内容？', a: '项目背景、目标、计划、团队介绍、沟通机制等' }
+                        ]
+                    }
+                ]
+            },
+            'platform-entry': {
+                title: '平台入驻',
+                icon: 'fas fa-store',
+                stages: [
+                    {
+                        title: '资料准备与提交',
+                        status: 'pending',
+                        steps: [
+                            { text: '企业资质材料准备', completed: false, template: '资质清单.docx' },
+                            { text: '品牌授权书准备', completed: false, template: '授权书模板.docx' },
+                            { text: '入驻申请表填写', completed: false, template: '入驻申请表.xlsx' },
+                            { text: '材料提交与跟进', completed: false, template: null }
+                        ],
+                        tips: '确保所有材料真实有效，授权书需要品牌方盖章确认',
+                        responsible: '商务拓展组',
+                        faq: [
+                            { q: '入驻需要哪些必备资料？', a: '营业执照、税务登记证、品牌授权书、产品质检报告等' },
+                            { q: '审核周期一般多长？', a: '正常情况下5-10个工作日，特殊情况可能延长' }
+                        ]
+                    }
+                ]
+            },
+            'campaign-operations': {
+                title: '活动运营',
+                icon: 'fas fa-bullhorn',
+                stages: [
+                    {
+                        title: '活动提报',
+                        status: 'pending',
+                        steps: [
+                            { text: '查看平台招商方案', completed: false, template: null },
+                            { text: '确认活动机制与规则', completed: false, template: '机制确认清单.xlsx' },
+                            { text: '填写活动提报表', completed: false, template: '活动提报表.xlsx' },
+                            { text: '上传至PMS系统', completed: false, template: null }
+                        ],
+                        tips: '仔细阅读招商方案，确保理解活动机制和参与条件',
+                        responsible: '客户经理',
+                        faq: [
+                            { q: '提报时权限不足怎么办？', a: '在PMS系统中申请相应权限，或联系系统管理员' },
+                            { q: '提报表填写有误如何修改？', a: '在审核通过前可以撤回修改，审核后需要重新提报' }
+                        ]
+                    },
+                    {
+                        title: '活动配置',
+                        status: 'pending',
+                        steps: [
+                            { text: '商品池配置', completed: false, template: '商品配置模板.xlsx' },
+                            { text: '价格与库存设置', completed: false, template: '价格库存模板.xlsx' },
+                            { text: '活动页面配置', completed: false, template: null },
+                            { text: '测试与上线确认', completed: false, template: '测试清单.xlsx' }
+                        ],
+                        tips: '配置前务必确认商品信息准确，价格策略合理',
+                        responsible: 'POD运营',
+                        faq: [
+                            { q: '商品池如何选择？', a: '根据活动主题和目标用户选择合适的商品组合' },
+                            { q: '价格设置有什么注意事项？', a: '确保价格符合平台规则，避免价格战' }
+                        ]
+                    },
+                    {
+                        title: '活动监测',
+                        status: 'pending',
+                        steps: [
+                            { text: '预算执行监控', completed: false, template: '预算监控表.xlsx' },
+                            { text: '活动机制跟踪', completed: false, template: '机制跟踪表.xlsx' },
+                            { text: '资源位效果监测', completed: false, template: '资源位报表.xlsx' },
+                            { text: '竞品活动监测', completed: false, template: '竞品监测表.xlsx' }
+                        ],
+                        tips: '实时关注数据变化，及时发现异常并处理',
+                        responsible: '数据分析组',
+                        faq: [
+                            { q: '监测频率如何设定？', a: '活动期间建议每小时监测一次，重要节点实时监测' },
+                            { q: '发现异常如何处理？', a: '立即暂停相关操作，分析原因后制定应对方案' }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // 模板数据
+        const templateData = [
+            { name: '市场调研模板', type: 'Excel', category: '业务规划', size: '2.5MB', icon: 'fas fa-file-excel' },
+            { name: '活动提报表', type: 'Excel', category: '活动运营', size: '1.8MB', icon: 'fas fa-file-excel' },
+            { name: '业务规划PPT模板', type: 'PowerPoint', category: '业务规划', size: '5.2MB', icon: 'fas fa-file-powerpoint' },
+            { name: '数据分析模板', type: 'Excel', category: '数据报表', size: '3.1MB', icon: 'fas fa-file-excel' },
+            { name: '结算报告模板', type: 'Word', category: '结算', size: '1.2MB', icon: 'fas fa-file-word' },
+            { name: '创意设计Brief', type: 'Word', category: '增值服务', size: '0.8MB', icon: 'fas fa-file-word' }
+        ];
+
+        // DOM 元素
+        const homePage = document.getElementById('homePage');
+        const modulePage = document.getElementById('modulePage');
+        const templateCenter = document.getElementById('templateCenter');
+        const cardView = document.getElementById('cardView');
+        const flowchartView = document.getElementById('flowchartView');
+        const viewToggle = document.getElementById('viewToggle');
+        const globalSearch = document.getElementById('globalSearch');
+        const backToHome = document.getElementById('backToHome');
+        const moduleTitle = document.getElementById('moduleTitle');
+        const stageContainer = document.getElementById('stageContainer');
+        const startProject = document.getElementById('startProject');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const completedSteps = document.getElementById('completedSteps');
+        const totalSteps = document.getElementById('totalSteps');
+
+        let currentModule = null;
+        let isFlowchartView = false;
+        let guidedMode = false;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            renderTemplateCenter();
+        });
+
+        // 事件监听器
+        function initializeEventListeners() {
+            // 模块卡片点击
+            document.querySelectorAll('[data-module]').forEach(card => {
+                card.addEventListener('click', function() {
+                    const moduleId = this.dataset.module;
+                    showModulePage(moduleId);
+                });
+            });
+
+            // 视图切换
+            viewToggle.addEventListener('click', function() {
+                isFlowchartView = !isFlowchartView;
+                if (isFlowchartView) {
+                    cardView.classList.add('hidden');
+                    flowchartView.classList.remove('hidden');
+                    this.innerHTML = '<i class="fas fa-project-diagram mr-2"></i>流程图视图';
+                } else {
+                    cardView.classList.remove('hidden');
+                    flowchartView.classList.add('hidden');
+                    this.innerHTML = '<i class="fas fa-th-large mr-2"></i>卡片视图';
+                }
+            });
+
+            // 返回首页
+            backToHome.addEventListener('click', function() {
+                showHomePage();
+            });
+
+            // 开始项目
+            startProject.addEventListener('click', function() {
+                guidedMode = !guidedMode;
+                if (guidedMode) {
+                    this.innerHTML = '<i class="fas fa-stop mr-2"></i>退出引导';
+                    this.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                    this.classList.add('bg-red-500', 'hover:bg-red-600');
+                } else {
+                    this.innerHTML = '<i class="fas fa-play mr-2"></i>开始项目';
+                    this.classList.remove('bg-red-500', 'hover:bg-red-600');
+                    this.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                }
+                updateGuidedMode();
+            });
+
+            // 全局搜索
+            globalSearch.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                performSearch(query);
+            });
+        }
+
+        // 显示首页
+        function showHomePage() {
+            homePage.classList.remove('hidden');
+            modulePage.classList.add('hidden');
+            templateCenter.classList.add('hidden');
+            currentModule = null;
+            guidedMode = false;
+        }
+
+        // 显示模块页面
+        function showModulePage(moduleId) {
+            const module = moduleData[moduleId];
+            if (!module) return;
+
+            currentModule = moduleId;
+            homePage.classList.add('hidden');
+            modulePage.classList.remove('hidden');
+            templateCenter.classList.add('hidden');
+
+            moduleTitle.innerHTML = `<i class="${module.icon} mr-3"></i>${module.title}`;
+            renderStages(module.stages);
+            updateProgress();
+        }
+
+        // 渲染阶段卡片
+        function renderStages(stages) {
+            stageContainer.innerHTML = '';
+            
+            stages.forEach((stage, stageIndex) => {
+                const stageCard = document.createElement('div');
+                stageCard.className = 'stage-card bg-white rounded-lg shadow-lg p-6';
+                
+                const stepsHtml = stage.steps.map((step, stepIndex) => `
+                    <div class="step-item flex items-center justify-between p-3 rounded-lg border ${step.completed ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}">
+                        <div class="flex items-center">
+                            <input type="checkbox" ${step.completed ? 'checked' : ''} 
+                                   class="step-checkbox mr-3" 
+                                   data-stage="${stageIndex}" 
+                                   data-step="${stepIndex}">
+                            <span class="${step.completed ? 'line-through text-gray-500' : 'text-gray-900'}">${step.text}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            ${step.template ? `<button class="template-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm" data-template="${step.template}"><i class="fas fa-download mr-1"></i>模板</button>` : ''}
+                            <span class="text-xs text-gray-500">${stage.responsible}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                const faqHtml = stage.faq.map(item => `
+                    <div class="border-l-4 border-yellow-400 bg-yellow-50 p-3 mb-2">
+                        <div class="font-medium text-yellow-800 mb-1">Q: ${item.q}</div>
+                        <div class="text-yellow-700 text-sm">A: ${item.a}</div>
+                    </div>
+                `).join('');
+
+                stageCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">${stage.title}</h3>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${
+                            stage.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            stage.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
+                            'bg-gray-100 text-gray-800'
+                        }">
+                            ${stage.status === 'completed' ? '已完成' : stage.status === 'in-progress' ? '进行中' : '待开始'}
+                        </span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-500 mr-2 mt-1"></i>
+                                <div>
+                                    <div class="font-medium text-blue-900 mb-1">注意事项</div>
+                                    <div class="text-blue-800 text-sm">${stage.tips}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        ${stepsHtml}
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold text-gray-900 mb-3">常见问题</h4>
+                        ${faqHtml}
+                    </div>
+                `;
+
+                stageContainer.appendChild(stageCard);
+            });
+
+            // 添加步骤复选框事件监听
+            document.querySelectorAll('.step-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const stageIndex = parseInt(this.dataset.stage);
+                    const stepIndex = parseInt(this.dataset.step);
+                    const module = moduleData[currentModule];
+                    
+                    module.stages[stageIndex].steps[stepIndex].completed = this.checked;
+                    updateProgress();
+                    
+                    // 重新渲染该步骤的样式
+                    const stepItem = this.closest('.step-item');
+                    const stepText = stepItem.querySelector('span');
+                    
+                    if (this.checked) {
+                        stepItem.classList.remove('bg-gray-50', 'border-gray-200');
+                        stepItem.classList.add('bg-green-50', 'border-green-200');
+                        stepText.classList.add('line-through', 'text-gray-500');
+                        stepText.classList.remove('text-gray-900');
+                    } else {
+                        stepItem.classList.remove('bg-green-50', 'border-green-200');
+                        stepItem.classList.add('bg-gray-50', 'border-gray-200');
+                        stepText.classList.remove('line-through', 'text-gray-500');
+                        stepText.classList.add('text-gray-900');
+                    }
+                });
+            });
+
+            // 添加模板下载事件监听
+            document.querySelectorAll('.template-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const templateName = this.dataset.template;
+                    downloadTemplate(templateName);
+                });
+            });
+        }
+
+        // 更新进度
+        function updateProgress() {
+            if (!currentModule) return;
+            
+            const module = moduleData[currentModule];
+            let totalStepsCount = 0;
+            let completedStepsCount = 0;
+            
+            module.stages.forEach(stage => {
+                stage.steps.forEach(step => {
+                    totalStepsCount++;
+                    if (step.completed) completedStepsCount++;
+                });
+            });
+            
+            const progress = totalStepsCount > 0 ? (completedStepsCount / totalStepsCount) * 100 : 0;
+            
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}%`;
+            completedSteps.textContent = completedStepsCount;
+            totalSteps.textContent = totalStepsCount;
+        }
+
+        // 更新引导模式
+        function updateGuidedMode() {
+            const stageCards = document.querySelectorAll('.stage-card');
+            
+            if (guidedMode) {
+                stageCards.forEach((card, index) => {
+                    if (index === 0) {
+                        card.classList.add('ring-4', 'ring-blue-500', 'ring-opacity-50');
+                    } else {
+                        card.style.opacity = '0.5';
+                        card.style.pointerEvents = 'none';
+                    }
+                });
+            } else {
+                stageCards.forEach(card => {
+                    card.classList.remove('ring-4', 'ring-blue-500', 'ring-opacity-50');
+                    card.style.opacity = '1';
+                    card.style.pointerEvents = 'auto';
+                });
+            }
+        }
+
+        // 渲染模板中心
+        function renderTemplateCenter() {
+            const templateGrid = document.getElementById('templateGrid');
+            
+            templateData.forEach(template => {
+                const templateCard = document.createElement('div');
+                templateCard.className = 'bg-white border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer';
+                
+                templateCard.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <i class="${template.icon} text-2xl text-blue-500 mr-3"></i>
+                        <div>
+                            <div class="font-semibold text-gray-900">${template.name}</div>
+                            <div class="text-sm text-gray-500">${template.type} • ${template.size}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">${template.category}</span>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm" onclick="downloadTemplate('${template.name}')">
+                            <i class="fas fa-download mr-1"></i>下载
+                        </button>
+                    </div>
+                `;
+                
+                templateGrid.appendChild(templateCard);
+            });
+        }
+
+        // 下载模板
+        function downloadTemplate(templateName) {
+            // 模拟下载
+            alert(`正在下载模板: ${templateName}`);
+            console.log(`下载模板: ${templateName}`);
+        }
+
+        // 执行搜索
+        function performSearch(query) {
+            if (!query) {
+                // 清除高亮
+                document.querySelectorAll('.search-highlight').forEach(el => {
+                    el.outerHTML = el.innerHTML;
+                });
+                return;
+            }
+
+            // 搜索模块和步骤
+            let found = false;
+            
+            Object.keys(moduleData).forEach(moduleId => {
+                const module = moduleData[moduleId];
+                
+                // 搜索模块标题
+                if (module.title.toLowerCase().includes(query)) {
+                    showModulePage(moduleId);
+                    found = true;
+                    return;
+                }
+                
+                // 搜索步骤
+                module.stages.forEach(stage => {
+                    stage.steps.forEach(step => {
+                        if (step.text.toLowerCase().includes(query)) {
+                            showModulePage(moduleId);
+                            found = true;
+                            
+                            // 高亮匹配的步骤
+                            setTimeout(() => {
+                                const stepElements = document.querySelectorAll('.step-item span');
+                                stepElements.forEach(el => {
+                                    if (el.textContent.toLowerCase().includes(query)) {
+                                        const regex = new RegExp(`(${query})`, 'gi');
+                                        el.innerHTML = el.textContent.replace(regex, '<span class="search-highlight">$1</span>');
+                                    }
+                                });
+                            }, 100);
+                            return;
+                        }
+                    });
+                });
+            });
+            
+            if (!found && query.length > 2) {
+                console.log(`未找到匹配的结果: ${query}`);
+            }
+        }
+
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.module-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

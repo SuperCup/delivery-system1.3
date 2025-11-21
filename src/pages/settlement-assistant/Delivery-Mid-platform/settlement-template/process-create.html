@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建环节</title>
+    <link href="../styles/task-tracking.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .drawer-content {
+            height: 100vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div class="drawer-content">
+        <!-- 页面标题和关闭按钮 -->
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-lg font-bold">创建环节（待完善）</h2>
+            <button onclick="closeDrawer()" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- 环节创建表单 -->
+        <div class="p-4">
+            <form id="processForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="processName">
+                        环节名称
+                    </label>
+                    <input type="text" id="processName" class="w-full px-3 py-2 border rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="processType">
+                        环节类型
+                    </label>
+                    <select id="processType" class="w-full px-3 py-2 border rounded-md" required>
+                        <option value="document">资料准备</option>
+                        <option value="review">审核</option>
+                        <option value="approval">审批</option>
+                        <option value="notification">通知</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="processDescription">
+                        环节描述
+                    </label>
+                    <textarea id="processDescription" class="w-full px-3 py-2 border rounded-md" rows="3" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="requiredDocuments">
+                        必要资料
+                    </label>
+                    <select id="requiredDocuments" class="w-full px-3 py-2 border rounded-md" multiple>
+                        <!-- 资料选项将通过JavaScript动态生成 -->
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="processStatus">
+                        状态
+                    </label>
+                    <select id="processStatus" class="w-full px-3 py-2 border rounded-md" required>
+                        <option value="active">启用</option>
+                        <option value="inactive">停用</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeDrawer()" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                        取消
+                    </button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                        创建
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载资料选项
+            loadDocumentOptions();
+
+            // 处理表单提交
+            document.getElementById('processForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const processData = {
+                    name: document.getElementById('processName').value,
+                    type: document.getElementById('processType').value,
+                    description: document.getElementById('processDescription').value,
+                    requiredDocuments: Array.from(document.getElementById('requiredDocuments').selectedOptions).map(option => option.value),
+                    status: document.getElementById('processStatus').value
+                };
+                
+                // 这里添加创建环节的逻辑
+                console.log('创建环节:', processData);
+                
+                // 创建成功后关闭抽屉
+                closeDrawer();
+            });
+        });
+
+        // 加载资料选项
+        function loadDocumentOptions() {
+            const select = document.getElementById('requiredDocuments');
+            // 这里应该是从API获取资料列表
+            const documents = [
+                { id: 1, name: '销售合同' },
+                { id: 2, name: '发票' },
+                { id: 3, name: '证书' }
+            ];
+
+            select.innerHTML = documents.map(doc => `
+                <option value="${doc.id}">${doc.name}</option>
+            `).join('');
+        }
+
+        // 关闭抽屉
+        function closeDrawer() {
+            // 这里添加关闭抽屉的逻辑
+            console.log('关闭抽屉');
+            // 如果是在iframe中,可以调用父窗口的方法
+            if (window.parent && window.parent.closeDrawer) {
+                window.parent.closeDrawer();
+            }
+        }
+    </script>
+</body>
+</html> 

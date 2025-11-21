@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建结算流程模板</title>
+    <link href="styles/template-create.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#F9FAFB] min-w-[1920px]">
+    <!-- 页面头部 -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center">
+                <a href="template-list.html" class="text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-arrow-left"></i> 返回
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="container mx-auto px-6 py-8">
+        <div class="flex-1 flex">
+            <!-- 左侧：环节类型 -->
+            <div class="w-64 bg-white border-r border-gray-200 flex flex-col">
+                <div class="sticky top-0 z-10 bg-white border-b border-gray-200 p-4">
+                    <h3 class="text-lg font-medium text-gray-900">环节类型</h3>
+                </div>
+                <div class="flex-1 overflow-y-auto">
+                    <div class="p-4 space-y-6">
+                        <!-- 资料准备 -->
+                        <div class="process-type-group">
+                            <h3 class="text-sm font-medium text-gray-500 mb-2">资料准备</h3>
+                            <div class="space-y-2">
+                                <div class="process-item bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-move hover:bg-blue-100 transition-colors" draggable="true" data-type="material">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-blue-600 mr-3">
+                                            <i class="fas fa-file-alt"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">资料准备（空白）</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="mt-1 process-item bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-move hover:bg-blue-100 transition-colors" draggable="true" data-type="material">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-blue-600 mr-3">
+                                            <i class="fas fa-file-alt"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">季度合同</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="mt-1 process-item bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-move hover:bg-blue-100 transition-colors" draggable="true" data-type="material">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-blue-600 mr-3">
+                                            <i class="fas fa-file-alt"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">BUPO</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="mt-1 process-item bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-move hover:bg-blue-100 transition-colors" draggable="true" data-type="material">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-blue-600 mr-3">
+                                            <i class="fas fa-file-alt"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">结算单（湖南）</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="mt-1 process-item bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-move hover:bg-blue-100 transition-colors" draggable="true" data-type="material">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-blue-600 mr-3">
+                                            <i class="fas fa-file-alt"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">结算单（华中）</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="mt-1 process-item bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-move hover:bg-blue-100 transition-colors" draggable="true" data-type="material">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-blue-600 mr-3">
+                                            <i class="fas fa-file-alt"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">结案报告</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 结算确认 -->
+                        <div class="process-type-group">
+                            <h3 class="text-sm font-medium text-gray-500 mb-2">结算确认</h3>
+                            <div class="space-y-2">
+                                <div class="process-item bg-green-50 border border-green-200 rounded-lg p-3 cursor-move hover:bg-green-100 transition-colors" draggable="true" data-type="confirmation">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-green-600 mr-3">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">结算确认（空白）</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="process-item bg-green-50 border border-green-200 rounded-lg p-3 cursor-move hover:bg-green-100 transition-colors mt-1" draggable="true" data-type="confirmation">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-green-600 mr-3">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">总部Owen确认</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="process-item bg-green-50 border border-green-200 rounded-lg p-3 cursor-move hover:bg-green-100 transition-colors mt-1" draggable="true" data-type="confirmation">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-green-600 mr-3">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">湖南大区确认</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 客户系统结算 -->
+                        <div class="process-type-group">
+                            <h3 class="text-sm font-medium text-gray-500 mb-2">客户系统结算</h3>
+                            <div class="space-y-2">
+                                <div class="process-item bg-purple-50 border border-purple-200 rounded-lg p-3 cursor-move hover:bg-purple-100 transition-colors" draggable="true" data-type="customer">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-purple-600 mr-3">
+                                            <i class="fas fa-building"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">客户系统结算（空白）</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="mt-1 process-item bg-purple-50 border border-purple-200 rounded-lg p-3 cursor-move hover:bg-purple-100 transition-colors" draggable="true" data-type="customer">
+                                    <div class="flex items-center">
+                                        <span class="process-icon text-purple-600 mr-3">
+                                            <i class="fas fa-building"></i>
+                                        </span>
+                                        <span class="text-sm font-medium">TM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中间：流程配置 -->
+            <div class="flex-1 bg-gray-50 flex flex-col">
+                <div class="sticky top-0 z-10 bg-white border-b border-gray-200 p-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-medium text-gray-900">流程配置</h3>
+                        <div class="flex space-x-2">
+                            <button id="resetFlow" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                                重置流程
+                            </button>
+                            <button id="saveFlow" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                保存流程
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto p-4">
+                    <div id="processContainer" class="min-h-full">
+                        <div id="processList" class="space-y-4"></div>
+                        <div class="process-placeholder text-center py-12 bg-white rounded-lg border-2 border-dashed border-gray-300">
+                            <i class="fas fa-arrow-left text-gray-400 text-2xl mb-2"></i>
+                            <p class="text-gray-500">从左侧拖拽环节到此处</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：属性 -->
+            <div class="w-80 bg-white border-l border-gray-200 flex flex-col">
+                <div class="sticky top-0 z-10 bg-white border-b border-gray-200 p-4">
+                    <h3 class="text-lg font-medium text-gray-900">属性</h3>
+                </div>
+                <div class="flex-1 overflow-y-auto">
+                    <!-- <div class="property-placeholder text-center py-12">
+                        <i class="fas fa-arrow-right text-gray-400 text-2xl mb-2"></i>
+                        <p class="text-gray-500">点击流程中的环节查看属性</p>
+                    </div> -->
+                    <div id="propertyPanel" class="h-full"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 资料选择器模态框 -->
+    <div id="materialSelectorModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[80vh] flex flex-col">
+                <div class="flex items-center justify-between p-6 border-b">
+                    <h3 class="text-lg font-medium text-gray-900">从资料库选择资料</h3>
+                    <button onclick="closeMaterialSelector()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-6 border-b">
+                    <div class="flex space-x-4">
+                        <input type="text" id="materialSearchInput" placeholder="搜索资料名称、客户或标签..." 
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               oninput="filterMaterials(this.value)">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            <i class="fas fa-search"></i> 搜索
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div id="materialLibraryList" class="space-y-4">
+                        <!-- 资料列表将在这里动态生成 -->
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-6 border-t bg-gray-50">
+                    <div class="text-sm text-gray-600">
+                        已选择 <span id="selectedMaterialCount">0</span> 项资料
+                    </div>
+                    <div class="space-x-3">
+                        <button onclick="closeMaterialSelector()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
+                            取消
+                        </button>
+                        <button onclick="addSelectedMaterials()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            确定添加
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 环节模板选择器模态框 -->
+    <div id="processTemplateSelectorModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[80vh] flex flex-col">
+                <div class="flex items-center justify-between p-6 border-b">
+                    <h3 class="text-lg font-medium text-gray-900">从模板选择资料</h3>
+                    <button onclick="closeProcessTemplateSelector()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div id="processTemplateList" class="space-y-4">
+                        <!-- 环节模板列表将在这里动态生成 -->
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-6 border-t bg-gray-50">
+                    <div class="text-sm text-gray-600">
+                        已选择 <span id="selectedTemplateCount">0</span> 项模板
+                    </div>
+                    <div class="space-x-3">
+                        <button onclick="closeProcessTemplateSelector()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
+                            取消
+                        </button>
+                        <button onclick="addSelectedTemplates()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            确定添加
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建新资料模态框 -->
+    <div id="createMaterialModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-2xl">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">创建新资料</h3>
+                <button onclick="closeCreateMaterialForm()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">资料名称 *</label>
+                    <input type="text" id="materialName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入资料名称">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">资料类型</label>
+                    <select id="materialType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="contract">合同</option>
+                        <option value="quotation">报价单</option>
+                        <option value="quotation_confirm">报价确认</option>
+                        <option value="bill_detail">账单明细</option>
+                        <option value="ad_proof">广告凭证</option>
+                        <option value="review_report">复盘报告</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">资料描述</label>
+                    <textarea id="materialDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入资料描述（可选）"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">标签</label>
+                    <input type="text" id="materialTags" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入标签，用逗号分隔（可选）">
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 p-6 border-t bg-gray-50">
+                <button onclick="closeCreateMaterialForm()" class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                    取消
+                </button>
+                <button onclick="saveNewMaterial()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="scripts/template-create.js"></script>
+</body>
+</html>

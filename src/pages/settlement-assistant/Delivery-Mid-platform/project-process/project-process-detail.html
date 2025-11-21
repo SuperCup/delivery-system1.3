@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目流程详情</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="styles/project-process.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 面包屑导航 -->
+        <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-4">
+            <a href="../index.html" class="hover:text-blue-600 transition-colors">
+                <i class="fas fa-home mr-1"></i>业务中台
+            </a>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+            <a href="project-process-management.html" class="hover:text-blue-600 transition-colors">项目流程管理</a>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+            <span class="text-gray-800 font-medium" id="projectTitle">项目详情</span>
+        </nav>
+        
+        <!-- 项目基本信息 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-start mb-6">
+                <div class="flex-1">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2" id="projectName">项目名称</h1>
+                    <div class="flex items-center space-x-6 text-sm text-gray-600">
+                        <span><i class="fas fa-building mr-2"></i>客户：<span id="clientName">-</span></span>
+                        <span><i class="fas fa-user mr-2"></i>项目经理：<span id="projectManager">-</span></span>
+                        <span><i class="fas fa-calendar mr-2"></i>开始时间：<span id="startDate">-</span></span>
+                        <span><i class="fas fa-flag mr-2"></i>预计结束：<span id="endDate">-</span></span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span class="status-badge" id="projectStatus">进行中</span>
+                    <button class="btn-primary" onclick="editProject()">
+                        <i class="fas fa-edit"></i>
+                        <span>编辑项目</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 项目进度条 -->
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-700">整体进度</span>
+                    <span class="text-sm text-gray-600" id="progressText">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <p class="text-gray-600" id="projectDescription">项目描述信息</p>
+        </div>
+
+        <!-- 流程时间线 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">项目流程</h2>
+                <button class="btn-secondary" onclick="showAddStageModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>添加阶段</span>
+                </button>
+            </div>
+            
+            <div class="relative" id="processTimeline">
+                <!-- 流程节点将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 当前阶段详情 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 当前任务 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">当前阶段任务</h3>
+                <div id="currentTasks">
+                    <!-- 当前任务列表 -->
+                </div>
+            </div>
+            
+            <!-- 交付物管理 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">交付物</h3>
+                    <button class="btn-outline" onclick="showUploadModal()">
+                        <i class="fas fa-upload"></i>
+                        <span>上传文件</span>
+                    </button>
+                </div>
+                <div id="deliverables">
+                    <!-- 交付物列表 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目团队 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">项目团队</h3>
+                <button class="btn-outline" onclick="showAddMemberModal()">
+                    <i class="fas fa-user-plus"></i>
+                    <span>添加成员</span>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="teamMembers">
+                <!-- 团队成员卡片 -->
+            </div>
+        </div>
+
+        <!-- 项目日志 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">项目日志</h3>
+            <div class="space-y-4" id="projectLogs">
+                <!-- 项目日志条目 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加阶段模态框 -->
+    <div id="addStageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">添加项目阶段</h3>
+                    <button onclick="hideAddStageModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <form id="addStageForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">阶段名称 *</label>
+                                <input type="text" id="stageName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">负责人 *</label>
+                                <input type="text" id="stageOwner" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">开始时间 *</label>
+                                <input type="date" id="stageStartDate" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">结束时间 *</label>
+                                <input type="date" id="stageEndDate" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">阶段描述</label>
+                            <textarea id="stageDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">交付物要求</label>
+                            <textarea id="stageDeliverables" rows="2" placeholder="请描述本阶段需要的交付物..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="hideAddStageModal()" class="btn-outline">取消</button>
+                            <button type="submit" class="btn-primary">添加阶段</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 上传文件模态框 -->
+    <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">上传交付物</h3>
+                    <button onclick="hideUploadModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <form id="uploadForm">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">文件名称 *</label>
+                            <input type="text" id="fileName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">所属阶段 *</label>
+                            <select id="fileStage" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">请选择阶段</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">文件类型</label>
+                            <select id="fileType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="document">文档</option>
+                                <option value="design">设计稿</option>
+                                <option value="code">代码</option>
+                                <option value="report">报告</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">文件描述</label>
+                            <textarea id="fileDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">选择文件</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-2"></i>
+                                <p class="text-gray-600">点击选择文件或拖拽文件到此处</p>
+                                <input type="file" id="fileInput" class="hidden" multiple>
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="hideUploadModal()" class="btn-outline">取消</button>
+                            <button type="submit" class="btn-primary">上传文件</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加成员模态框 -->
+    <div id="addMemberModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">添加团队成员</h3>
+                    <button onclick="hideAddMemberModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <form id="addMemberForm">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">成员姓名 *</label>
+                            <input type="text" id="memberName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">角色 *</label>
+                            <select id="memberRole" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">请选择角色</option>
+                                <option value="项目经理">项目经理</option>
+                                <option value="产品经理">产品经理</option>
+                                <option value="设计师">设计师</option>
+                                <option value="开发工程师">开发工程师</option>
+                                <option value="测试工程师">测试工程师</option>
+                                <option value="运维工程师">运维工程师</option>
+                                <option value="业务分析师">业务分析师</option>
+                                <option value="其他">其他</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">邮箱</label>
+                            <input type="email" id="memberEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">电话</label>
+                            <input type="tel" id="memberPhone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="hideAddMemberModal()" class="btn-outline">取消</button>
+                            <button type="submit" class="btn-primary">添加成员</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/project-process-detail.js"></script>
+</body>
+</html>
