@@ -13,7 +13,7 @@ import {
 } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
-import styles from './activity-list-page.module.css'
+import styles from './dashboard-page.module.css'
 import type { ActivityItem, ActivityStatus } from '../../../../types/activity'
 import type { BusinessType, Contact } from '../../../../types/client'
 import type { BusinessActivityGuide } from '../../../../types/activity-guidance'
@@ -29,7 +29,7 @@ const statusColorMap: Record<ActivityStatus, string> = {
   已结束: '#b1b5c6',
 }
 
-export default function ActivityListPage() {
+export default function DashboardPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const { clientId: routeClientId } = useParams<{ clientId?: string }>()
@@ -187,11 +187,11 @@ export default function ActivityListPage() {
   ]
 
   const handleCreate = () => {
-    navigate(`/clients/${clientId}/activities/create?businessType=${activeType}`)
+    navigate(`/clients/${clientId}/dashboard/create?businessType=${activeType}`)
   }
 
   const handleEdit = (record: ActivityItem) => {
-    navigate(`/clients/${clientId}/activities/edit/${record.id}`)
+    navigate(`/clients/${clientId}/dashboard/edit/${record.id}`)
   }
 
   return (
@@ -246,7 +246,7 @@ export default function ActivityListPage() {
                     <Button
                       onClick={() =>
                         navigate(
-                          `/clients/${clientId}/activities/data-sources?businessType=${type}`,
+                          `/clients/${clientId}/dashboard/data-sources?businessType=${type}`,
                         )
                       }
                       disabled={!clientId}

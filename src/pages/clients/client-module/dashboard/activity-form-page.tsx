@@ -155,7 +155,7 @@ export default function ActivityFormPage() {
       await new Promise((resolve) => setTimeout(resolve, 500))
 
       message.success(isEdit ? '活动已更新（模拟）' : '活动已创建（模拟）')
-      navigate(`/clients/${clientId}/activities`)
+      navigate(`/clients/${clientId}/dashboard`)
     } catch (error: unknown) {
       const err = error as { errorFields?: unknown }
       if (err?.errorFields) return
@@ -350,7 +350,7 @@ export default function ActivityFormPage() {
             title: <HomeOutlined />,
           },
           {
-            href: `/clients/${clientId}/activities`,
+            href: `/clients/${clientId}/dashboard`,
             title: '客户看板',
           },
           {
@@ -363,7 +363,7 @@ export default function ActivityFormPage() {
           {isEdit ? '编辑活动' : '新建活动'}
         </Title>
         <Space>
-          <Button onClick={() => navigate(`/clients/${clientId}/activities`)}>取消</Button>
+          <Button onClick={() => navigate(`/clients/${clientId}/dashboard`)}>取消</Button>
           <Button type="primary" onClick={handleSubmit} loading={loading}>
             保存
           </Button>

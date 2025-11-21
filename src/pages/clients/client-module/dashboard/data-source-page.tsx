@@ -488,7 +488,7 @@ export default function DataSourcePage() {
             title: <HomeOutlined />,
           },
           {
-            href: `/clients/${clientId}/activities`,
+            href: `/clients/${clientId}/dashboard`,
             title: '客户看板',
           },
           {
@@ -788,3 +788,4 @@ export default function DataSourcePage() {
     </div>
   )
 }
+

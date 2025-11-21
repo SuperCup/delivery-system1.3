@@ -11,9 +11,9 @@ import ReportCenterPage from '../pages/report-center/report-center-page'
 import ToolsMarketPage from '../pages/tools-market/tools-market-page'
 import PermissionCenterPage from '../pages/permission-center/permission-center-page'
 import ClientDetailPage from '../pages/clients/client-detail-page'
-import ActivityListPage from '../pages/clients/client-module/activities/activity-list-page'
-import ActivityFormPage from '../pages/clients/client-module/activities/activity-form-page'
-import DataSourcePage from '../pages/clients/client-module/activities/data-source-page'
+import DashboardPage from '../pages/clients/client-module/dashboard/dashboard-page'
+import ActivityFormPage from '../pages/clients/client-module/dashboard/activity-form-page'
+import DataSourcePage from '../pages/clients/client-module/dashboard/data-source-page'
 import ClientDataDeliveryPage from '../pages/clients/client-module/data-delivery/client-data-delivery-page'
 import ClientFileDeliveryPage from '../pages/clients/client-module/file-delivery/client-file-delivery-page'
 import ClientDataAssetsPage from '../pages/clients/client-module/data-assets/client-data-assets-page'
@@ -50,10 +50,10 @@ export const AppRoutes = () => (
       <Route element={<ClientModuleLayout />}>
         <Route index element={<Navigate to="overview" replace />} />
         <Route path="overview" element={<ClientDetailPage />} />
-        <Route path="activities" element={<ActivityListPage />} />
-        <Route path="activities/create" element={<ActivityFormPage />} />
-        <Route path="activities/edit/:id" element={<ActivityFormPage />} />
-        <Route path="activities/data-sources" element={<DataSourcePage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="dashboard/create" element={<ActivityFormPage />} />
+        <Route path="dashboard/edit/:id" element={<ActivityFormPage />} />
+        <Route path="dashboard/data-sources" element={<DataSourcePage />} />
         <Route path="data-delivery" element={<ClientDataDeliveryPage />} />
         <Route path="file-delivery" element={<ClientFileDeliveryPage />} />
         <Route path="data-assets" element={<ClientDataAssetsPage />} />

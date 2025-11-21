@@ -2,36 +2,43 @@
   "roles": [
     {
       "id": "role-admin",
-      "name": "系统管理员",
+      "name": "超级管理员",
       "description": "负责系统配置、账号开通与安全策略管理。",
-      "memberCount": 6,
+      "memberCount": 3,
       "createdAt": "2024-11-01",
       "updatedAt": "2025-11-07"
     },
     {
-      "id": "role-operator",
-      "name": "业务运营",
-      "description": "日常运营、活动配置与数据查询权限。",
-      "memberCount": 28,
+      "id": "role-customer",
+      "name": "客户管理",
+      "description": "负责客户信息管理与维护。",
+      "memberCount": 3,
       "createdAt": "2024-12-15",
       "updatedAt": "2025-11-05"
     },
     {
-      "id": "role-analyst",
-      "name": "数据分析师",
-      "description": "负责报表分析、数据导出与模型配置。",
-      "memberCount": 14,
+      "id": "role-delivery",
+      "name": "交付管理",
+      "description": "负责交付任务管理与协调。",
+      "memberCount": 3,
       "createdAt": "2025-01-08",
       "updatedAt": "2025-11-06"
     },
     {
-      "id": "role-viewer",
-      "name": "只读访客",
-      "description": "查看核心看板与知识库内容。",
-      "memberCount": 42,
+      "id": "role-executor",
+      "name": "交付执行",
+      "description": "负责交付任务的具体执行。",
+      "memberCount": 3,
+      "createdAt": "2025-02-12",
+      "updatedAt": "2025-11-06"
+    },
+    {
+      "id": "role-data",
+      "name": "数据管理",
+      "description": "负责数据仓库与数据管理。",
+      "memberCount": 3,
       "createdAt": "2025-03-01",
       "updatedAt": "2025-10-28"
     }
   ]
 }
-

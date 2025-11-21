@@ -85,19 +85,21 @@ export async function getPermissionMembers(): Promise<PermissionMember[]> {
     const raw = (await res.json()) as unknown
     const rawObject = isRecord(raw) ? raw : {}
     const list = Array.isArray(rawObject.members) ? rawObject.members : Array.isArray(raw) ? raw : []
-    const allowedStatus: PermissionMember['status'][] = ['正常', '停用', '待开通']
+    const allowedStatus: PermissionMember['status'][] = ['启用', '禁用']
 
     return list
       .filter(isRecord)
       .map((member) => {
         const status = allowedStatus.includes(member.status as PermissionMember['status'])
           ? (member.status as PermissionMember['status'])
-          : '正常'
+          : '启用'
+        const permissions = Array.isArray(member.permissions) ? member.permissions.map(String) : undefined
         return {
           id: String(member.id ?? ''),
           name: String(member.name ?? ''),
           email: String(member.email ?? ''),
           roleId: String(member.roleId ?? ''),
+          permissions,
           status,
           joinedAt: String(member.joinedAt ?? ''),
           lastActiveAt: String(member.lastActiveAt ?? ''),

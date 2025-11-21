@@ -1,46 +1,29 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Card, Statistic, Table, Tag, Input, Select, Space, Typography, Skeleton, Empty } from 'antd'
+import { Card, Table, Tag, Input, Select, Space, Typography, Button, Form } from 'antd'
 import type { TableColumnsType } from 'antd'
-import {
-  getPermissionMatrix,
-  getPermissionMembers,
-  getPermissionRoles,
-} from '../../services/permission-center-service'
-import type {
-  PermissionAction,
-  PermissionMember,
-  PermissionModule,
-  PermissionRole,
-} from '../../types/permission'
+import { getPermissionMembers, getPermissionRoles } from '../../services/permission-center-service'
+import type { PermissionMember, PermissionRole } from '../../types/permission'
 import styles from './permission-center-page.module.css'
 
-const { Search } = Input
 const { Text } = Typography
 
-type MatrixRow = {
-  module: PermissionModule
-  [roleId: string]: PermissionAction[] | PermissionModule
-}
-
 export default function PermissionCenterPage() {
-  const [roles, setRoles] = useState<PermissionRole[]>([])
-  const [matrix, setMatrix] = useState<Record<string, { module: PermissionModule; actions: PermissionAction[] }[]>>({})
   const [members, setMembers] = useState<PermissionMember[]>([])
+  const [roles, setRoles] = useState<PermissionRole[]>([])
   const [loading, setLoading] = useState(true)
-  const [memberSearch, setMemberSearch] = useState('')
-  const [roleFilter, setRoleFilter] = useState<string>('全部角色')
+  const [nameSearch, setNameSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState<string>('全部')
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 10
+
+  const [form] = Form.useForm()
 
   useEffect(() => {
     const load = async () => {
       setLoading(true)
       try {
-        const [roleList, matrixData, memberList] = await Promise.all([
-          getPermissionRoles(),
-          getPermissionMatrix(),
-          getPermissionMembers(),
-        ])
+        const [roleList, memberList] = await Promise.all([getPermissionRoles(), getPermissionMembers()])
         setRoles(roleList)
-        setMatrix(matrixData)
         setMembers(memberList)
       } finally {
         setLoading(false)
@@ -49,170 +32,159 @@ export default function PermissionCenterPage() {
     load()
   }, [])
 
-  const stats = useMemo(() => {
-    const totalMembers = members.length
-    const inactiveMembers = members.filter((member) => member.status !== '正常').length
-    const latestUpdatedAt = roles.reduce<string>(
-      (latest, role) => (role.updatedAt > latest ? role.updatedAt : latest),
-      '',
-    )
-    return [
-      { title: '角色数量', value: roles.length },
-      { title: '成员总数', value: totalMembers },
-      { title: '最近更新', value: latestUpdatedAt || '—' },
-      { title: '异常成员', value: inactiveMembers },
-    ]
-  }, [members, roles])
-
-  const matrixRows: MatrixRow[] = useMemo(() => {
-    const moduleSet = new Set<PermissionModule>()
-    Object.values(matrix).forEach((cells) => {
-      cells.forEach((cell) => moduleSet.add(cell.module))
+  useEffect(() => {
+    form.setFieldsValue({
+      status: '全部',
     })
-    return Array.from(moduleSet).map((module) => {
-      const row: MatrixRow = { module }
-      roles.forEach((role) => {
-        const cells = matrix[role.id] ?? []
-        const cell = cells.find((item) => item.module === module)
-        row[role.id] = cell?.actions ?? []
-      })
-      return row
-    })
-  }, [matrix, roles])
-
-  const matrixColumns: TableColumnsType<MatrixRow> = useMemo(() => {
-    const baseColumn: TableColumnsType<MatrixRow>[number] = {
-      title: '系统功能模块',
-      dataIndex: 'module',
-      key: 'module',
-      width: 180,
-      render: (value: PermissionModule) => <Text strong>{value}</Text>,
-    }
-    const dynamicColumns = roles.map((role) => ({
-      title: role.name,
-      dataIndex: role.id,
-      key: role.id,
-      render: (actions: PermissionAction[]) =>
-        actions && actions.length > 0 ? (
-          actions.map((action) => (
-            <Tag key={action} color="blue" className={styles.matrixTag}>
-              {action}
-            </Tag>
-          ))
-        ) : (
-          <Tag color="default">无权限</Tag>
-        ),
-    }))
-    return [baseColumn, ...dynamicColumns]
-  }, [roles])
+  }, [form])
 
   const filteredMembers = useMemo(() => {
-    const kw = memberSearch.trim().toLowerCase()
+    const kw = nameSearch.trim().toLowerCase()
     return members.filter((member) => {
-      const matchKw =
-        kw.length === 0 ||
-        member.name.toLowerCase().includes(kw) ||
-        member.email.toLowerCase().includes(kw)
-      const matchRole = roleFilter === '全部角色' || member.roleId === roleFilter
-      return matchKw && matchRole
+      const matchName = kw.length === 0 || member.name.toLowerCase().includes(kw)
+      const matchStatus = statusFilter === '全部' || member.status === statusFilter
+      return matchName && matchStatus
     })
-  }, [members, memberSearch, roleFilter])
+  }, [members, nameSearch, statusFilter])
+
+  const pagedMembers = useMemo(() => {
+    const start = (currentPage - 1) * pageSize
+    return filteredMembers.slice(start, start + pageSize)
+  }, [filteredMembers, currentPage, pageSize])
+
+  const handleSearch = () => {
+    const values = form.getFieldsValue()
+    setNameSearch(values.name || '')
+    setStatusFilter(values.status || '全部')
+    setCurrentPage(1)
+  }
+
+  const handleReset = () => {
+    form.resetFields()
+    setNameSearch('')
+    setStatusFilter('全部')
+    setCurrentPage(1)
+  }
+
+  const handleViewPermissions = (member: PermissionMember) => {
+    // TODO: 实现查看权限功能
+    console.log('查看权限', member)
+  }
+
+  const handleEdit = (member: PermissionMember) => {
+    // TODO: 实现编辑功能
+    console.log('编辑', member)
+  }
+
+  const handleDisable = (member: PermissionMember) => {
+    // TODO: 实现禁用功能
+    console.log('禁用', member)
+  }
 
   const memberColumns: TableColumnsType<PermissionMember> = [
-    { title: '姓名', dataIndex: 'name', key: 'name', width: 160 },
-    { title: '邮箱', dataIndex: 'email', key: 'email', width: 220 },
+    {
+      title: '成员姓名',
+      dataIndex: 'name',
+      key: 'name',
+      width: 150,
+    },
     {
       title: '角色',
       dataIndex: 'roleId',
       key: 'roleId',
+      width: 150,
       render: (id: string) => roles.find((role) => role.id === id)?.name ?? '—',
-      width: 160,
     },
-    { title: '加入时间', dataIndex: 'joinedAt', key: 'joinedAt', width: 160 },
-    { title: '最近活跃', dataIndex: 'lastActiveAt', key: 'lastActiveAt', width: 160 },
+    {
+      title: '权限',
+      key: 'permissions',
+      width: 100,
+      render: (_: unknown, record: PermissionMember) => (
+        <Button type="link" size="small" onClick={() => handleViewPermissions(record)}>
+          查看
+        </Button>
+      ),
+    },
     {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
-      render: (status: PermissionMember['status']) => {
-        const color = status === '正常' ? 'green' : status === '停用' ? 'red' : 'orange'
-        return <Tag color={color}>{status}</Tag>
-      },
-      width: 120,
+      width: 100,
+      render: (status: PermissionMember['status']) => (
+        <Tag color={status === '启用' ? 'green' : 'default'}>{status}</Tag>
+      ),
+    },
+    {
+      title: '操作',
+      key: 'actions',
+      width: 150,
+      render: (_: unknown, record: PermissionMember) => (
+        <Space>
+          <Button type="link" size="small" onClick={() => handleEdit(record)}>
+            编辑
+          </Button>
+          <Button type="link" size="small" onClick={() => handleDisable(record)}>
+            禁用
+          </Button>
+        </Space>
+      ),
     },
   ]
 
   return (
     <div className={styles.page}>
       <Card>
-        <h3 style={{ marginBottom: 4 }}>权限中心</h3>
-        <Text type="secondary">
-          统一管理系统角色与权限，确保数据安全与操作合规。
-        </Text>
-      </Card>
-
-      {loading ? (
-        <Skeleton active />
-      ) : (
-        <>
-          <div className={styles.statCards}>
-            {stats.map((stat) => (
-              <Card key={stat.title}>
-                <Statistic title={stat.title} value={stat.value} />
-              </Card>
-            ))}
+        <div className={styles.header}>
+          <div>
+            <h3 className={styles.title}>成员管理</h3>
+            <Text type="secondary">成员都是从公司内部员工管理系统同步过来，在权限中心配置系统角色后，可正常访问对应页面</Text>
           </div>
+        </div>
 
-          <Card title="角色权限矩阵" className={styles.matrixTable}>
-            {matrixRows.length === 0 ? (
-              <Empty description="暂无权限配置" />
-            ) : (
-              <Table<MatrixRow>
-                columns={matrixColumns}
-                dataSource={matrixRows}
-                pagination={false}
-                rowKey="module"
-                scroll={{ x: true }}
-                size="small"
+        <div className={styles.filters}>
+          <Form form={form} layout="inline" onFinish={handleSearch}>
+            <Form.Item label="名称:" name="name">
+              <Input placeholder="请输入成员姓名" style={{ width: 200 }} allowClear />
+            </Form.Item>
+            <Form.Item label="状态:" name="status">
+              <Select
+                placeholder="请选择状态"
+                style={{ width: 150 }}
+                options={[
+                  { label: '全部', value: '全部' },
+                  { label: '启用', value: '启用' },
+                  { label: '禁用', value: '禁用' },
+                ]}
               />
-            )}
-          </Card>
-
-          <Card>
-            <div className={styles.memberHeader}>
-              <h3 style={{ marginBottom: 0 }}>成员列表</h3>
-              <Space className={styles.filters}>
-                <Search
-                  placeholder="搜索姓名或邮箱"
-                  allowClear
-                  onSearch={setMemberSearch}
-                  value={memberSearch}
-                  onChange={(e) => setMemberSearch(e.target.value)}
-                  style={{ width: 240 }}
-                />
-                <Select
-                  value={roleFilter}
-                  style={{ width: 200 }}
-                  onChange={setRoleFilter}
-                  options={[
-                    { label: '全部角色', value: '全部角色' },
-                    ...roles.map((role) => ({ label: role.name, value: role.id })),
-                  ]}
-                />
+            </Form.Item>
+            <Form.Item className={styles.actionButtons}>
+              <Space>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+                <Button onClick={handleReset}>重置</Button>
               </Space>
-            </div>
-            <Table<PermissionMember>
-              style={{ marginTop: 16 }}
-              columns={memberColumns}
-              dataSource={filteredMembers}
-              rowKey="id"
-              pagination={{ pageSize: 10 }}
-              size="small"
-            />
-          </Card>
-        </>
-      )}
+            </Form.Item>
+          </Form>
+        </div>
+
+        <Table<PermissionMember>
+          columns={memberColumns}
+          dataSource={pagedMembers}
+          rowKey="id"
+          loading={loading}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: filteredMembers.length,
+            showSizeChanger: false,
+            showQuickJumper: true,
+            showTotal: (total) => `共${total}条`,
+            onChange: (page) => setCurrentPage(page),
+          }}
+          size="middle"
+        />
+      </Card>
     </div>
   )
 }
-

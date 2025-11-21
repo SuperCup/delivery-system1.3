@@ -43,7 +43,7 @@ export const ClientModuleLayout = () => {
         label: '总览',
       },
       {
-        key: `/clients/${clientId}/activities`,
+        key: `/clients/${clientId}/dashboard`,
         icon: <ThunderboltOutlined />,
         label: '客户看板',
       },
@@ -84,6 +84,10 @@ export const ClientModuleLayout = () => {
   }, [location, menuItems])
 
   const handleMenuClick = ({ key }: { key: string }) => {
+    if (key.endsWith('/settlement-assistant')) {
+      window.open('https://supercup.github.io/delivery-mid-platform/settlement-task/pms-internal-settlement.html', '_blank')
+      return
+    }
     navigate(key)
   }
 

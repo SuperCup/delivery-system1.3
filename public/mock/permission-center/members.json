@@ -2,58 +2,138 @@
   "members": [
     {
       "id": "member-001",
-      "name": "刘晓彤",
-      "email": "liuxiaotong@company.com",
-      "roleId": "role-admin",
-      "status": "正常",
+      "name": "林燕真",
+      "email": "linyanzhen@company.com",
+      "roleId": "role-customer",
+      "status": "启用",
       "joinedAt": "2024-11-15",
       "lastActiveAt": "2025-11-09 20:30"
     },
     {
       "id": "member-002",
-      "name": "王珊",
-      "email": "wangshan@company.com",
-      "roleId": "role-operator",
-      "status": "正常",
+      "name": "刘淑云",
+      "email": "liushuyun@company.com",
+      "roleId": "role-delivery",
+      "status": "启用",
       "joinedAt": "2025-01-08",
       "lastActiveAt": "2025-11-09 19:42"
     },
     {
       "id": "member-003",
-      "name": "赵一鸣",
-      "email": "zhaoyiming@company.com",
-      "roleId": "role-analyst",
-      "status": "停用",
+      "name": "王国燕",
+      "email": "wangguoyan@company.com",
+      "roleId": "role-executor",
+      "status": "启用",
       "joinedAt": "2025-02-12",
-      "lastActiveAt": "2025-10-30 09:15"
+      "lastActiveAt": "2025-11-09 18:15"
     },
     {
       "id": "member-004",
-      "name": "陈乐",
-      "email": "chenle@company.com",
-      "roleId": "role-operator",
-      "status": "正常",
+      "name": "罗勇",
+      "email": "luoyong@company.com",
+      "roleId": "role-admin",
+      "status": "启用",
       "joinedAt": "2025-03-05",
-      "lastActiveAt": "2025-11-08 23:10"
+      "lastActiveAt": "2025-11-09 17:10"
     },
     {
       "id": "member-005",
-      "name": "张弛",
-      "email": "zhangchi@company.com",
-      "roleId": "role-viewer",
-      "status": "待开通",
+      "name": "张志军",
+      "email": "zhangzhijun@company.com",
+      "roleId": "role-data",
+      "status": "启用",
       "joinedAt": "2025-10-20",
-      "lastActiveAt": "-"
+      "lastActiveAt": "2025-11-09 16:55"
     },
     {
       "id": "member-006",
-      "name": "孙倩",
-      "email": "sunqian@company.com",
-      "roleId": "role-analyst",
-      "status": "正常",
+      "name": "ken",
+      "email": "ken@company.com",
+      "roleId": "role-admin",
+      "status": "启用",
       "joinedAt": "2025-05-18",
-      "lastActiveAt": "2025-11-09 18:55"
+      "lastActiveAt": "2025-11-09 15:30"
+    },
+    {
+      "id": "member-007",
+      "name": "王雄军",
+      "email": "wangxiongjun@company.com",
+      "roleId": "role-delivery",
+      "status": "启用",
+      "joinedAt": "2024-12-10",
+      "lastActiveAt": "2025-11-09 14:20"
+    },
+    {
+      "id": "member-008",
+      "name": "胡咏芝",
+      "email": "huyongzhi@company.com",
+      "roleId": "role-executor",
+      "status": "启用",
+      "joinedAt": "2025-06-25",
+      "lastActiveAt": "2025-11-09 13:45"
+    },
+    {
+      "id": "member-009",
+      "name": "邝间维",
+      "email": "kuangjianwei@company.com",
+      "roleId": "role-customer",
+      "status": "启用",
+      "joinedAt": "2025-07-12",
+      "lastActiveAt": "2025-11-09 12:30"
+    },
+    {
+      "id": "member-010",
+      "name": "蒋骊贞",
+      "email": "jianglizhen@company.com",
+      "roleId": "role-data",
+      "status": "启用",
+      "joinedAt": "2025-08-20",
+      "lastActiveAt": "2025-11-09 11:15"
+    },
+    {
+      "id": "member-011",
+      "name": "陈明",
+      "email": "chenming@company.com",
+      "roleId": "role-executor",
+      "status": "启用",
+      "joinedAt": "2024-09-15",
+      "lastActiveAt": "2025-11-09 10:00"
+    },
+    {
+      "id": "member-012",
+      "name": "李静",
+      "email": "lijing@company.com",
+      "roleId": "role-customer",
+      "status": "启用",
+      "joinedAt": "2025-04-08",
+      "lastActiveAt": "2025-11-09 09:30"
+    },
+    {
+      "id": "member-013",
+      "name": "张伟",
+      "email": "zhangwei@company.com",
+      "roleId": "role-delivery",
+      "status": "禁用",
+      "joinedAt": "2025-02-20",
+      "lastActiveAt": "2025-11-08 18:20"
+    },
+    {
+      "id": "member-014",
+      "name": "王芳",
+      "email": "wangfang@company.com",
+      "roleId": "role-data",
+      "status": "启用",
+      "joinedAt": "2025-01-12",
+      "lastActiveAt": "2025-11-09 08:15"
+    },
+    {
+      "id": "member-015",
+      "name": "刘强",
+      "email": "liuqiang@company.com",
+      "roleId": "role-admin",
+      "status": "启用",
+      "joinedAt": "2024-11-25",
+      "lastActiveAt": "2025-11-09 07:45"
     }
   ]
 }
-

@@ -4,30 +4,55 @@
   gap: 16px;
 }
 
-.statCards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+.header {
+  margin-bottom: 24px;
 }
 
-.matrixTable :global(.ant-table) {
-  margin-top: 12px;
-}
-
-.matrixTag {
-  margin-right: 6px;
-  margin-bottom: 6px;
-}
-
-.memberHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.title {
+  margin: 0 0 8px 0 !important;
+  font-weight: 500 !important;
+  color: #1f2937 !important;
 }
 
 .filters {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
 }
 
+.filters :global(.ant-form) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.filters :global(.ant-form-item) {
+  margin-right: 16px;
+  margin-bottom: 0;
+}
+
+.filters :global(.ant-form-item-label) {
+  padding: 0 8px 0 0;
+}
+
+.filters :global(.ant-form-item-label > label) {
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+}
+
+.filters :global(.ant-input),
+.filters :global(.ant-select-selector) {
+  height: 32px;
+}
+
+.filters :global(.ant-btn) {
+  height: 32px;
+  padding: 4px 15px;
+}
+
+.actionButtons {
+  margin-left: auto !important;
+}

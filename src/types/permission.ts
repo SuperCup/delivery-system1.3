@@ -30,7 +30,8 @@ export type PermissionMember = {
   name: string
   email: string
   roleId: string
-  status: '正常' | '停用' | '待开通'
+  permissions?: string[]
+  status: '启用' | '禁用'
   joinedAt: string
   lastActiveAt: string
 }
