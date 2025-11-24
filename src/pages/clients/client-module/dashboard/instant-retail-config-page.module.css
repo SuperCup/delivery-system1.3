@@ -1,0 +1,50 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.breadcrumb {
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.pageTitle {
+  margin: 0;
+  color: #1a234a;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(31, 42, 85, 0.06);
+  border: 1px solid rgba(15, 33, 77, 0.04);
+}
+
+.tabDescription {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f0f7ff;
+  border-left: 3px solid #1890ff;
+  border-radius: 4px;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.actionBar .tabDescription {
+  flex: 1;
+  margin-bottom: 0;
+}
+

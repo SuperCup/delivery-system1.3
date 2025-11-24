@@ -14,6 +14,7 @@ import ClientDetailPage from '../pages/clients/client-detail-page'
 import DashboardPage from '../pages/clients/client-module/dashboard/dashboard-page'
 import ActivityFormPage from '../pages/clients/client-module/dashboard/activity-form-page'
 import DataSourcePage from '../pages/clients/client-module/dashboard/data-source-page'
+import InstantRetailConfigPage from '../pages/clients/client-module/dashboard/instant-retail-config-page'
 import ClientDataDeliveryPage from '../pages/clients/client-module/data-delivery/client-data-delivery-page'
 import ClientFileDeliveryPage from '../pages/clients/client-module/file-delivery/client-file-delivery-page'
 import ClientDataAssetsPage from '../pages/clients/client-module/data-assets/client-data-assets-page'
@@ -54,6 +55,7 @@ export const AppRoutes = () => (
         <Route path="dashboard/create" element={<ActivityFormPage />} />
         <Route path="dashboard/edit/:id" element={<ActivityFormPage />} />
         <Route path="dashboard/data-sources" element={<DataSourcePage />} />
+        <Route path="dashboard/instant-retail-config" element={<InstantRetailConfigPage />} />
         <Route path="data-delivery" element={<ClientDataDeliveryPage />} />
         <Route path="file-delivery" element={<ClientFileDeliveryPage />} />
         <Route path="data-assets" element={<ClientDataAssetsPage />} />

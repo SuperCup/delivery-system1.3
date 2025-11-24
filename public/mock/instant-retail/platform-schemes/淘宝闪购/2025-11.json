@@ -1,0 +1,25 @@
+[
+  {
+    "id": "CRAWLED-004",
+    "platform": "淘宝闪购",
+    "activityName": "双十一闪购节",
+    "startDate": "2025-11-01",
+    "endDate": "2025-11-11",
+    "description": "淘宝双十一闪购专场活动",
+    "crawledAt": "2025-10-26 11:00:00",
+    "mechanisms": ["满减", "折扣", "秒杀"],
+    "url": "https://www.taobao.com/activity/double11"
+  },
+  {
+    "id": "CRAWLED-005",
+    "platform": "淘宝闪购",
+    "activityName": "品牌日特惠",
+    "startDate": "2025-11-10",
+    "endDate": "2025-11-20",
+    "description": "品牌日特惠活动",
+    "crawledAt": "2025-11-02 10:00:00",
+    "mechanisms": ["满减", "优惠券"],
+    "url": "https://www.taobao.com/activity/brandday"
+  }
+]
+

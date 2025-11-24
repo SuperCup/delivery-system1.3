@@ -1,0 +1,109 @@
+[
+  {
+    "id": "AA-001",
+    "platform": "美团闪购",
+    "month": "2025-11",
+    "totalOrders": 5000,
+    "totalAmount": 3200000,
+    "avgOrderAmount": 640,
+    "conversionRate": 12.5,
+    "metrics": [
+      {
+        "name": "订单量",
+        "value": 5000,
+        "unit": "单",
+        "trend": "up",
+        "trendValue": "+15.2%"
+      },
+      {
+        "name": "交易金额",
+        "value": 320,
+        "unit": "万元",
+        "trend": "up",
+        "trendValue": "+18.5%"
+      },
+      {
+        "name": "客单价",
+        "value": 640,
+        "unit": "元",
+        "trend": "up",
+        "trendValue": "+2.8%"
+      },
+      {
+        "name": "转化率",
+        "value": 12.5,
+        "unit": "%",
+        "trend": "up",
+        "trendValue": "+1.2pp"
+      }
+    ],
+    "orderData": [
+      {
+        "orderId": "MT-20251101001",
+        "orderTime": "2025-11-01 10:30:00",
+        "amount": 68.5,
+        "platform": "美团闪购",
+        "activityName": "康师傅双十一满减活动",
+        "status": "已完成"
+      },
+      {
+        "orderId": "MT-20251101002",
+        "orderTime": "2025-11-01 11:15:00",
+        "amount": 125.0,
+        "platform": "美团闪购",
+        "activityName": "康师傅双十一满减活动",
+        "status": "已完成"
+      }
+    ]
+  },
+  {
+    "id": "AA-002",
+    "platform": "京东到家",
+    "month": "2025-11",
+    "totalOrders": 2500,
+    "totalAmount": 1800000,
+    "avgOrderAmount": 720,
+    "conversionRate": 10.8,
+    "metrics": [
+      {
+        "name": "订单量",
+        "value": 2500,
+        "unit": "单",
+        "trend": "up",
+        "trendValue": "+8.3%"
+      },
+      {
+        "name": "交易金额",
+        "value": 180,
+        "unit": "万元",
+        "trend": "up",
+        "trendValue": "+12.1%"
+      },
+      {
+        "name": "客单价",
+        "value": 720,
+        "unit": "元",
+        "trend": "flat",
+        "trendValue": "持平"
+      },
+      {
+        "name": "转化率",
+        "value": 10.8,
+        "unit": "%",
+        "trend": "down",
+        "trendValue": "-0.5pp"
+      }
+    ],
+    "orderData": [
+      {
+        "orderId": "JDDJ-20251105001",
+        "orderTime": "2025-11-05 14:20:00",
+        "amount": 95.0,
+        "platform": "京东到家",
+        "activityName": "达能品牌满减活动",
+        "status": "已完成"
+      }
+    ]
+  }
+]
+

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "CRAWLED-006",
+    "platform": "京东到家",
+    "activityName": "11.11 到家狂欢",
+    "startDate": "2025-11-01",
+    "endDate": "2025-11-11",
+    "description": "京东到家双十一大促活动",
+    "crawledAt": "2025-10-27 15:00:00",
+    "mechanisms": ["满减", "折扣", "优惠券"],
+    "url": "https://www.jddj.com/activity/double11"
+  },
+  {
+    "id": "CRAWLED-007",
+    "platform": "京东到家",
+    "activityName": "周末特惠",
+    "startDate": "2025-11-08",
+    "endDate": "2025-11-10",
+    "description": "周末特惠活动",
+    "crawledAt": "2025-11-03 09:00:00",
+    "mechanisms": ["满减", "折扣"],
+    "url": "https://www.jddj.com/activity/weekend"
+  }
+]
+

@@ -1,0 +1,58 @@
+{
+  "month": "2025-11",
+  "activities": [
+    {
+      "id": "MC-001",
+      "platform": "美团闪购",
+      "activityName": "双十一闪购狂欢节",
+      "activityType": "平台活动方案",
+      "startDate": "2025-11-01",
+      "endDate": "2025-11-11",
+      "status": "待报名",
+      "description": "平台双十一大促活动，支持满减、折扣等多种机制"
+    },
+    {
+      "id": "MC-002",
+      "platform": "美团闪购",
+      "activityName": "康师傅双十一满减活动",
+      "activityType": "已报名活动机制",
+      "startDate": "2025-11-01",
+      "endDate": "2025-11-11",
+      "status": "已报名",
+      "mechanismName": "满50减10元",
+      "projectCode": "SG-250101"
+    },
+    {
+      "id": "MC-003",
+      "platform": "淘宝闪购",
+      "activityName": "双十一闪购节",
+      "activityType": "平台活动方案",
+      "startDate": "2025-11-01",
+      "endDate": "2025-11-11",
+      "status": "待报名",
+      "description": "淘宝双十一闪购专场活动"
+    },
+    {
+      "id": "MC-004",
+      "platform": "京东到家",
+      "activityName": "11.11 到家狂欢",
+      "activityType": "平台活动方案",
+      "startDate": "2025-11-01",
+      "endDate": "2025-11-11",
+      "status": "待报名",
+      "description": "京东到家双十一大促活动"
+    },
+    {
+      "id": "MC-005",
+      "platform": "京东到家",
+      "activityName": "达能品牌满减活动",
+      "activityType": "已报名活动机制",
+      "startDate": "2025-11-05",
+      "endDate": "2025-11-15",
+      "status": "已报名",
+      "mechanismName": "满80减15元",
+      "projectCode": "SG-250102"
+    }
+  ]
+}
+

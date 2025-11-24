@@ -1,0 +1,28 @@
+[
+  {
+    "id": "SCHEME-001",
+    "platform": "美团闪购",
+    "activityName": "双十一闪购狂欢节",
+    "startDate": "2025-11-01",
+    "endDate": "2025-11-11",
+    "description": "平台双十一大促活动，支持满减、折扣等多种机制",
+    "source": "平台爬取",
+    "crawledAt": "2025-10-25 10:00:00",
+    "status": "已选择",
+    "mechanisms": ["满减", "折扣", "优惠券", "秒杀"]
+  },
+  {
+    "id": "SCHEME-002",
+    "platform": "美团闪购",
+    "activityName": "康师傅品牌专属活动",
+    "startDate": "2025-11-05",
+    "endDate": "2025-11-15",
+    "description": "康师傅品牌专属促销活动",
+    "source": "手动导入",
+    "importedAt": "2025-10-28 14:00:00",
+    "importedBy": "运营A",
+    "status": "待选择",
+    "mechanisms": ["满减", "折扣"]
+  }
+]
+

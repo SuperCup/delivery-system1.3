@@ -1,0 +1,36 @@
+[
+  {
+    "id": "CRAWLED-001",
+    "platform": "美团闪购",
+    "activityName": "双十一闪购狂欢节",
+    "startDate": "2025-11-01",
+    "endDate": "2025-11-11",
+    "description": "平台双十一大促活动，支持满减、折扣等多种机制",
+    "crawledAt": "2025-10-25 10:00:00",
+    "mechanisms": ["满减", "折扣", "优惠券", "秒杀"],
+    "url": "https://www.meituan.com/activity/double11"
+  },
+  {
+    "id": "CRAWLED-002",
+    "platform": "美团闪购",
+    "activityName": "冬季暖饮节",
+    "startDate": "2025-11-15",
+    "endDate": "2025-11-30",
+    "description": "冬季暖饮促销活动",
+    "crawledAt": "2025-11-01 09:00:00",
+    "mechanisms": ["满减", "折扣"],
+    "url": "https://www.meituan.com/activity/winter"
+  },
+  {
+    "id": "CRAWLED-003",
+    "platform": "美团闪购",
+    "activityName": "品牌联合促销",
+    "startDate": "2025-11-20",
+    "endDate": "2025-11-27",
+    "description": "多品牌联合促销活动",
+    "crawledAt": "2025-11-05 14:30:00",
+    "mechanisms": ["满减", "优惠券"],
+    "url": "https://www.meituan.com/activity/brand"
+  }
+]
+

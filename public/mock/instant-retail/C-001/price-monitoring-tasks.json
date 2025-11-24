@@ -1,0 +1,54 @@
+[
+  {
+    "id": "PMT-001",
+    "name": "康师傅方便面破价监测",
+    "startDate": "2025-11-01",
+    "endDate": "2025-12-31",
+    "source": "RPA自动采集",
+    "platforms": ["美团闪购", "淘宝闪购", "京东到家"],
+    "frequency": "每日",
+    "referencePrice": 12.5,
+    "notificationReceivers": ["CT-001", "CT-002"],
+    "status": "进行中",
+    "createdAt": "2025-10-25 10:00:00",
+    "createdBy": "运营A",
+    "lastCheckedAt": "2025-11-15 09:00:00",
+    "priceAlerts": [
+      {
+        "id": "PA-001",
+        "productName": "康师傅红烧牛肉面",
+        "platform": "美团闪购",
+        "referencePrice": 12.5,
+        "actualPrice": 9.9,
+        "alertTime": "2025-11-10 14:30:00",
+        "status": "待处理"
+      },
+      {
+        "id": "PA-002",
+        "productName": "康师傅老坛酸菜面",
+        "platform": "淘宝闪购",
+        "referencePrice": 12.5,
+        "actualPrice": 10.5,
+        "alertTime": "2025-11-12 16:20:00",
+        "status": "已处理"
+      }
+    ]
+  },
+  {
+    "id": "PMT-002",
+    "name": "达能脉动破价监测",
+    "startDate": "2025-11-01",
+    "endDate": "2025-11-30",
+    "source": "人工截图上传分析",
+    "platforms": ["美团闪购"],
+    "frequency": "每周",
+    "referencePrice": 5.5,
+    "notificationReceivers": ["CT-003"],
+    "status": "进行中",
+    "createdAt": "2025-10-28 15:00:00",
+    "createdBy": "运营B",
+    "lastCheckedAt": "2025-11-14 10:00:00",
+    "priceAlerts": []
+  }
+]
+

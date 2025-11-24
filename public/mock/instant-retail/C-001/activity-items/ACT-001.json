@@ -1,0 +1,44 @@
+{
+  "id": "ACT-001",
+  "platform": "美团闪购",
+  "activityName": "康师傅双十一满减活动",
+  "schemeId": "SCHEME-001",
+  "schemeName": "双十一闪购狂欢节",
+  "startDate": "2025-11-01",
+  "endDate": "2025-11-11",
+  "status": "进行中",
+  "budget": 500000,
+  "usedBudget": 320000,
+  "orderCount": 5000,
+  "totalAmount": 3200000,
+  "mechanismName": "满50减10元",
+  "projectCode": "SG-250101",
+  "description": "康师傅双十一满减活动",
+  "createdAt": "2025-10-25 10:00:00",
+  "createdBy": "运营A",
+  "metrics": {
+    "totalOrders": 5000,
+    "totalAmount": 3200000,
+    "avgOrderAmount": 640,
+    "conversionRate": 12.5
+  },
+  "orderData": [
+    {
+      "orderId": "MT-20251101001",
+      "orderTime": "2025-11-01 10:30:00",
+      "amount": 68.5,
+      "platform": "美团闪购",
+      "activityName": "康师傅双十一满减活动",
+      "status": "已完成"
+    },
+    {
+      "orderId": "MT-20251101002",
+      "orderTime": "2025-11-01 11:15:00",
+      "amount": 125.0,
+      "platform": "美团闪购",
+      "activityName": "康师傅双十一满减活动",
+      "status": "已完成"
+    }
+  ]
+}
+

@@ -1,0 +1,64 @@
+[
+  {
+    "id": "AP-001",
+    "platform": "美团闪购",
+    "activityName": "康师傅双十一满减活动",
+    "month": "2025-11",
+    "budget": 500000,
+    "usedBudget": 320000,
+    "progress": 64,
+    "status": "进行中",
+    "startDate": "2025-11-01",
+    "endDate": "2025-11-11",
+    "activities": [
+      {
+        "id": "AD-001",
+        "name": "满50减10元",
+        "mechanismName": "满50元减10元",
+        "budget": 200000,
+        "usedBudget": 150000,
+        "orderCount": 3200,
+        "status": "进行中",
+        "startDate": "2025-11-01",
+        "endDate": "2025-11-11"
+      },
+      {
+        "id": "AD-002",
+        "name": "满100减25元",
+        "mechanismName": "满100元减25元",
+        "budget": 300000,
+        "usedBudget": 170000,
+        "orderCount": 1800,
+        "status": "进行中",
+        "startDate": "2025-11-01",
+        "endDate": "2025-11-11"
+      }
+    ]
+  },
+  {
+    "id": "AP-002",
+    "platform": "京东到家",
+    "activityName": "达能品牌满减活动",
+    "month": "2025-11",
+    "budget": 300000,
+    "usedBudget": 180000,
+    "progress": 60,
+    "status": "进行中",
+    "startDate": "2025-11-05",
+    "endDate": "2025-11-15",
+    "activities": [
+      {
+        "id": "AD-003",
+        "name": "满80减15元",
+        "mechanismName": "满80元减15元",
+        "budget": 300000,
+        "usedBudget": 180000,
+        "orderCount": 2500,
+        "status": "进行中",
+        "startDate": "2025-11-05",
+        "endDate": "2025-11-15"
+      }
+    ]
+  }
+]
+
