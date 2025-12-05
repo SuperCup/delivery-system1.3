@@ -1,0 +1,23 @@
+{
+  "subBrands": [
+    {
+      "id": "SUB-001",
+      "brandName": "伊利",
+      "subBrandName": "伊利奶粉",
+      "displayName": "伊利-伊利奶粉"
+    },
+    {
+      "id": "SUB-002",
+      "brandName": "伊利",
+      "subBrandName": "伊利低温",
+      "displayName": "伊利-伊利低温"
+    },
+    {
+      "id": "SUB-003",
+      "brandName": "伊利",
+      "subBrandName": "伊利液奶",
+      "displayName": "伊利-伊利液奶"
+    }
+  ]
+}
+

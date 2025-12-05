@@ -1,0 +1,36 @@
+{
+  "services": [
+    {
+      "id": "SVC-001",
+      "name": "到店营销服务",
+      "description": "提供到店营销相关的数据分析和活动管理功能",
+      "functionPermissions": ["到店营销"],
+      "isEnabled": true,
+      "enabledAt": "2024-01-15 10:30:00"
+    },
+    {
+      "id": "SVC-002",
+      "name": "即时零售服务",
+      "description": "提供即时零售相关的活动方案和监测任务管理功能",
+      "functionPermissions": ["即时零售"],
+      "isEnabled": true,
+      "enabledAt": "2024-02-20 14:20:00"
+    },
+    {
+      "id": "SVC-003",
+      "name": "物码营销服务",
+      "description": "提供物码营销相关的活动管理和数据分析功能",
+      "functionPermissions": ["物码营销"],
+      "isEnabled": false
+    },
+    {
+      "id": "SVC-004",
+      "name": "数据支持服务",
+      "description": "提供数据交付、文件交付和数据资产等数据支持功能",
+      "functionPermissions": ["数据支持"],
+      "isEnabled": true,
+      "enabledAt": "2024-03-10 09:15:00"
+    }
+  ]
+}
+

@@ -68,9 +68,9 @@ export const ClientModuleLayout = () => {
         label: '结算助手',
       },
       {
-        key: `/clients/${clientId}/settings`,
+        key: `/clients/${clientId}/account`,
         icon: <SettingOutlined />,
-        label: '客户管理',
+        label: '客户账号',
       },
     ],
     [clientId],

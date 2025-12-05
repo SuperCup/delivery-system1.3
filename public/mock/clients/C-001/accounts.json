@@ -1,0 +1,61 @@
+{
+  "accounts": [
+    {
+      "id": "ACC-001",
+      "accountName": "精明购_59",
+      "name": "黎XX",
+      "email": "277458535@qq.com",
+      "status": "使用中",
+      "mobileLogin": "未绑定",
+      "wechatLogin": "已绑定",
+      "creator": "黎燕苹",
+      "createdAt": "2024-01-15 10:30:00",
+      "functionPermissions": ["到店营销", "即时零售"],
+      "regionIds": ["REG-001"],
+      "subBrandIds": ["SUB-001", "SUB-002"]
+    },
+    {
+      "id": "ACC-002",
+      "accountName": "精明购_82",
+      "name": "冯杰",
+      "email": "aaronfung@ismartgo.com",
+      "status": "使用中",
+      "mobileLogin": "未绑定",
+      "wechatLogin": "已绑定",
+      "creator": "黎燕苹",
+      "createdAt": "2024-02-20 14:20:00",
+      "functionPermissions": ["即时零售", "数据支持"],
+      "regionIds": ["REG-001"],
+      "subBrandIds": ["SUB-001"]
+    },
+    {
+      "id": "ACC-003",
+      "accountName": "精明购_83",
+      "name": "古兆花",
+      "email": "chiaragu@ismartgo.com",
+      "status": "使用中",
+      "mobileLogin": "未绑定",
+      "wechatLogin": "已绑定",
+      "creator": "黎燕苹",
+      "createdAt": "2024-03-10 09:15:00",
+      "functionPermissions": ["物码营销"],
+      "regionIds": ["REG-001"],
+      "subBrandIds": ["SUB-003"]
+    },
+    {
+      "id": "ACC-004",
+      "accountName": "精明购_185",
+      "name": "王雄军",
+      "email": "gavinwang@ismartgo.com",
+      "status": "使用中",
+      "mobileLogin": "未绑定",
+      "wechatLogin": "已绑定",
+      "creator": "王雄军",
+      "createdAt": "2024-04-05 16:45:00",
+      "functionPermissions": ["到店营销", "即时零售", "数据支持"],
+      "regionIds": ["REG-001"],
+      "subBrandIds": ["SUB-001", "SUB-002", "SUB-003"]
+    }
+  ]
+}
+

@@ -19,7 +19,10 @@ import ClientDataDeliveryPage from '../pages/clients/client-module/data-delivery
 import ClientFileDeliveryPage from '../pages/clients/client-module/file-delivery/client-file-delivery-page'
 import ClientDataAssetsPage from '../pages/clients/client-module/data-assets/client-data-assets-page'
 import ClientSettlementAssistantPage from '../pages/clients/client-module/settlement-assistant/client-settlement-assistant-page'
-import ClientSettingsPage from '../pages/clients/client-module/settings/client-settings-page'
+import ClientAccountPage from '../pages/clients/client-module/account-management/client-account-page'
+import BusinessRegionPage from '../pages/clients/client-module/account-management/business-region-page'
+import ServiceManagementPage from '../pages/clients/client-module/account-management/service-management-page'
+import SubBrandPage from '../pages/clients/client-module/account-management/sub-brand-page'
 import DaodianPage from '../pages/business-process/daodian-page'
 import TasksPage from '../pages/business-process/tasks-page'
 
@@ -60,7 +63,10 @@ export const AppRoutes = () => (
         <Route path="file-delivery" element={<ClientFileDeliveryPage />} />
         <Route path="data-assets" element={<ClientDataAssetsPage />} />
         <Route path="settlement-assistant" element={<ClientSettlementAssistantPage />} />
-        <Route path="settings" element={<ClientSettingsPage />} />
+        <Route path="account" element={<ClientAccountPage />} />
+        <Route path="account/business-region" element={<BusinessRegionPage />} />
+        <Route path="account/service-management" element={<ServiceManagementPage />} />
+        <Route path="account/sub-brand" element={<SubBrandPage />} />
       </Route>
     </Route>
     

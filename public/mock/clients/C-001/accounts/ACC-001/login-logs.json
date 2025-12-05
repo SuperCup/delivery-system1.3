@@ -1,0 +1,32 @@
+{
+  "logs": [
+    {
+      "id": "LOG-001",
+      "accountId": "ACC-001",
+      "loginTime": "2024-11-15 10:30:00",
+      "loginMethod": "微信",
+      "ipAddress": "192.168.1.100",
+      "deviceInfo": "iPhone 14 Pro / iOS 17.0",
+      "status": "成功"
+    },
+    {
+      "id": "LOG-002",
+      "accountId": "ACC-001",
+      "loginTime": "2024-11-14 15:20:00",
+      "loginMethod": "微信",
+      "ipAddress": "192.168.1.100",
+      "deviceInfo": "iPhone 14 Pro / iOS 17.0",
+      "status": "成功"
+    },
+    {
+      "id": "LOG-003",
+      "accountId": "ACC-001",
+      "loginTime": "2024-11-13 09:15:00",
+      "loginMethod": "手机验证码",
+      "ipAddress": "192.168.1.101",
+      "deviceInfo": "Chrome 120 / Windows 10",
+      "status": "成功"
+    }
+  ]
+}
+

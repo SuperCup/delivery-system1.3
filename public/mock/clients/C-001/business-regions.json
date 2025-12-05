@@ -1,0 +1,12 @@
+{
+  "mappings": [
+    {
+      "id": "REG-001",
+      "regionName": "华中大区",
+      "cityCodes": ["HN-ZZ", "HN-LY", "HB-SJZ", "HB-TS", "SX-XA", "SNX-TY"],
+      "createdAt": "2024-01-15 10:30:00",
+      "updatedAt": "2024-01-15 10:30:00"
+    }
+  ]
+}
+

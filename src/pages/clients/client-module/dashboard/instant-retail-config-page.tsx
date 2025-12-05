@@ -60,6 +60,7 @@ export default function InstantRetailConfigPage() {
   const [activeTab, setActiveTab] = useState('scheme')
   const [selectedMonth, setSelectedMonth] = useState(dayjs().format('YYYY-MM'))
   const [selectedActivityPlatform, setSelectedActivityPlatform] = useState<InstantRetailPlatform | '全部'>('全部')
+  const [selectedActivityMonth, setSelectedActivityMonth] = useState(dayjs().format('YYYY-MM'))
   const [contacts, setContacts] = useState<Contact[]>([])
 
   // 方案相关状态
@@ -67,6 +68,7 @@ export default function InstantRetailConfigPage() {
   const [platformSchemes, setPlatformSchemes] = useState<PlatformCrawledScheme[]>([])
   const [schemeModalOpen, setSchemeModalOpen] = useState(false)
   const [schemeModalTab, setSchemeModalTab] = useState<'platform' | 'create'>('platform')
+  const [selectedSchemePlatform, setSelectedSchemePlatform] = useState<InstantRetailPlatform | '全部'>('全部')
   const [selectedPlatform, setSelectedPlatform] = useState<InstantRetailPlatform>('美团闪购')
   const [schemeLoading, setSchemeLoading] = useState(false)
   const [schemeForm] = Form.useForm()
@@ -78,6 +80,7 @@ export default function InstantRetailConfigPage() {
 
   // 监测任务相关状态
   const [monitoringTasks, setMonitoringTasks] = useState<PriceMonitoringTask[]>([])
+  const [selectedMonitoringPlatforms, setSelectedMonitoringPlatforms] = useState<InstantRetailPlatform[]>([])
   const [taskModalOpen, setTaskModalOpen] = useState(false)
   const [taskForm] = Form.useForm()
   const [viewingTask, setViewingTask] = useState<PriceMonitoringTask | null>(null)
@@ -87,7 +90,7 @@ export default function InstantRetailConfigPage() {
     loadContacts()
     loadData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clientId, selectedMonth, activeTab, selectedActivityPlatform])
+  }, [clientId, selectedMonth, activeTab, selectedActivityPlatform, selectedActivityMonth, selectedSchemePlatform, selectedMonitoringPlatforms])
 
   const loadContacts = async () => {
     if (!clientId) return
@@ -125,12 +128,30 @@ export default function InstantRetailConfigPage() {
   const loadSchemes = async () => {
     if (!clientId) return
     try {
-      const schemeList = await InstantRetailService.getActivitySchemes(
-        clientId,
-        selectedPlatform,
-        selectedMonth,
-      )
-      setSchemes(schemeList)
+      // 如果选择了"全部"，需要获取所有平台的方案
+      if (selectedSchemePlatform === '全部') {
+        const allSchemes: ActivityScheme[] = []
+        for (const platform of platforms) {
+          try {
+            const platformSchemes = await InstantRetailService.getActivitySchemes(
+              clientId,
+              platform,
+              selectedMonth,
+            )
+            allSchemes.push(...platformSchemes)
+          } catch (error) {
+            console.warn(`加载${platform}方案失败:`, error)
+          }
+        }
+        setSchemes(allSchemes)
+      } else {
+        const schemeList = await InstantRetailService.getActivitySchemes(
+          clientId,
+          selectedSchemePlatform,
+          selectedMonth,
+        )
+        setSchemes(schemeList)
+      }
     } catch (error: unknown) {
       const err = error as Error
       message.error(`加载方案失败：${err.message}`)
@@ -161,7 +182,12 @@ export default function InstantRetailConfigPage() {
         clientId,
         selectedActivityPlatform === '全部' ? undefined : selectedActivityPlatform,
       )
-      setActivityItems(items)
+      // 按月份过滤活动明细
+      const filteredItems = items.filter((item) => {
+        const activityMonth = item.startDate.substring(0, 7) // YYYY-MM
+        return activityMonth === selectedActivityMonth
+      })
+      setActivityItems(filteredItems)
     } catch (error: unknown) {
       const err = error as Error
       message.error(`加载活动明细失败：${err.message}`)
@@ -172,7 +198,14 @@ export default function InstantRetailConfigPage() {
     if (!clientId) return
     try {
       const tasks = await InstantRetailService.getPriceMonitoringTasks(clientId)
-      setMonitoringTasks(tasks)
+      // 按平台过滤监测任务
+      let filteredTasks = tasks
+      if (selectedMonitoringPlatforms.length > 0) {
+        filteredTasks = tasks.filter((task) => {
+          return task.platforms.some((platform) => selectedMonitoringPlatforms.includes(platform))
+        })
+      }
+      setMonitoringTasks(filteredTasks)
     } catch (error: unknown) {
       const err = error as Error
       message.error(`加载监测任务失败：${err.message}`)
@@ -624,47 +657,6 @@ export default function InstantRetailConfigPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.pageHeader}>
-        <Title level={3} className={styles.pageTitle}>
-          即时零售配置
-        </Title>
-        {activeTab === 'scheme' && (
-          <Space>
-            <MonthPicker
-              value={dayjs(selectedMonth)}
-              onChange={(date) => {
-                if (date) {
-                  setSelectedMonth(date.format('YYYY-MM'))
-                }
-              }}
-              format="YYYY-MM"
-              placeholder="选择月份"
-            />
-            <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenSchemeModal}>
-              管理方案
-            </Button>
-          </Space>
-        )}
-        {activeTab === 'activity' && (
-          <Space>
-            <Select
-              value={selectedActivityPlatform}
-              onChange={(value) => setSelectedActivityPlatform(value)}
-              style={{ width: 150 }}
-              options={[
-                { label: '全部平台', value: '全部' },
-                ...platforms.map((p) => ({ label: p, value: p })),
-              ]}
-            />
-          </Space>
-        )}
-        {activeTab === 'monitoring' && (
-          <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateTask}>
-            新建监测任务
-          </Button>
-        )}
-      </div>
-
       <Card className={styles.card}>
         <Tabs
           activeKey={activeTab}
@@ -680,10 +672,36 @@ export default function InstantRetailConfigPage() {
               ),
               children: (
                 <div>
-                  <div className={styles.tabDescription}>
+                  <div className={styles.tabDescription} style={{ marginBottom: 16 }}>
                     <Text type="secondary">
                       支持运营人员从爬取回来的方案中选择方案发布（发布后，客户端可见），也可以新建方案，配置方案基础信息手动创建后发布
                     </Text>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Space>
+                      <Select
+                        value={selectedSchemePlatform}
+                        onChange={(value) => setSelectedSchemePlatform(value)}
+                        style={{ width: 150 }}
+                        options={[
+                          { label: '全部平台', value: '全部' },
+                          ...platforms.map((p) => ({ label: p, value: p })),
+                        ]}
+                      />
+                      <MonthPicker
+                        value={dayjs(selectedMonth)}
+                        onChange={(date) => {
+                          if (date) {
+                            setSelectedMonth(date.format('YYYY-MM'))
+                          }
+                        }}
+                        format="YYYY-MM"
+                        placeholder="选择月份"
+                      />
+                      <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenSchemeModal}>
+                        管理方案
+                      </Button>
+                    </Space>
                   </div>
                   <Table
                     rowKey="id"
@@ -706,10 +724,33 @@ export default function InstantRetailConfigPage() {
               ),
               children: (
                 <div>
-                  <div className={styles.tabDescription}>
+                  <div className={styles.tabDescription} style={{ marginBottom: 16 }}>
                     <Text type="secondary">
                       按平台查看不同平台下当前客户真实在进行的活动，列表分页展示活动的基础信息，点击活动可查看活动详情，活动可以下架，下架后的活动，对应数据不计入客户端看板的数据统计范围
                     </Text>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Space>
+                      <Select
+                        value={selectedActivityPlatform}
+                        onChange={(value) => setSelectedActivityPlatform(value)}
+                        style={{ width: 150 }}
+                        options={[
+                          { label: '全部平台', value: '全部' },
+                          ...platforms.map((p) => ({ label: p, value: p })),
+                        ]}
+                      />
+                      <MonthPicker
+                        value={dayjs(selectedActivityMonth)}
+                        onChange={(date) => {
+                          if (date) {
+                            setSelectedActivityMonth(date.format('YYYY-MM'))
+                          }
+                        }}
+                        format="YYYY-MM"
+                        placeholder="选择月份"
+                      />
+                    </Space>
                   </div>
                   <Table
                     rowKey="id"
@@ -732,10 +773,26 @@ export default function InstantRetailConfigPage() {
               ),
               children: (
                 <div>
-                  <div className={styles.tabDescription}>
+                  <div className={styles.tabDescription} style={{ marginBottom: 16 }}>
                     <Text type="secondary">
                       支持运营人员依据客户要求，创建破价监测任务，任务需要设置名称、起止时间、监测数据来源（RPA自动采集与人工截图上传分析）、监测平台、监测频次、监测商品价格参考、破价通知接收人
                     </Text>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Space>
+                      <Select
+                        mode="multiple"
+                        value={selectedMonitoringPlatforms}
+                        onChange={(value) => setSelectedMonitoringPlatforms(value)}
+                        style={{ width: 300 }}
+                        placeholder="选择平台（可多选）"
+                        allowClear
+                        options={platforms.map((p) => ({ label: p, value: p }))}
+                      />
+                      <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateTask}>
+                        新建监测任务
+                      </Button>
+                    </Space>
                   </div>
                   <Table
                     rowKey="id"

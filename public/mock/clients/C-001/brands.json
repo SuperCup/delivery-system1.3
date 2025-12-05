@@ -1,0 +1,13 @@
+{
+  "brands": [
+    { "id": "BRAND-001", "name": "康师傅" },
+    { "id": "BRAND-002", "name": "嘉士伯" },
+    { "id": "BRAND-003", "name": "统一" },
+    { "id": "BRAND-004", "name": "百威" },
+    { "id": "BRAND-005", "name": "雀巢" },
+    { "id": "BRAND-006", "name": "达能" },
+    { "id": "BRAND-007", "name": "伊利" },
+    { "id": "BRAND-008", "name": "联合利华" }
+  ]
+}
+
