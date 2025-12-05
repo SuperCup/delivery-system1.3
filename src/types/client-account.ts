@@ -125,6 +125,8 @@ export interface Brand {
 export interface SubBrand {
   /** 子品牌ID */
   id: string
+  /** 平台 */
+  platform: string
   /** 品牌ID */
   brandId: string
   /** 品牌名称 */

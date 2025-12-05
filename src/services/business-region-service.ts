@@ -95,8 +95,9 @@ export class BusinessRegionService {
   /**
    * 创建业务区域映射
    */
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   static async createBusinessRegionMapping(
-    clientId: string,
+    _clientId: string,
     regionName: string,
     cityCodes: string[],
   ): Promise<BusinessRegionMapping> {
@@ -111,6 +112,7 @@ export class BusinessRegionService {
       updatedAt: new Date().toLocaleString('zh-CN', { hour12: false }),
     }
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   /**
    * 更新业务区域映射
