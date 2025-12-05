@@ -94,8 +94,14 @@ export default function ActivityFormPage() {
   const [batchModalOpen, setBatchModalOpen] = useState(false)
   const [currentPlatform, setCurrentPlatform] = useState<string>('')
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([])
-  const [autoSelectAll, setAutoSelectAll] = useState(false)
-  const [selectedBatchIds, setSelectedBatchIds] = useState<string[]>([])
+  // 每个项目的配置：projectId -> { autoSelectAll: boolean, selectedBatchIds: string[] }
+  const [projectConfigs, setProjectConfigs] = useState<Record<string, { autoSelectAll: boolean; selectedBatchIds: string[] }>>({})
+  // 当前查看的项目ID（用于右侧显示）
+  const [currentViewProjectId, setCurrentViewProjectId] = useState<string>('')
+  // 项目搜索关键词
+  const [projectSearchText, setProjectSearchText] = useState('')
+  // 批次搜索关键词
+  const [batchSearchText, setBatchSearchText] = useState('')
 
   useEffect(() => {
     if (!clientId) return
@@ -174,8 +180,10 @@ export default function ActivityFormPage() {
     }
     setCurrentPlatform(platform)
     setSelectedProjectIds([])
-    setAutoSelectAll(false)
-    setSelectedBatchIds([])
+    setProjectConfigs({})
+    setCurrentViewProjectId('')
+    setProjectSearchText('')
+    setBatchSearchText('')
     setBatchModalOpen(true)
   }
 
@@ -204,17 +212,35 @@ export default function ActivityFormPage() {
     const platformOption = platformOptions.find((opt) => opt.platform === currentPlatform)
     if (!platformOption) return
 
+    // 验证每个项目都有配置
+    let hasValidConfig = false
+    for (const projectId of selectedProjectIds) {
+      const config = projectConfigs[projectId]
+      if (config && (config.autoSelectAll || config.selectedBatchIds.length > 0)) {
+        hasValidConfig = true
+        break
+      }
+    }
+
+    if (!hasValidConfig) {
+      message.warning('请为每个项目选择"自动获取全量数据"或选择部分批次')
+      return
+    }
+
     const currentScopes = form.getFieldValue('scopes') || {}
     const currentBatches = currentScopes[currentPlatform]?.batches || []
 
     const newBatches: BatchItem[] = []
     
-    // 遍历所有选中的项目
+    // 遍历所有选中的项目，根据每个项目的配置添加批次
     selectedProjectIds.forEach((projectId) => {
       const project = platformOption.projects.find((p) => p.id === projectId)
       if (!project) return
 
-      if (autoSelectAll) {
+      const config = projectConfigs[projectId]
+      if (!config) return
+
+      if (config.autoSelectAll) {
         // 自动获取该项目下全量数据
         const projectBatches = (project.batches || []).map((batch) => ({
           projectId: project.id,
@@ -229,10 +255,10 @@ export default function ActivityFormPage() {
           platform: currentPlatform,
         }))
         newBatches.push(...projectBatches)
-      } else if (selectedBatchIds.length > 0) {
+      } else if (config.selectedBatchIds.length > 0) {
         // 选择特定批次（仅当前项目的批次）
         const projectBatches = (project.batches || [])
-          .filter((batch) => selectedBatchIds.includes(batch.id))
+          .filter((batch) => config.selectedBatchIds.includes(batch.id))
           .map((batch) => ({
             projectId: project.id,
             projectName: project.name,
@@ -248,11 +274,6 @@ export default function ActivityFormPage() {
         newBatches.push(...projectBatches)
       }
     })
-
-    if (newBatches.length === 0 && !autoSelectAll) {
-      message.warning('请选择批次或勾选"自动获取全量数据"')
-      return
-    }
 
     // 去重
     const existingBatchIds = new Set(currentBatches.map((b: BatchItem) => b.batchId))
@@ -272,8 +293,10 @@ export default function ActivityFormPage() {
     message.success(`已添加 ${uniqueNewBatches.length} 个批次`)
     setBatchModalOpen(false)
     setSelectedProjectIds([])
-    setAutoSelectAll(false)
-    setSelectedBatchIds([])
+    setProjectConfigs({})
+    setCurrentViewProjectId('')
+    setProjectSearchText('')
+    setBatchSearchText('')
   }
 
   const getBatchColumns = (platform: string): ColumnsType<BatchItem> => [
@@ -572,7 +595,13 @@ export default function ActivityFormPage() {
                                   rowKey="batchId"
                                   columns={getBatchColumns(platform)}
                                   dataSource={(currentBatches || []).map((b: BatchItem) => ({ ...b, platform }))}
-                                  pagination={false}
+                                  pagination={{
+                                    pageSize: 10,
+                                    showSizeChanger: true,
+                                    showQuickJumper: true,
+                                    showTotal: (total) => `共 ${total} 条`,
+                                    size: 'small',
+                                  }}
                                   size="small"
                                   className={styles.batchTable}
                                   scroll={{ x: 1000 }}
@@ -600,10 +629,12 @@ export default function ActivityFormPage() {
         onCancel={() => {
           setBatchModalOpen(false)
           setSelectedProjectIds([])
-          setAutoSelectAll(false)
-          setSelectedBatchIds([])
+          setProjectConfigs({})
+          setCurrentViewProjectId('')
+          setProjectSearchText('')
+          setBatchSearchText('')
         }}
-        width={900}
+        width={1200}
         okText="确认添加"
         cancelText="取消"
       >
@@ -615,114 +646,265 @@ export default function ActivityFormPage() {
                 {currentPlatform}
               </Tag>
             </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong style={{ display: 'block', marginBottom: 8 }}>
-                选择项目（支持多选和搜索）
-              </Text>
-              <Select
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder="请搜索并选择项目"
-                options={
-                  platformOptions
-                    .find((opt) => opt.platform === currentPlatform)
-                    ?.projects.map((proj) => ({
-                      label: `${proj.name}${proj.code ? ` (${proj.code})` : ''}`,
-                      value: proj.id,
-                    })) || []
-                }
-                value={selectedProjectIds}
-                onChange={(values) => {
-                  setSelectedProjectIds(values)
-                  setSelectedBatchIds([])
-                  setAutoSelectAll(false)
-                }}
-                showSearch
-                filterOption={(input, option) =>
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                allowClear
-                maxTagCount="responsive"
-              />
-            </div>
-            {selectedProjectIds.length > 0 && (
-              <div>
+            <div style={{ display: 'flex', gap: 16, height: 600 }}>
+              {/* 左侧：项目列表 */}
+              <div style={{ width: '40%', borderRight: '1px solid #f0f0f0', paddingRight: 16 }}>
                 <div style={{ marginBottom: 12 }}>
-                  <Checkbox
-                    checked={autoSelectAll}
-                    onChange={(e) => {
-                      setAutoSelectAll(e.target.checked)
-                      if (e.target.checked) {
-                        setSelectedBatchIds([])
-                      }
-                    }}
-                  >
-                    <Text strong>自动获取所选项目下全量数据</Text>
-                  </Checkbox>
-                  <Text type="secondary" style={{ marginLeft: 8, fontSize: 12 }}>
-                    （勾选后将自动添加所选项目下所有批次）
+                  <Text strong style={{ display: 'block', marginBottom: 8 }}>
+                    选择项目
                   </Text>
+                  <Input.Search
+                    placeholder="搜索项目名称或编码"
+                    allowClear
+                    value={projectSearchText}
+                    onChange={(e) => setProjectSearchText(e.target.value)}
+                    onSearch={(value) => setProjectSearchText(value)}
+                    style={{ marginBottom: 12 }}
+                  />
                 </div>
-                {!autoSelectAll && (
-                  <div>
-                    <Text strong style={{ display: 'block', marginBottom: 8 }}>
-                      选择批次（来自所选项目）
-                    </Text>
-                    <Table
-                      rowKey="id"
-                      rowSelection={{
-                        selectedRowKeys: selectedBatchIds,
-                        onChange: (keys) => setSelectedBatchIds(keys as string[]),
-                      }}
-                      columns={[
-                        {
-                          title: '项目名称',
-                          dataIndex: 'projectName',
-                          key: 'projectName',
-                          width: 150,
-                        },
-                        {
-                          title: '批次名称',
-                          dataIndex: 'name',
-                          key: 'name',
-                          width: 200,
-                          ellipsis: true,
-                        },
-                        {
-                          title: '批次编码',
-                          dataIndex: 'code',
-                          key: 'code',
-                          width: 150,
-                          ellipsis: true,
-                          render: (code: string) => (code ? <Text style={{ fontSize: 12 }}>{code}</Text> : '—'),
-                        },
-                        {
-                          title: '机制名',
-                          dataIndex: 'mechanismName',
-                          key: 'mechanismName',
-                          width: 120,
-                          render: (name: string) => (name ? <Text>{name}</Text> : '—'),
-                        },
-                      ]}
-                      dataSource={
-                        platformOptions
-                          .find((opt) => opt.platform === currentPlatform)
-                          ?.projects.filter((p) => selectedProjectIds.includes(p.id))
-                          .flatMap((project) =>
-                            (project.batches || []).map((batch) => ({
-                              ...batch,
-                              projectName: project.name,
-                            })),
-                          ) || []
-                      }
-                      pagination={{ pageSize: 5, size: 'small' }}
-                      size="small"
-                      scroll={{ y: 300 }}
-                    />
+                <div style={{ height: 550, overflow: 'auto' }}>
+                  {(() => {
+                    const platformOption = platformOptions.find((opt) => opt.platform === currentPlatform)
+                    const allProjects = platformOption?.projects || []
+                    const filteredProjects = projectSearchText
+                      ? allProjects.filter(
+                          (proj) =>
+                            proj.name?.toLowerCase().includes(projectSearchText.toLowerCase()) ||
+                            proj.code?.toLowerCase().includes(projectSearchText.toLowerCase()),
+                        )
+                      : allProjects
+
+                    return (
+                      <Space direction="vertical" style={{ width: '100%' }} size={8}>
+                        {filteredProjects.map((project) => {
+                          const config = projectConfigs[project.id] || { autoSelectAll: false, selectedBatchIds: [] }
+                          const isSelected = selectedProjectIds.includes(project.id)
+                          const batchCount = project.batches?.length || 0
+
+                          return (
+                            <Card
+                              key={project.id}
+                              size="small"
+                              hoverable
+                              style={{
+                                cursor: 'pointer',
+                                backgroundColor: isSelected ? '#e6f7ff' : currentViewProjectId === project.id ? '#f0f0f0' : '#fff',
+                                border: isSelected ? '2px solid #1890ff' : currentViewProjectId === project.id ? '2px solid #d9d9d9' : '1px solid #d9d9d9',
+                              }}
+                              onClick={() => {
+                                if (!isSelected) {
+                                  const newSelectedIds = [...selectedProjectIds, project.id]
+                                  setSelectedProjectIds(newSelectedIds)
+                                  if (!projectConfigs[project.id]) {
+                                    setProjectConfigs({
+                                      ...projectConfigs,
+                                      [project.id]: { autoSelectAll: false, selectedBatchIds: [] },
+                                    })
+                                  }
+                                }
+                                setCurrentViewProjectId(project.id)
+                              }}
+                            >
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                <div style={{ flex: 1 }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+                                    <Checkbox
+                                      checked={isSelected}
+                                      onClick={(e) => e.stopPropagation()}
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          const newSelectedIds = [...selectedProjectIds, project.id]
+                                          setSelectedProjectIds(newSelectedIds)
+                                          if (!projectConfigs[project.id]) {
+                                            setProjectConfigs({
+                                              ...projectConfigs,
+                                              [project.id]: { autoSelectAll: false, selectedBatchIds: [] },
+                                            })
+                                          }
+                                          setCurrentViewProjectId(project.id)
+                                        } else {
+                                          setSelectedProjectIds(selectedProjectIds.filter((id) => id !== project.id))
+                                          if (currentViewProjectId === project.id) {
+                                            const remainingIds = selectedProjectIds.filter((id) => id !== project.id)
+                                            setCurrentViewProjectId(remainingIds.length > 0 ? remainingIds[0] : '')
+                                          }
+                                        }
+                                      }}
+                                    />
+                                    <Text strong style={{ marginLeft: 8 }}>
+                                      {project.name}
+                                    </Text>
+                                  </div>
+                                  {project.code && (
+                                    <Text type="secondary" style={{ fontSize: 12, marginLeft: 24, display: 'block' }}>
+                                      {project.code}
+                                    </Text>
+                                  )}
+                                  <div style={{ marginTop: 8, marginLeft: 24 }}>
+                                    <Text type="secondary" style={{ fontSize: 12 }}>
+                                      共 {batchCount} 个批次
+                                    </Text>
+                                    {isSelected && config.autoSelectAll && (
+                                      <Tag color="green" style={{ marginLeft: 8, fontSize: 12 }}>
+                                        全量数据
+                                      </Tag>
+                                    )}
+                                    {isSelected && !config.autoSelectAll && config.selectedBatchIds.length > 0 && (
+                                      <Tag color="blue" style={{ marginLeft: 8, fontSize: 12 }}>
+                                        已选 {config.selectedBatchIds.length} 个
+                                      </Tag>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </Card>
+                          )
+                        })}
+                        {filteredProjects.length === 0 && (
+                          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                            <Text type="secondary">未找到匹配的项目</Text>
+                          </div>
+                        )}
+                      </Space>
+                    )
+                  })()}
+                </div>
+              </div>
+
+              {/* 右侧：批次列表 */}
+              <div style={{ width: '60%', paddingLeft: 16 }}>
+                {currentViewProjectId ? (
+                  (() => {
+                    const project = platformOptions
+                      .find((opt) => opt.platform === currentPlatform)
+                      ?.projects.find((p) => p.id === currentViewProjectId)
+                    if (!project) return null
+
+                    const config = projectConfigs[currentViewProjectId] || { autoSelectAll: false, selectedBatchIds: [] }
+                    const allBatches = project.batches || []
+                    const filteredBatches = batchSearchText
+                      ? allBatches.filter(
+                          (batch) =>
+                            batch.name?.toLowerCase().includes(batchSearchText.toLowerCase()) ||
+                            batch.code?.toLowerCase().includes(batchSearchText.toLowerCase()) ||
+                            batch.mechanismName?.toLowerCase().includes(batchSearchText.toLowerCase()),
+                        )
+                      : allBatches
+
+                    return (
+                      <div>
+                        <div style={{ marginBottom: 12 }}>
+                          <Text strong style={{ fontSize: 16 }}>
+                            {project.name}
+                          </Text>
+                          {project.code && (
+                            <Text type="secondary" style={{ marginLeft: 8, fontSize: 12 }}>
+                              ({project.code})
+                            </Text>
+                          )}
+                        </div>
+                        <div style={{ marginBottom: 12 }}>
+                          <Checkbox
+                            checked={config.autoSelectAll}
+                            onChange={(e) => {
+                              setProjectConfigs({
+                                ...projectConfigs,
+                                [currentViewProjectId]: {
+                                  autoSelectAll: e.target.checked,
+                                  selectedBatchIds: e.target.checked ? [] : config.selectedBatchIds,
+                                },
+                              })
+                            }}
+                          >
+                            <Text strong>自动获取该项目下全量数据</Text>
+                          </Checkbox>
+                          <Text type="secondary" style={{ marginLeft: 8, fontSize: 12 }}>
+                            （勾选后将自动添加该项目下所有批次）
+                          </Text>
+                        </div>
+                        {!config.autoSelectAll && allBatches.length > 0 && (
+                          <div>
+                            <div style={{ marginBottom: 8 }}>
+                              <Input.Search
+                                placeholder="搜索批次名称、编码或机制名"
+                                allowClear
+                                value={batchSearchText}
+                                onChange={(e) => setBatchSearchText(e.target.value)}
+                                onSearch={(value) => setBatchSearchText(value)}
+                              />
+                            </div>
+                            {filteredBatches.length === 0 ? (
+                              <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                                <Text type="secondary">未找到匹配的批次</Text>
+                              </div>
+                            ) : (
+                              <Table
+                                rowKey="id"
+                                rowSelection={{
+                                  selectedRowKeys: config.selectedBatchIds,
+                                  onChange: (keys) => {
+                                    setProjectConfigs({
+                                      ...projectConfigs,
+                                      [currentViewProjectId]: {
+                                        autoSelectAll: false,
+                                        selectedBatchIds: keys as string[],
+                                      },
+                                    })
+                                  },
+                                }}
+                                columns={[
+                                  {
+                                    title: '批次名称',
+                                    dataIndex: 'name',
+                                    key: 'name',
+                                    width: 200,
+                                    ellipsis: true,
+                                  },
+                                  {
+                                    title: '批次编码',
+                                    dataIndex: 'code',
+                                    key: 'code',
+                                    width: 150,
+                                    ellipsis: true,
+                                    render: (code: string) => (code ? <Text style={{ fontSize: 12 }}>{code}</Text> : '—'),
+                                  },
+                                  {
+                                    title: '机制名',
+                                    dataIndex: 'mechanismName',
+                                    key: 'mechanismName',
+                                    width: 120,
+                                    render: (name: string) => (name ? <Text>{name}</Text> : '—'),
+                                  },
+                                ]}
+                                dataSource={filteredBatches}
+                                pagination={{
+                                  pageSize: 10,
+                                  showSizeChanger: true,
+                                  showQuickJumper: true,
+                                  showTotal: (total) => `共 ${total} 条`,
+                                  size: 'small',
+                                }}
+                                size="small"
+                                scroll={{ y: 400 }}
+                              />
+                            )}
+                          </div>
+                        )}
+                        {!config.autoSelectAll && allBatches.length === 0 && (
+                          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                            <Text type="secondary">该项目暂无可用批次</Text>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })()
+                ) : (
+                  <div style={{ textAlign: 'center', padding: '100px 0', color: '#999' }}>
+                    <Text type="secondary">请从左侧选择项目查看批次</Text>
                   </div>
                 )}
               </div>
-            )}
+            </div>
           </div>
         )}
       </Modal>
