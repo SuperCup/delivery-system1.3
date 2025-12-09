@@ -1,0 +1,185 @@
+.loginContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.backgroundSection {
+  flex: 1;
+  max-width: calc(100% - 500px);
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 深色背景作为fallback，与背景图底色适配 */
+  background-color: #0a0a1a;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.backgroundSection::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.15) 0%, rgba(15, 52, 96, 0.1) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.loginBox {
+  width: 500px;
+  min-width: 500px;
+  height: 100vh;
+  background: #ffffff;
+  padding: 40px;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .loginContainer {
+    flex-direction: column;
+  }
+  
+  .backgroundSection {
+    flex: 0 0 40%;
+    min-height: 40vh;
+  }
+  
+  .loginBox {
+    width: 100%;
+    min-width: unset;
+    height: 60vh;
+    min-height: 500px;
+  }
+}
+
+.loginHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff5f0;
+  border-radius: 6px;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brandName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ff6b35;
+  line-height: 1.2;
+}
+
+.brandSubtitle {
+  font-size: 12px;
+  color: #ff6b35;
+  line-height: 1.2;
+}
+
+.divider {
+  width: 1px;
+  height: 40px;
+  background: #ff6b35;
+  margin: 0 16px;
+}
+
+.platformSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.platformName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ff6b35;
+  line-height: 1.2;
+}
+
+.platformSubtitle {
+  font-size: 12px;
+  color: #ff6b35;
+  line-height: 1.2;
+}
+
+.inputField {
+  height: 48px;
+  border-radius: 6px;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  font-size: 14px;
+}
+
+.inputField:hover {
+  border-color: #bfbfbf;
+  background: #fafafa;
+}
+
+.inputField:focus,
+.inputField:focus-within {
+  border-color: #1890ff;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.inputField .ant-input {
+  background: transparent;
+}
+
+.inputField .ant-input-password {
+  background: transparent;
+}
+
+.loginButton {
+  height: 48px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.loginButton:hover {
+  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+}
+
+.loginButton:active {
+  background: linear-gradient(135deg, #096dd9 0%, #0050b3 100%);
+}

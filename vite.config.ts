@@ -15,7 +15,7 @@ export default defineConfig({
     port: 5174,
     strictPort: true,
     host: true,
-    open: '/home',
+    open: '/',
   },
   preview: {
     port: 4173,

@@ -1,7 +1,10 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
+import { ProtectedRoute } from '../components/protected-route/protected-route'
 import BasicLayout from '../layouts/basic-layout'
 import ClientMainLayout from '../layouts/client-main-layout'
 import ClientModuleLayout from '../layouts/client-module-layout'
+import IntroPage from '../pages/intro/intro-page'
+import LoginPage from '../pages/login/login-page'
 import HomePage from '../pages/home/home-page'
 import ClientsPage from '../pages/clients/clients-page'
 import MagiCorePage from '../pages/magi-core/magi-core-page'
@@ -28,10 +31,17 @@ import TasksPage from '../pages/business-process/tasks-page'
 
 export const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Navigate to="/home" replace />} />
+    <Route path="/" element={<IntroPage />} />
+    <Route path="/login" element={<LoginPage />} />
     
     {/* 主系统路由 - 使用 BasicLayout */}
-    <Route element={<BasicLayout />}>
+    <Route
+      element={
+        <ProtectedRoute>
+          <BasicLayout />
+        </ProtectedRoute>
+      }
+    >
       <Route path="/home" element={<HomePage />} />
       <Route path="/magi-core" element={<MagiCorePage />} />
       <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
@@ -49,7 +59,14 @@ export const AppRoutes = () => (
     </Route>
     
     {/* 客户管理模块 - 使用独立的 ClientMainLayout */}
-    <Route path="/clients/:clientId" element={<ClientMainLayout />}>
+    <Route
+      path="/clients/:clientId"
+      element={
+        <ProtectedRoute>
+          <ClientMainLayout />
+        </ProtectedRoute>
+      }
+    >
       {/* 客户模块二级布局（侧边栏） */}
       <Route element={<ClientModuleLayout />}>
         <Route index element={<Navigate to="overview" replace />} />

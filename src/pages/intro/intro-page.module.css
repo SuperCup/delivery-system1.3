@@ -1,0 +1,238 @@
+.introContainer {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.contentWrapper {
+  width: 100%;
+  height: auto;
+  max-width: 1400px;
+  max-height: 95vh;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 25px 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 标题区域 */
+.headerSection {
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e8eef5;
+  flex-shrink: 0;
+}
+
+.mainTitle {
+  margin: 0 !important;
+  color: #1a1a1a;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* 架构图区域 */
+.architectureSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px 0;
+  overflow: visible;
+}
+
+/* 层级容器 */
+.layerContainer {
+  display: flex;
+  gap: 15px;
+  align-items: stretch;
+  min-height: 70px;
+}
+
+/* 左侧标签 */
+.layerLabel {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+  border-radius: 8px;
+  border: 1px solid #d9e2ec;
+}
+
+.layerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+/* 系统容器 */
+.systemsContainer {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.systemGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding: 12px;
+  border: 2px solid;
+  border-radius: 8px;
+  background: #fafbfc;
+  align-items: center;
+}
+
+/* 功能模块/能力容器 */
+.itemsContainer {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+/* 系统名 */
+.systemName {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.systemName.clickable {
+  cursor: pointer;
+}
+
+.systemName.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 功能卡片 */
+.itemCard {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  border: 1px solid;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  flex: 0 1 auto;
+}
+
+.itemCard.clickable {
+  cursor: pointer;
+}
+
+.itemCard.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 连接箭头 */
+.connector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8px;
+  margin: 0;
+}
+
+.connectorIcon {
+  font-size: 16px;
+  color: #52c41a;
+}
+
+/* 操作区域 */
+.actionSection {
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+  border-top: 2px solid #e8eef5;
+  flex-shrink: 0;
+}
+
+.enterButton {
+  height: 40px;
+  padding: 0 30px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.enterButton:hover {
+  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+  box-shadow: 0 6px 16px rgba(24, 144, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .layerLabel {
+    width: 90px;
+  }
+
+  .systemsContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contentWrapper {
+    padding: 20px;
+  }
+
+  .layerContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .layerLabel {
+    width: 100%;
+  }
+
+  .systemsContainer {
+    gap: 10px;
+  }
+
+  .itemsContainer {
+    gap: 8px;
+  }
+
+  .itemCard {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .mainTitle {
+    font-size: 24px !important;
+  }
+}

@@ -24,16 +24,24 @@ export const BasicLayout = () => {
 
   // 加载用户信息
   useEffect(() => {
+    // 检查是否已登录
+    if (!AuthService.isAuthenticated()) {
+      navigate('/login', { replace: true })
+      return
+    }
+
     const loadUser = async () => {
       try {
         const userData = await AuthService.getCurrentUser()
         setUser(userData)
       } catch (error) {
         console.error('加载用户信息失败:', error)
+        // 如果加载失败，可能是未登录，跳转到登录页
+        navigate('/login', { replace: true })
       }
     }
     loadUser()
-  }, [])
+  }, [navigate])
 
   // 加载消息数据
   const loadMessages = async () => {
@@ -128,7 +136,9 @@ export const BasicLayout = () => {
   const handleUserMenuClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
       // 退出登录逻辑
-      console.log('退出登录')
+      AuthService.logout()
+      message.success('已退出登录')
+      navigate('/login', { replace: true })
     } else if (key === 'profile') {
       navigate('/account-config')
     } else if (key === 'settings') {
@@ -141,7 +151,7 @@ export const BasicLayout = () => {
       { key: '/home', label: '首页' },
       { key: '/magi-core', label: '魔盒 MagiCore' },
       { key: '/knowledge-base', label: '知识库' },
-      { key: '/data-warehouse', label: '数据仓库' },
+      { key: '/data-warehouse', label: '数据赋能' },
         { key: '/tools-market', label: '工具市场' },
       { key: '/permission-center', label: '权限中心' },
       ],
