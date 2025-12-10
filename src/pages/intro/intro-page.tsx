@@ -1,46 +1,51 @@
-import { Button, Typography } from 'antd'
-import { ArrowRightOutlined, UpOutlined } from '@ant-design/icons'
+import { Typography } from 'antd'
+import { ArrowRightOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import styles from './intro-page.module.css'
 
 const { Title } = Typography
 
-interface SystemModule {
-  systemName: string
-  items: { name: string; link?: string }[]
+interface LayerModule {
+  name: string
   link?: string
 }
 
-interface ArchitectureLayer {
-  title: string
-  systems: SystemModule[]
-  color: string
+interface RoleGroup {
+  role: string
+  modules: LayerModule[]
 }
 
-// 架构层级：从上到下显示，数据汇总方向从数据源到应用层
+interface ArchitectureLayer {
+  systemName: string
+  roleGroups: RoleGroup[]
+  layerName: string
+  systemLink?: string
+}
+
+// 架构层级：从上到下
 const architectureLayers: ArchitectureLayer[] = [
   {
-    title: '应用层',
-    systems: [
+    systemName: 'DSM Cloud',
+    systemLink: 'https://dsmcloud-datacenter.netlify.app/',
+    roleGroups: [
       {
-        systemName: 'DSMCloud',
-        link: 'https://dsmcloud.example.com',
-        items: [
-          { name: '标准看板', link: 'https://dsmcloud.example.com/standard' },
-          { name: '定制看板', link: 'https://dsmcloud.example.com/custom' },
-          { name: '数据资产', link: 'https://dsmcloud.example.com/assets' },
+        role: '客户',
+        modules: [
+          { name: '标准看板', link: 'https://dsmcloud-datacenter.netlify.app/' },
+          { name: '定制看板', link: 'https://dsmcloud-datacenter.netlify.app/' },
+          { name: '数据资产', link: 'https://dsmcloud-datacenter.netlify.app/' },
         ],
       },
     ],
-    color: '#ff9800',
+    layerName: '应用层',
   },
   {
-    title: '工具层',
-    systems: [
+    systemName: '交付中台',
+    systemLink: '/login',
+    roleGroups: [
       {
-        systemName: '交付中台',
-        link: '#',
-        items: [
+        role: '运营/项目/业务人员',
+        modules: [
           { name: '数据关联', link: '#' },
           { name: '数据补充', link: '#' },
           { name: '数据分析', link: '#' },
@@ -48,78 +53,83 @@ const architectureLayers: ArchitectureLayer[] = [
         ],
       },
       {
-        systemName: '开发方',
-        link: 'https://dev.example.com',
-        items: [
-          { name: '标准看板', link: 'https://dev.example.com/standard' },
-          { name: '帆软/QBI', link: 'https://dev.example.com/qbi' },
+        role: '数据/开发人员',
+        modules: [
+          { name: '标准看板', link: '#' },
+          { name: '帆软/QBI', link: '#' },
         ],
       },
     ],
-    color: '#8bc34a',
+    layerName: '工具层',
   },
   {
-    title: '数据管理',
-    systems: [
+    systemName: '数据中台',
+    systemLink: 'https://op.ismartgo.cn/dcsv/h5/md/productset_readonly.html?rdp-mnu=home',
+    roleGroups: [
       {
-        systemName: '数据中台',
-        link: 'https://data-platform.example.com',
-        items: [
-          { name: '元数据管理', link: 'https://data-platform.example.com/metadata' },
-          { name: '数据API接口', link: 'https://data-platform.example.com/api' },
+        role: '开发人员',
+        modules: [
+          { name: '元数据管理', link: 'https://op.ismartgo.cn/dcsv/h5/md/productset_readonly.html?rdp-mnu=home' },
+          { name: '数据API接口', link: 'https://op.ismartgo.cn/dcsv/h5/md/productset_readonly.html?rdp-mnu=home' },
         ],
       },
     ],
-    color: '#5c6bc0',
+    layerName: '数据管理',
   },
   {
-    title: 'OLAP',
-    systems: [
+    systemName: '数据仓库',
+    roleGroups: [
       {
-        systemName: '数据仓库',
-        link: '#',
-        items: [
+        role: '开发人员',
+        modules: [
           { name: '大数据存储', link: '#' },
           { name: '数据清洗', link: '#' },
           { name: '数据计算', link: '#' },
         ],
       },
     ],
-    color: '#5c6bc0',
+    layerName: 'OLAP',
   },
   {
-    title: '数据源',
-    systems: [
+    systemName: '业务系统',
+    roleGroups: [
       {
-        systemName: '',
-        items: [
-          { name: '小程序', link: 'https://miniprogram.example.com' },
-          { name: 'H5活动', link: 'https://h5.example.com' },
-          { name: '优惠券活动', link: 'https://coupon.example.com' },
-          { name: '物码活动', link: 'https://qrcode.example.com' },
-          { name: '智能导购', link: 'https://guide.example.com' },
-          { name: '到家活动', link: 'https://home-delivery.example.com' },
-          { name: '到家供给', link: 'https://supply.example.com' },
-          { name: '彩页', link: 'https://flyer.example.com' },
-          { name: 'PMS', link: 'https://pms.example.com' },
+        role: '',
+        modules: [
+          { name: '小程序', link: 'https://wx3.ismartgo.com/brandwxa/h5/selectapp.html?from=https%3A%2F%2Fwx3.ismartgo.com%2Fbrandwxa%2Fweb%2Frdp%2Fp%2Fapp%2Fmall%2Fmall_goods.html%3Frdp-mnu%3D130000097586' },
+          { name: 'H5活动', link: 'https://dsmcloud.ismartgo.com/dsmcloud/home/index#60' },
+          { name: '优惠券活动', link: 'https://op.ismartgo.cn/cpmanage/h5/overview.html?rdp-mnu=home' },
+          { name: '物码活动', link: 'https://dsmcloud.ismartgo.com/dsmcloud/home/index#66' },
+          { name: '智能导购', link: 'https://dsmcloud.ismartgo.com/dsmcloud/home/index#180' },
+          { name: '到家活动', link: 'https://op.ismartgo.cn/edjweb/h5/home.html' },
+          { name: '到家供给', link: 'https://sv.ismartgo.cn/djwin/h5/login.html#/djwin/web/rdp/p/task/census' },
+          { name: '彩页', link: '#' },
+          { name: 'PMS', link: 'https://op.ismartgo.cn/pms2/web/rdp/p/msg/overview.html?rdp-mnu=home' },
+          { name: '其他', link: '#' },
         ],
       },
     ],
-    color: '#90caf9',
+    layerName: '数据源',
   },
 ]
 
 export default function IntroPage() {
   const navigate = useNavigate()
 
-  const handleItemClick = (link?: string) => {
-    if (link && link !== '#') {
+  const handleModuleClick = (link?: string) => {
+    if (link && link !== '#' && !link.startsWith('/')) {
       window.open(link, '_blank')
     }
   }
 
-  const handleEnterSystem = () => {
-    navigate('/login')
+  const handleSystemNameClick = (link?: string) => {
+    if (link) {
+      if (link.startsWith('/')) {
+        navigate(link)
+      } else {
+        window.open(link, '_blank')
+      }
+    }
   }
 
   return (
@@ -128,87 +138,120 @@ export default function IntroPage() {
         {/* 标题区域 */}
         <div className={styles.headerSection}>
           <Title level={2} className={styles.mainTitle}>
-            交付中台系统架构
+            交付中台数据架构
           </Title>
         </div>
 
         {/* 架构图区域 */}
         <div className={styles.architectureSection}>
           {architectureLayers.map((layer, layerIndex) => (
-            <div key={layer.title}>
-              {/* 层级容器 */}
-              <div className={styles.layerContainer}>
-                {/* 左侧标签 */}
-                <div className={styles.layerLabel}>
-                  <div className={styles.layerTitle}>{layer.title}</div>
+            <div key={layer.systemName}>
+              {/* 层级行 */}
+              <div className={`${styles.layerRow} ${styles[`layer-${layerIndex}`]}`}>
+                {/* 左侧：系统名称 */}
+                <div
+                  className={`${styles.systemNameCard} ${
+                    layer.systemLink ? styles.clickable : ''
+                  }`}
+                  onClick={() => handleSystemNameClick(layer.systemLink)}
+                >
+                  {layer.systemName}
+                  {layer.systemLink && (
+                    <ArrowRightOutlined className={styles.enterIcon} />
+                  )}
                 </div>
 
-                {/* 右侧系统区域 */}
-                <div className={styles.systemsContainer}>
-                  {layer.systems.map((system, sysIndex) => (
-                    <div
-                      key={system.systemName || sysIndex}
-                      className={styles.systemGroup}
-                      style={{ borderColor: layer.color }}
-                    >
-                      {/* 功能模块/能力 */}
-                      <div className={styles.itemsContainer}>
-                        {system.items.map((item) => (
-                          <div
-                            key={item.name}
-                            className={`${styles.itemCard} ${
-                              item.link && item.link !== '#' ? styles.clickable : ''
-                            }`}
-                            style={{ 
-                              backgroundColor: system.systemName ? '#ffffff' : layer.color,
-                              color: system.systemName ? layer.color : '#ffffff',
-                              borderColor: layer.color,
-                            }}
-                            onClick={() => handleItemClick(item.link)}
-                          >
-                            {item.name}
+                {/* 中间：功能模块区域 */}
+                <div className={styles.modulesArea}>
+                  {layer.systemName === '交付中台' ? (
+                    // 交付中台：两个角色同行
+                    <div className={styles.toolLayerRow}>
+                      {layer.roleGroups.map((roleGroup, idx) => (
+                        <div key={idx} className={styles.roleGroupContainer}>
+                          {/* 角色标签 */}
+                          {roleGroup.role && (
+                            <div className={styles.roleTag}>
+                              {roleGroup.role}
+                            </div>
+                          )}
+                          {/* 功能模块 */}
+                          <div className={styles.modulesGrid}>
+                            {roleGroup.modules.map((module) => (
+                              <div
+                                key={module.name}
+                                className={`${styles.moduleCard} ${
+                                  module.link && module.link !== '#' ? styles.clickable : ''
+                                }`}
+                                onClick={() => handleModuleClick(module.link)}
+                              >
+                                {module.name}
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-
-                      {/* 系统名 */}
-                      {system.systemName && (
-                        <div
-                          className={`${styles.systemName} ${
-                            system.link && system.link !== '#' ? styles.clickable : ''
-                          }`}
-                          style={{ backgroundColor: layer.color }}
-                          onClick={() => handleItemClick(system.link)}
-                        >
-                          {system.systemName}
                         </div>
-                      )}
+                      ))}
                     </div>
-                  ))}
+                  ) : layer.systemName === '业务系统' ? (
+                    // 业务系统：分两行，每行5个
+                    <div className={styles.businessSystemGrid}>
+                      {layer.roleGroups[0].modules.map((module) => (
+                        <div
+                          key={module.name}
+                          className={`${styles.moduleCard} ${
+                            module.link && module.link !== '#' ? styles.clickable : ''
+                          }`}
+                          onClick={() => handleModuleClick(module.link)}
+                        >
+                          {module.name}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    // 其他层级：原有布局
+                    layer.roleGroups.map((roleGroup, idx) => (
+                      <div key={idx} className={styles.roleGroupContainer}>
+                        {/* 角色标签 */}
+                        {roleGroup.role && (
+                          <div className={styles.roleTag}>
+                            {roleGroup.role}
+                          </div>
+                        )}
+                        {/* 功能模块 */}
+                        <div className={styles.modulesGrid}>
+                          {roleGroup.modules.map((module) => (
+                            <div
+                              key={module.name}
+                              className={`${styles.moduleCard} ${
+                                module.link && module.link !== '#' ? styles.clickable : ''
+                              }`}
+                              onClick={() => handleModuleClick(module.link)}
+                            >
+                              {module.name}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* 右侧：层级名称 */}
+                <div className={styles.layerNameCard}>
+                  {layer.layerName}
                 </div>
               </div>
 
-              {/* 连接箭头 */}
+              {/* 向上箭头 */}
               {layerIndex < architectureLayers.length - 1 && (
-                <div className={styles.connector}>
-                  <UpOutlined className={styles.connectorIcon} />
+                <div className={styles.arrowUp}>
+                  <svg width="60" height="30" viewBox="0 0 60 30">
+                    <path d="M 30 0 L 30 25" stroke="#999" strokeWidth="2" fill="none"/>
+                    <path d="M 20 10 L 30 0 L 40 10" stroke="#999" strokeWidth="2" fill="none"/>
+                  </svg>
                 </div>
               )}
             </div>
           ))}
-        </div>
-
-        {/* 进入系统按钮 */}
-        <div className={styles.actionSection}>
-          <Button
-            type="primary"
-            size="large"
-            icon={<ArrowRightOutlined />}
-            onClick={handleEnterSystem}
-            className={styles.enterButton}
-          >
-            进入系统
-          </Button>
         </div>
       </div>
     </div>

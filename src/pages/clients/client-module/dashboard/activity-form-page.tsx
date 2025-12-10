@@ -650,9 +650,9 @@ export default function ActivityFormPage() {
               {/* 左侧：项目列表 */}
               <div style={{ width: '40%', borderRight: '1px solid #f0f0f0', paddingRight: 16 }}>
                 <div style={{ marginBottom: 12 }}>
-                  <Text strong style={{ display: 'block', marginBottom: 8 }}>
+              <Text strong style={{ display: 'block', marginBottom: 8 }}>
                     选择项目
-                  </Text>
+              </Text>
                   <Input.Search
                     placeholder="搜索项目名称或编码"
                     allowClear
@@ -769,7 +769,7 @@ export default function ActivityFormPage() {
                     )
                   })()}
                 </div>
-              </div>
+            </div>
 
               {/* 右侧：批次列表 */}
               <div style={{ width: '60%', paddingLeft: 16 }}>
@@ -792,7 +792,7 @@ export default function ActivityFormPage() {
                       : allBatches
 
                     return (
-                      <div>
+              <div>
                         <div style={{ marginBottom: 12 }}>
                           <Text strong style={{ fontSize: 16 }}>
                             {project.name}
@@ -803,10 +803,10 @@ export default function ActivityFormPage() {
                             </Text>
                           )}
                         </div>
-                        <div style={{ marginBottom: 12 }}>
-                          <Checkbox
+                <div style={{ marginBottom: 12 }}>
+                  <Checkbox
                             checked={config.autoSelectAll}
-                            onChange={(e) => {
+                    onChange={(e) => {
                               setProjectConfigs({
                                 ...projectConfigs,
                                 [currentViewProjectId]: {
@@ -814,16 +814,16 @@ export default function ActivityFormPage() {
                                   selectedBatchIds: e.target.checked ? [] : config.selectedBatchIds,
                                 },
                               })
-                            }}
-                          >
+                    }}
+                  >
                             <Text strong>自动获取该项目下全量数据</Text>
-                          </Checkbox>
-                          <Text type="secondary" style={{ marginLeft: 8, fontSize: 12 }}>
+                  </Checkbox>
+                  <Text type="secondary" style={{ marginLeft: 8, fontSize: 12 }}>
                             （勾选后将自动添加该项目下所有批次）
-                          </Text>
-                        </div>
+                  </Text>
+                </div>
                         {!config.autoSelectAll && allBatches.length > 0 && (
-                          <div>
+                  <div>
                             <div style={{ marginBottom: 8 }}>
                               <Input.Search
                                 placeholder="搜索批次名称、编码或机制名"
@@ -838,9 +838,9 @@ export default function ActivityFormPage() {
                                 <Text type="secondary">未找到匹配的批次</Text>
                               </div>
                             ) : (
-                              <Table
-                                rowKey="id"
-                                rowSelection={{
+                    <Table
+                      rowKey="id"
+                      rowSelection={{
                                   selectedRowKeys: config.selectedBatchIds,
                                   onChange: (keys) => {
                                     setProjectConfigs({
@@ -851,31 +851,31 @@ export default function ActivityFormPage() {
                                       },
                                     })
                                   },
-                                }}
-                                columns={[
-                                  {
-                                    title: '批次名称',
-                                    dataIndex: 'name',
-                                    key: 'name',
-                                    width: 200,
-                                    ellipsis: true,
-                                  },
-                                  {
-                                    title: '批次编码',
-                                    dataIndex: 'code',
-                                    key: 'code',
-                                    width: 150,
-                                    ellipsis: true,
-                                    render: (code: string) => (code ? <Text style={{ fontSize: 12 }}>{code}</Text> : '—'),
-                                  },
-                                  {
-                                    title: '机制名',
-                                    dataIndex: 'mechanismName',
-                                    key: 'mechanismName',
-                                    width: 120,
-                                    render: (name: string) => (name ? <Text>{name}</Text> : '—'),
-                                  },
-                                ]}
+                      }}
+                      columns={[
+                        {
+                          title: '批次名称',
+                          dataIndex: 'name',
+                          key: 'name',
+                          width: 200,
+                          ellipsis: true,
+                        },
+                        {
+                          title: '批次编码',
+                          dataIndex: 'code',
+                          key: 'code',
+                          width: 150,
+                          ellipsis: true,
+                          render: (code: string) => (code ? <Text style={{ fontSize: 12 }}>{code}</Text> : '—'),
+                        },
+                        {
+                          title: '机制名',
+                          dataIndex: 'mechanismName',
+                          key: 'mechanismName',
+                          width: 120,
+                          render: (name: string) => (name ? <Text>{name}</Text> : '—'),
+                        },
+                      ]}
                                 dataSource={filteredBatches}
                                 pagination={{
                                   pageSize: 10,
@@ -884,25 +884,25 @@ export default function ActivityFormPage() {
                                   showTotal: (total) => `共 ${total} 条`,
                                   size: 'small',
                                 }}
-                                size="small"
+                      size="small"
                                 scroll={{ y: 400 }}
-                              />
+                    />
                             )}
                           </div>
                         )}
                         {!config.autoSelectAll && allBatches.length === 0 && (
                           <div style={{ textAlign: 'center', padding: '40px 0' }}>
                             <Text type="secondary">该项目暂无可用批次</Text>
-                          </div>
-                        )}
+                  </div>
+                )}
                       </div>
                     )
                   })()
                 ) : (
                   <div style={{ textAlign: 'center', padding: '100px 0', color: '#999' }}>
                     <Text type="secondary">请从左侧选择项目查看批次</Text>
-                  </div>
-                )}
+              </div>
+            )}
               </div>
             </div>
           </div>

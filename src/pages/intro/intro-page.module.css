@@ -1,7 +1,7 @@
 .introContainer {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+  background: linear-gradient(180deg, #f5f7fa 0%, #eef2f5 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,8 +16,8 @@
   max-height: 95vh;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  padding: 25px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 15px 20px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -26,16 +26,18 @@
 /* 标题区域 */
 .headerSection {
   text-align: center;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #e8eef5;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: none;
   flex-shrink: 0;
 }
 
 .mainTitle {
   margin: 0 !important;
   color: #1a1a1a;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 /* 架构图区域 */
@@ -43,165 +45,386 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 15px 0;
+  gap: 0;
+  padding: 5px 0;
   overflow: visible;
+  min-height: 0;
 }
 
-/* 层级容器 */
-.layerContainer {
+/* 层级行 */
+.layerRow {
   display: flex;
-  gap: 15px;
   align-items: stretch;
-  min-height: 70px;
+  gap: 12px;
+  margin-bottom: 3px;
+  padding: 8px 8px;
+  background: transparent;
+  border-radius: 0;
+  min-height: 60px;
 }
 
-/* 左侧标签 */
-.layerLabel {
-  width: 100px;
+/* 系统名称卡片（左侧） */
+.systemNameCard {
+  width: 120px;
   flex-shrink: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 10px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #ffffff;
+  border: none;
   border-radius: 8px;
-  border: 1px solid #d9e2ec;
-}
-
-.layerTitle {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #2c3e50;
   text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-/* 系统容器 */
-.systemsContainer {
+.systemNameCard.clickable {
+  cursor: pointer;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.systemNameCard.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+}
+
+.enterIcon {
+  font-size: 12px;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.systemNameCard.clickable:hover .enterIcon {
+  transform: translateX(2px);
+}
+
+/* 功能模块区域（中间）- 固定宽度，与业务系统对齐 */
+.modulesArea {
   flex: 1;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* 角色分组容器 */
+.roleGroupContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   align-items: stretch;
 }
 
-.systemGroup {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  padding: 12px;
-  border: 2px solid;
-  border-radius: 8px;
-  background: #fafbfc;
-  align-items: center;
+/* 角色标签 */
+.roleTag {
+  padding: 5px 12px;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #495057;
+  text-align: center;
+  font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
-/* 功能模块/能力容器 */
-.itemsContainer {
-  flex: 1;
+/* 功能模块网格 */
+.modulesGrid {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* 功能模块卡片 */
+.moduleCard {
+  padding: 6px 12px;
+  background: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2c3e50;
+  text-align: center;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  cursor: default;
+  box-sizing: border-box;
+  overflow: visible;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* 交付中台的第二个角色组允许文字换行 */
+.toolLayerRow .roleGroupContainer:last-child .moduleCard {
+  white-space: normal;
+  word-break: keep-all;
+  line-height: 1.4;
+}
+
+/* 业务系统（数据源）- 10个模块，分两行，每行5个 */
+.businessSystemGrid {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
-  justify-content: space-evenly;
 }
 
-/* 系统名 */
-.systemName {
-  flex-shrink: 0;
-  padding: 8px 14px;
-  border-radius: 6px;
+.businessSystemGrid .moduleCard {
+  flex: 0 0 calc((100% - 32px) / 5);
+  box-sizing: border-box;
+}
+
+/* 应用层 - 3个模块，均匀分布，与业务系统对齐 */
+.layer-0 .modulesGrid {
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.layer-0 .moduleCard {
+  flex: 0 0 calc((100% - 16px) / 3);
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
+  box-shadow: 0 2px 6px rgba(21, 101, 192, 0.15);
+}
+
+.layer-0 .moduleCard.clickable:hover {
+  background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
   color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.25);
 }
 
-.systemName.clickable {
+/* 数据管理 - 2个模块，均匀分布，与业务系统对齐 */
+.layer-2 .modulesGrid {
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.layer-2 .moduleCard {
+  flex: 0 0 calc((100% - 8px) / 2);
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+  box-shadow: 0 2px 6px rgba(230, 81, 0, 0.15);
+}
+
+.layer-2 .moduleCard.clickable:hover {
+  background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(230, 81, 0, 0.25);
+}
+
+/* OLAP - 3个模块，均匀分布，与业务系统对齐 */
+.layer-3 .modulesGrid {
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.layer-3 .moduleCard {
+  flex: 0 0 calc((100% - 16px) / 3);
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+  box-shadow: 0 2px 6px rgba(230, 81, 0, 0.15);
+}
+
+.layer-3 .moduleCard.clickable:hover {
+  background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(230, 81, 0, 0.25);
+}
+
+/* 交付中台：两个角色同行 */
+.toolLayerRow {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+/* 工具层（交付中台）的能力单元颜色 - 与应用层相同的蓝色 */
+.layer-1 .moduleCard {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
+  box-shadow: 0 2px 6px rgba(21, 101, 192, 0.15);
+}
+
+.layer-1 .moduleCard.clickable:hover {
+  background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.25);
+}
+
+.toolLayerRow .roleGroupContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* 第一个角色组（运营/项目/业务人员）- 4个功能，占80% */
+.toolLayerRow .roleGroupContainer:first-child {
+  flex: 0 0 calc(80% - 4px);
+  min-width: 0;
+  overflow: visible;
+}
+
+/* 第二个角色组（数据/开发人员）- 2个功能，占20% */
+.toolLayerRow .roleGroupContainer:last-child {
+  flex: 0 0 calc(20% - 4px);
+  min-width: 180px;
+  overflow: visible;
+}
+
+.toolLayerRow .roleTag {
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.toolLayerRow .modulesGrid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
+}
+
+/* 第一个角色组下的4个功能模块，每个占25% */
+.toolLayerRow .roleGroupContainer:first-child .moduleCard {
+  flex: 0 0 calc((100% - 24px) / 4);
+  min-width: 0;
+  overflow: visible;
+}
+
+/* 第二个角色组下的2个功能模块，每个占50% */
+.toolLayerRow .roleGroupContainer:last-child .moduleCard {
+  flex: 0 0 calc((100% - 8px) / 2);
+  min-width: 70px;
+  overflow: visible;
+  white-space: normal;
+  word-break: keep-all;
+  line-height: 1.4;
+}
+
+.moduleCard.clickable {
   cursor: pointer;
 }
 
-.systemName.clickable:hover {
+.moduleCard.clickable:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  background: #f8f9fa;
+  color: #1976d2;
 }
 
-/* 功能卡片 */
-.itemCard {
-  padding: 6px 12px;
-  border-radius: 6px;
+/* 数据源的模块（深色背景，白色文字） */
+.layerRow:last-child .moduleCard {
+  background: #2c3e50;
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(44, 62, 80, 0.2);
+}
+
+.layerRow:last-child .moduleCard.clickable:hover {
+  background: #34495e;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+}
+
+/* 层级名称卡片（右侧） */
+.layerNameCard {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #2c3e50;
   text-align: center;
-  white-space: nowrap;
-  border: 1px solid;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  flex: 0 1 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.itemCard.clickable {
-  cursor: pointer;
+/* 应用层 - 蓝色 */
+.layer-0 .layerNameCard {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
+  box-shadow: 0 2px 8px rgba(21, 101, 192, 0.15);
 }
 
-.itemCard.clickable:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+/* 工具层 - 与应用层相同的蓝色 */
+.layer-1 .layerNameCard {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
+  box-shadow: 0 2px 8px rgba(21, 101, 192, 0.15);
 }
 
-/* 连接箭头 */
-.connector {
+/* 数据管理 - 橙色 */
+.layer-2 .layerNameCard {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+  box-shadow: 0 2px 8px rgba(230, 81, 0, 0.15);
+}
+
+/* OLAP - 与数据管理相同的橙色 */
+.layer-3 .layerNameCard {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+  box-shadow: 0 2px 8px rgba(230, 81, 0, 0.15);
+}
+
+/* 数据源 - 深色 */
+.layerRow:last-child .layerNameCard {
+  background: #2c3e50;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.2);
+}
+
+/* 向上箭头 */
+.arrowUp {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 8px;
+  height: 15px;
   margin: 0;
 }
 
-.connectorIcon {
-  font-size: 16px;
-  color: #52c41a;
-}
-
-/* 操作区域 */
-.actionSection {
-  display: flex;
-  justify-content: center;
-  padding-top: 12px;
-  border-top: 2px solid #e8eef5;
-  flex-shrink: 0;
-}
-
-.enterButton {
-  height: 40px;
-  padding: 0 30px;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
-  border: none;
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
-}
-
-.enterButton:hover {
-  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
-  box-shadow: 0 6px 16px rgba(24, 144, 255, 0.4);
-  transform: translateY(-2px);
-}
 
 /* 响应式设计 */
 @media (max-width: 1200px) {
-  .layerLabel {
-    width: 90px;
-  }
-
-  .systemsContainer {
+  .layerRow {
     flex-direction: column;
     gap: 12px;
+  }
+
+  .systemNameCard,
+  .layerNameCard {
+    width: 100%;
   }
 }
 
@@ -210,29 +433,20 @@
     padding: 20px;
   }
 
-  .layerContainer {
-    flex-direction: column;
-    gap: 10px;
+  .systemNameCard {
+    font-size: 14px;
   }
 
-  .layerLabel {
-    width: 100%;
-  }
-
-  .systemsContainer {
-    gap: 10px;
-  }
-
-  .itemsContainer {
-    gap: 8px;
-  }
-
-  .itemCard {
-    padding: 6px 12px;
+  .moduleCard {
+    padding: 8px 12px;
     font-size: 12px;
   }
 
+  .layerNameCard {
+    font-size: 13px;
+  }
+
   .mainTitle {
-    font-size: 24px !important;
+    font-size: 20px !important;
   }
 }
