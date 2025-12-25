@@ -526,7 +526,7 @@ export default function ReportCenterPage() {
                         <Text strong>{report.name}</Text>
                         <div className={styles.reportBrand}>
                           {report.brands === '全部适用' ? (
-                            <Tag color="blue" size="small">全部适用</Tag>
+                            <Tag color="blue">全部适用</Tag>
                           ) : (
                             <BrandsDisplay brands={report.brands} maxDisplay={2} />
                           )}
