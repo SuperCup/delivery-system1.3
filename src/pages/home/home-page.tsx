@@ -12,6 +12,7 @@ import {
   List,
   Empty,
   Table,
+  Modal,
 } from 'antd'
 import { BrandsDisplay } from '../../components/brands-display/brands-display'
 import { 
@@ -20,6 +21,7 @@ import {
   DragOutlined,
   InfoCircleOutlined,
   ClockCircleOutlined,
+  FileTextOutlined,
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -116,6 +118,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false)
   const [reports, setReports] = useState<HomeReportCard[]>([])
   const [todos, setTodos] = useState<Todo[]>([])
+  const [notesModalVisible, setNotesModalVisible] = useState(false)
   
   const navigate = useNavigate()
 
@@ -261,7 +264,20 @@ export default function HomePage() {
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={24}>
           <Card
-            title={<Title level={5} style={{ margin: 0 }}>我的看板</Title>}
+            title={
+              <Space>
+                <Title level={5} style={{ margin: 0 }}>我的看板</Title>
+                <Button
+                  type="text"
+                  size="small"
+                  icon={<FileTextOutlined />}
+                  onClick={() => setNotesModalVisible(true)}
+                  style={{ fontSize: 12, color: '#8c8c8c' }}
+                >
+                  开发备注
+                </Button>
+              </Space>
+            }
             className={styles.section}
             bordered={false}
             extra={
@@ -297,25 +313,42 @@ export default function HomePage() {
                     dataIndex: 'brands',
                     key: 'brands',
                     width: 200,
-                    render: (brands: string[]) => <BrandsDisplay brands={brands} maxDisplay={3} />,
+                    render: (brands: string[] | '全部适用') => 
+                      brands === '全部适用' ? (
+                        <Tag color="blue">全部适用</Tag>
+                      ) : (
+                        <BrandsDisplay brands={brands} maxDisplay={3} />
+                      ),
                   },
                   {
-                    title: '链接有效期',
-                    dataIndex: 'validity',
-                    key: 'validity',
+                    title: '所属客户',
+                    dataIndex: 'clients',
+                    key: 'clients',
+                    width: 200,
+                    render: (clients: string[] | '全部适用') => 
+                      clients === '全部适用' ? (
+                        <Tag color="blue">全部适用</Tag>
+                      ) : (
+                        <Space wrap size={[0, 4]}>
+                          {clients.slice(0, 3).map((client) => (
+                            <Tag key={client}>{client}</Tag>
+                          ))}
+                          {clients.length > 3 && (
+                            <Tag>+{clients.length - 3}</Tag>
+                          )}
+                        </Space>
+                      ),
+                  },
+                  {
+                    title: '产品',
+                    dataIndex: 'product',
+                    key: 'product',
                     width: 120,
-                  },
-                  {
-                    title: '链接来源',
-                    dataIndex: 'source',
-                    key: 'source',
-                    width: 100,
-                  },
-                  {
-                    title: '链接依赖数据源',
-                    dataIndex: 'dataSource',
-                    key: 'dataSource',
-                    width: 150,
+                    render: (product: string) => (
+                      <Tag color={product === '到店营销' ? 'blue' : product === '即时零售' ? 'green' : product === '物码营销' ? 'gold' : 'default'}>
+                        {product}
+                      </Tag>
+                    ),
                   },
                   {
                     title: '创建时间',
@@ -334,13 +367,13 @@ export default function HomePage() {
                     key: 'actions',
                     width: 100,
                     fixed: 'right',
-                    render: () => (
+                    render: (_, record: HomeReportCard) => (
                       <Button
                         type="link"
                         size="small"
                         onClick={() =>
                           window.open(
-                            'https://quickbi.ismartgo.cn/token3rd/dashboard/view/pc.htm?pageId=2b2a4ccf-582e-4072-a98e-f6411df63f68&accessTicket=76ff1515-8996-4659-b057-460e87cdf378&dd_orientation=auto',
+                            record.link || 'https://quickbi.ismartgo.cn/token3rd/dashboard/view/pc.htm?pageId=2b2a4ccf-582e-4072-a98e-f6411df63f68&accessTicket=76ff1515-8996-4659-b057-460e87cdf378&dd_orientation=auto',
                             '_blank',
                           )
                         }
@@ -419,6 +452,58 @@ export default function HomePage() {
           </Card>
         </Col>
       </Row>
+
+      {/* 开发备注弹窗 */}
+      <Modal
+        title="开发备注"
+        open={notesModalVisible}
+        onCancel={() => setNotesModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setNotesModalVisible(false)}>
+            关闭
+          </Button>,
+        ]}
+        width={800}
+      >
+        <div style={{ padding: '16px 0' }}>
+          <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+            <div>
+              <Text strong>1、</Text>
+              <Text>看板首页默认显示列表最顶部5个看板，有新添加到自己名下的看板，显示在最上面；</Text>
+            </div>
+            <div>
+              <Text strong>2、</Text>
+              <Text>首页看板不需要支持搜索、查看全部看板（看板列表），支持by名称、品牌、创建时间、创建人、产品，进行筛选搜索；</Text>
+            </div>
+            <div>
+              <Text strong>3、</Text>
+              <Text>点击预览，新的浏览器标签全屏加载看板；</Text>
+            </div>
+            <div>
+              <Text strong>4、权限分配——</Text>
+              <div style={{ marginLeft: 20, marginTop: 8 }}>
+                <div>
+                  <Text>a）除当前客户管理外其他所有角色，可见系统添加的所有看板记录（支持添加、编辑、删除等）；</Text>
+                </div>
+                <div style={{ marginTop: 8 }}>
+                  <Text>b）客户管理角色，如果拥有该链接的权限，可以对链接可见联系人进行编辑；</Text>
+                </div>
+              </div>
+            </div>
+            <div>
+              <Text strong>5、</Text>
+              <Text>用户可在看板列表（非首页），对看板顺序进行自定义调整；</Text>
+            </div>
+            <div>
+              <Text strong>6、</Text>
+              <Text>后台保存对链接的编辑与调整；</Text>
+            </div>
+            <div>
+              <Text strong>7、专属定制——挂链接，选的是当前用户（客户管理角色）可见的看板，并且，看板所属客户对应、所属产品对应；</Text>
+            </div>
+          </Space>
+        </div>
+      </Modal>
     </div>
   )
 }

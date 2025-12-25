@@ -66,7 +66,9 @@ export type HomeMessages = {
 export type ReportCard = {
   id: string
   name: string
-  brands: string[] // 所属品牌（可多个）
+  brands: string[] | '全部适用' // 所属品牌（可多个，或全部适用）
+  clients: string[] | '全部适用' // 所属客户（可多个，或全部适用）
+  product: BusinessType | '全部适用' // 产品（到店营销/即时零售/物码营销，或全部适用）
   validity: '永久' | string // 链接有效期，可以是"永久"或具体日期
   source: string // 链接来源，如"QBI"
   dataSource: string // 链接依赖数据源，如"数仓"

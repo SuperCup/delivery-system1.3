@@ -17,6 +17,7 @@ import {
   Form,
   Select,
   Tag,
+  Checkbox,
 } from 'antd'
 import { HomeOutlined, HolderOutlined, EyeOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
@@ -94,6 +95,8 @@ export default function ReportCenterPage() {
   // 筛选条件
   const [nameFilter, setNameFilter] = useState('')
   const [brandFilter, setBrandFilter] = useState('')
+  const [clientFilter, setClientFilter] = useState('')
+  const [productFilter, setProductFilter] = useState<string>('')
   const [creatorFilter, setCreatorFilter] = useState('')
   const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null] | null>(null)
   
@@ -155,8 +158,24 @@ export default function ReportCenterPage() {
 
     // 品牌筛选
     if (brandFilter.trim()) {
-      filtered = filtered.filter((report) =>
-        report.brands.some(brand => brand.toLowerCase().includes(brandFilter.toLowerCase().trim()))
+      filtered = filtered.filter((report) => {
+        if (report.brands === '全部适用') return false
+        return report.brands.some(brand => brand.toLowerCase().includes(brandFilter.toLowerCase().trim()))
+      })
+    }
+
+    // 客户筛选
+    if (clientFilter.trim()) {
+      filtered = filtered.filter((report) => {
+        if (report.clients === '全部适用') return false
+        return report.clients.some(client => client.toLowerCase().includes(clientFilter.toLowerCase().trim()))
+      })
+    }
+
+    // 产品筛选
+    if (productFilter) {
+      filtered = filtered.filter((report) => 
+        report.product === productFilter || report.product === '全部适用'
       )
     }
 
@@ -188,6 +207,8 @@ export default function ReportCenterPage() {
   const resetFilters = () => {
     setNameFilter('')
     setBrandFilter('')
+    setClientFilter('')
+    setProductFilter('')
     setCreatorFilter('')
     setDateRange(null)
     setFilteredReports(reports)
@@ -206,7 +227,11 @@ export default function ReportCenterPage() {
     setEditingReport(record)
     form.setFieldsValue({
       name: record.name,
-      brands: record.brands,
+      brands: record.brands === '全部适用' ? [] : record.brands,
+      brandsAll: record.brands === '全部适用',
+      clients: record.clients === '全部适用' ? [] : record.clients,
+      clientsAll: record.clients === '全部适用',
+      product: record.product === '全部适用' ? undefined : record.product,
       link: record.link,
       validity: record.validity,
       source: record.source,
@@ -219,11 +244,9 @@ export default function ReportCenterPage() {
     setDrawerVisible(true)
   }
 
-  const handlePreview = () => {
-    window.open(
-      'https://quickbi.ismartgo.cn/token3rd/dashboard/view/pc.htm?pageId=2b2a4ccf-582e-4072-a98e-f6411df63f68&accessTicket=76ff1515-8996-4659-b057-460e87cdf378&dd_orientation=auto',
-      '_blank',
-    )
+  const handlePreview = (record?: ReportCard) => {
+    const link = record?.link || 'https://quickbi.ismartgo.cn/token3rd/dashboard/view/pc.htm?pageId=2b2a4ccf-582e-4072-a98e-f6411df63f68&accessTicket=76ff1515-8996-4659-b057-460e87cdf378&dd_orientation=auto'
+    window.open(link, '_blank')
   }
 
   const handleDelete = (record: ReportCard) => {
@@ -249,6 +272,8 @@ export default function ReportCenterPage() {
       validity: '永久',
       source: 'QBI',
       dataSource: '数仓',
+      brandsAll: false,
+      clientsAll: false,
       visibilityConfig: { type: 'all', selectedIds: [] },
     })
     setDrawerVisible(true)
@@ -293,7 +318,9 @@ export default function ReportCenterPage() {
       const newReport: ReportCard = {
         id: editingReport?.id || `report-${Date.now()}`,
         name: values.name,
-        brands: values.brands || [],
+        brands: values.brandsAll ? '全部适用' : (values.brands || []),
+        clients: values.clientsAll ? '全部适用' : (values.clients || []),
+        product: values.product || '到店营销',
         validity: values.validity,
         source: values.source,
         dataSource: values.dataSource,
@@ -346,7 +373,42 @@ export default function ReportCenterPage() {
       dataIndex: 'brands',
       key: 'brands',
       width: 200,
-      render: (brands: string[]) => <BrandsDisplay brands={brands} maxDisplay={3} />,
+      render: (brands: string[] | '全部适用') => 
+        brands === '全部适用' ? (
+          <Tag color="blue">全部适用</Tag>
+        ) : (
+          <BrandsDisplay brands={brands} maxDisplay={3} />
+        ),
+    },
+    {
+      title: '所属客户',
+      dataIndex: 'clients',
+      key: 'clients',
+      width: 200,
+      render: (clients: string[] | '全部适用') => 
+        clients === '全部适用' ? (
+          <Tag color="blue">全部适用</Tag>
+        ) : (
+          <Space wrap size={[0, 4]}>
+            {clients.slice(0, 3).map((client) => (
+              <Tag key={client}>{client}</Tag>
+            ))}
+            {clients.length > 3 && (
+              <Tag>+{clients.length - 3}</Tag>
+            )}
+          </Space>
+        ),
+    },
+    {
+      title: '产品',
+      dataIndex: 'product',
+      key: 'product',
+      width: 120,
+      render: (product: string) => (
+        <Tag color={product === '到店营销' ? 'blue' : product === '即时零售' ? 'green' : product === '物码营销' ? 'gold' : 'default'}>
+          {product}
+        </Tag>
+      ),
     },
     {
       title: '链接有效期',
@@ -396,7 +458,7 @@ export default function ReportCenterPage() {
           <Button type="link" size="small" onClick={() => handleEdit(record)}>
             编辑
           </Button>
-          <Button type="link" size="small" onClick={() => handlePreview()}>
+          <Button type="link" size="small" onClick={() => handlePreview(record)}>
             预览
           </Button>
           <Button type="link" size="small" danger onClick={() => handleDelete(record)}>
@@ -463,7 +525,11 @@ export default function ReportCenterPage() {
                       <div className={styles.reportListItemContent}>
                         <Text strong>{report.name}</Text>
                         <div className={styles.reportBrand}>
-                          <BrandsDisplay brands={report.brands} maxDisplay={2} />
+                          {report.brands === '全部适用' ? (
+                            <Tag color="blue" size="small">全部适用</Tag>
+                          ) : (
+                            <BrandsDisplay brands={report.brands} maxDisplay={2} />
+                          )}
                         </div>
                       </div>
                     </List.Item>
@@ -478,13 +544,17 @@ export default function ReportCenterPage() {
                 className={styles.previewFrameCard}
                 bodyStyle={{ padding: 0, height: '100%' }}
               >
-                {selectedReport ? (
-                  <iframe
-                    src="https://quickbi.ismartgo.cn/token3rd/dashboard/view/pc.htm?pageId=2b2a4ccf-582e-4072-a98e-f6411df63f68&accessTicket=76ff1515-8996-4659-b057-460e87cdf378&dd_orientation=auto"
-                    title="看板预览"
-                    className={styles.previewFrame}
-                  />
-                ) : (
+                {selectedReport ? (() => {
+                  const report = filteredReports.find(r => r.id === selectedReport)
+                  const link = report?.link || 'https://quickbi.ismartgo.cn/token3rd/dashboard/view/pc.htm?pageId=2b2a4ccf-582e-4072-a98e-f6411df63f68&accessTicket=76ff1515-8996-4659-b057-460e87cdf378&dd_orientation=auto'
+                  return (
+                    <iframe
+                      src={link}
+                      title="看板预览"
+                      className={styles.previewFrame}
+                    />
+                  )
+                })() : (
                   <div className={styles.noPreview}>
                     <Text type="secondary">请从左侧列表选择一个看板</Text>
                   </div>
@@ -531,6 +601,31 @@ export default function ReportCenterPage() {
                   onChange={(e) => setBrandFilter(e.target.value)}
                   style={{ width: 180 }}
                   allowClear
+                />
+              </div>
+              <div className={styles.filterItem}>
+                <Text>客户：</Text>
+                <Input
+                  placeholder="请输入客户名称"
+                  value={clientFilter}
+                  onChange={(e) => setClientFilter(e.target.value)}
+                  style={{ width: 180 }}
+                  allowClear
+                />
+              </div>
+              <div className={styles.filterItem}>
+                <Text>产品：</Text>
+                <Select
+                  placeholder="请选择产品"
+                  value={productFilter || undefined}
+                  onChange={(value) => setProductFilter(value || '')}
+                  allowClear
+                  style={{ width: 180 }}
+                  options={[
+                    { label: '到店营销', value: '到店营销' },
+                    { label: '即时零售', value: '即时零售' },
+                    { label: '物码营销', value: '物码营销' },
+                  ]}
                 />
               </div>
               <div className={styles.filterItem}>
@@ -619,22 +714,118 @@ export default function ReportCenterPage() {
           </Form.Item>
 
           <Form.Item
+            label={
+              <span>
+                所属客户
+                <Text type="secondary" style={{ fontSize: 12, fontWeight: 'normal', marginLeft: 4 }}>
+                  （PMS已建档客户）
+                </Text>
+              </span>
+            }
+            required
+          >
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <Checkbox
+                checked={form.getFieldValue('clientsAll')}
+                onChange={(e) => {
+                  form.setFieldsValue({ clientsAll: e.target.checked, clients: e.target.checked ? [] : form.getFieldValue('clients') })
+                }}
+              >
+                全部适用
+              </Checkbox>
+              <Form.Item
+                name="clients"
+                noStyle
+                rules={[
+                  {
+                    validator: (_, value) => {
+                      const clientsAll = form.getFieldValue('clientsAll')
+                      if (clientsAll) return Promise.resolve()
+                      if (!value || value.length === 0) {
+                        return Promise.reject(new Error('请选择至少一个客户或选择全部适用'))
+                      }
+                      return Promise.resolve()
+                    },
+                  },
+                ]}
+              >
+                <Select
+                  mode="multiple"
+                  placeholder="请选择客户"
+                  disabled={form.getFieldValue('clientsAll')}
+                  options={[
+                    { label: '达能', value: '达能' },
+                    { label: '伊利', value: '伊利' },
+                    { label: '康师傅', value: '康师傅' },
+                    { label: '嘉士伯', value: '嘉士伯' },
+                    { label: '统一', value: '统一' },
+                    { label: '百威', value: '百威' },
+                    { label: '雀巢', value: '雀巢' },
+                  ]}
+                />
+              </Form.Item>
+            </Space>
+          </Form.Item>
+
+          <Form.Item
             label="所属品牌"
-            name="brands"
-            rules={[{ required: true, message: '请选择至少一个品牌' }]}
+            required
+          >
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <Checkbox
+                checked={form.getFieldValue('brandsAll')}
+                onChange={(e) => {
+                  form.setFieldsValue({ brandsAll: e.target.checked, brands: e.target.checked ? [] : form.getFieldValue('brands') })
+                }}
+              >
+                全部适用
+              </Checkbox>
+              <Form.Item
+                name="brands"
+                noStyle
+                rules={[
+                  {
+                    validator: (_, value) => {
+                      const brandsAll = form.getFieldValue('brandsAll')
+                      if (brandsAll) return Promise.resolve()
+                      if (!value || value.length === 0) {
+                        return Promise.reject(new Error('请选择至少一个品牌或选择全部适用'))
+                      }
+                      return Promise.resolve()
+                    },
+                  },
+                ]}
+              >
+                <Select
+                  mode="multiple"
+                  placeholder="请选择品牌"
+                  disabled={form.getFieldValue('brandsAll')}
+                  options={[
+                    { label: '康师傅', value: '康师傅' },
+                    { label: '嘉士伯', value: '嘉士伯' },
+                    { label: '统一', value: '统一' },
+                    { label: '百威', value: '百威' },
+                    { label: '雀巢', value: '雀巢' },
+                    { label: '达能', value: '达能' },
+                    { label: '伊利', value: '伊利' },
+                    { label: '联合利华', value: '联合利华' },
+                  ]}
+                />
+              </Form.Item>
+            </Space>
+          </Form.Item>
+
+          <Form.Item
+            label="产品"
+            name="product"
+            rules={[{ required: true, message: '请选择产品' }]}
           >
             <Select
-              mode="multiple"
-              placeholder="请选择品牌"
+              placeholder="请选择产品"
               options={[
-                { label: '康师傅', value: '康师傅' },
-                { label: '嘉士伯', value: '嘉士伯' },
-                { label: '统一', value: '统一' },
-                { label: '百威', value: '百威' },
-                { label: '雀巢', value: '雀巢' },
-                { label: '达能', value: '达能' },
-                { label: '伊利', value: '伊利' },
-                { label: '联合利华', value: '联合利华' },
+                { label: '到店营销', value: '到店营销' },
+                { label: '即时零售', value: '即时零售' },
+                { label: '物码营销', value: '物码营销' },
               ]}
             />
           </Form.Item>

@@ -1,0 +1,21 @@
+.logoSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoImage {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* 尺寸变体 */
+.logoSection.small .logoImage {
+  height: 24px;
+}
+
+.logoSection.large .logoImage {
+  height: 48px;
+}
+

@@ -6,7 +6,7 @@ import type { UserProfile } from '../types/auth'
 import { AuthService } from '../services/auth-service'
 import { HomeService } from '../services/home-service'
 import type { HomeMessages, Message } from '../types/home'
-import systemLogo from '../assets/systemlogo.png'
+import { SystemLogo } from '../components/system-logo/system-logo'
 import styles from './client-main-layout.module.css'
 
 const { Header, Content } = Layout
@@ -128,7 +128,7 @@ export const ClientMainLayout = () => {
         <div className={styles.headerBar}>
           {/* Logo 区域 */}
           <div className={styles.brand} onClick={() => navigate('/home')}>
-            <img src={systemLogo} alt="系统Logo" className={styles.brandLogo} />
+            <SystemLogo size="default" />
           </div>
 
           {/* 模块标题 */}

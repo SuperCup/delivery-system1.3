@@ -2,7 +2,7 @@ import { Layout, Menu, theme, Avatar, Dropdown, Drawer, Badge, List, Typography,
 import { useMemo, useState, useEffect } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import styles from './basic-layout.module.css'
-import systemLogo from '../assets/systemlogo.png'
+import { SystemLogo } from '../components/system-logo/system-logo'
 import type { UserProfile } from '../types/auth'
 import { AuthService } from '../services/auth-service'
 import { HomeService } from '../services/home-service'
@@ -182,7 +182,7 @@ export const BasicLayout = () => {
             className={styles.brand} 
             onClick={() => navigate('/home')}
           >
-            <img src={systemLogo} alt="系统Logo" className={styles.brandLogo} />
+            <SystemLogo size="default" />
           </div>
 
           {/* 导航菜单 */}

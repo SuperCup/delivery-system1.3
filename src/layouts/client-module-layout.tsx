@@ -50,7 +50,7 @@ export const ClientModuleLayout = () => {
       {
         key: `/clients/${clientId}/data-delivery`,
         icon: <DatabaseOutlined />,
-        label: '数据交付',
+        label: '专属定制',
       },
       {
         key: `/clients/${clientId}/file-delivery`,
