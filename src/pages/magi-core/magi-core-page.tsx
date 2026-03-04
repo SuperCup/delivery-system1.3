@@ -1,10 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Card, Button, Empty, Tabs } from 'antd'
-import { ThunderboltOutlined, PlayCircleOutlined } from '@ant-design/icons'
+import { Card, Button, Empty, Tabs, Tag } from 'antd'
+import {
+  PlayCircleOutlined,
+  DeploymentUnitOutlined,
+  ArrowRightOutlined,
+} from '@ant-design/icons'
 import { getMagiAgents } from '../../services/magi-core-service'
 import type { MagiAgent } from '../../types/magi-core'
 import styles from './magi-core-page.module.css'
 
+const AGENT_CHAT_URL = 'https://agent-helper.netlify.app/'
 const CATEGORY_TABS = ['全部', '执行层', '策略层', '数据层']
 
 export default function MagiCorePage() {
@@ -34,23 +39,28 @@ export default function MagiCorePage() {
 
   return (
     <div className={styles.page}>
-      <Card className={styles.introCard}>
-        <div className={styles.header}>
-          <div>
-            <h3 style={{ marginBottom: 4 }}>魔盒 MagiCore 智能体集合</h3>
-            <div style={{ color: 'var(--ant-color-text-secondary)' }}>
-              帮助业务快速复用内部大模型、规则引擎与工作流，沉淀最佳实践能力。
-            </div>
+      {/* AI Agent Entry */}
+      <a
+        className={styles.heroCard}
+        href={AGENT_CHAT_URL}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <div className={styles.heroContent}>
+          <div className={styles.heroIconWrap}>
+            <DeploymentUnitOutlined className={styles.heroIcon} />
           </div>
-          <Button type="primary" size="large" icon={<ThunderboltOutlined />}>
-            创建我的智能体
-          </Button>
+          <div className={styles.heroText}>
+            <span className={styles.heroTitle}>即时零售运营 AI Agent</span>
+            <Tag bordered={false} className={styles.heroBadge}>NEW</Tag>
+          </div>
+          <span className={styles.heroDesc}>对话式 AI 运营助手，覆盖洞察、方案、投放等场景</span>
+          <div className={styles.heroBtnWrap}>
+            <span className={styles.heroBtnLabel}>开始对话</span>
+            <ArrowRightOutlined className={styles.heroBtnArrow} />
+          </div>
         </div>
-
-        <div className={styles.filterTips}>
-          精选覆盖执行层、策略层、数据层的智能体能力，帮助团队快速组合业务方案。
-        </div>
-      </Card>
+      </a>
 
       <Card className={styles.filterCard} bordered={false}>
         <Tabs

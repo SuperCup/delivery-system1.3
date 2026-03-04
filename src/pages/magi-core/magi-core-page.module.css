@@ -4,20 +4,109 @@
   gap: 16px;
 }
 
-.introCard :global(.ant-card-body) {
-  padding: 24px;
+/* ---- AI Agent Entry Banner ---- */
+.heroCard {
+  display: block;
+  border-radius: 12px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+  border: 1px solid #bae0ff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.header {
+.heroCard:hover {
+  border-color: #69b1ff;
+  box-shadow: 0 4px 16px rgba(22, 119, 255, 0.12);
+}
+
+.heroContent {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
 }
 
-.filterTips {
-  margin-top: 12px;
-  color: #475569;
-  font-size: 14px;
+.heroIconWrap {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1677ff, #4096ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroIcon {
+  font-size: 18px;
+  color: #fff;
+}
+
+.heroText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.heroTitle {
+  color: #1e293b;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.heroBadge {
+  background: linear-gradient(135deg, #1677ff, #4096ff);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  line-height: 1;
+  padding: 3px 6px;
+}
+
+.heroDesc {
+  color: #64748b;
+  font-size: 13px;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.heroBtnWrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1677ff, #4096ff);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.heroCard:hover .heroBtnWrap {
+  opacity: 0.9;
+}
+
+.heroBtnLabel {
+  white-space: nowrap;
+}
+
+.heroBtnArrow {
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.heroCard:hover .heroBtnArrow {
+  transform: translateX(3px);
 }
 
 .categoryTabs :global(.ant-tabs-nav) {
@@ -49,7 +138,7 @@
 
 .agentCard:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+  box-shadow: 0 12px 24px rgba(22, 119, 255, 0.18);
 }
 
 .agentCard :global(.ant-card-cover) {
