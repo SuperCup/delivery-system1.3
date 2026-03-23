@@ -41,6 +41,7 @@ import type {
   DataWarehouseBusinessType,
   DownloadCondition,
 } from '../../types/data-warehouse'
+import CollectionTaskTab from './collection-task-tab'
 import styles from './data-warehouse-page.module.css'
 
 const { Text, Title } = Typography
@@ -78,6 +79,7 @@ interface SourceGroup {
 }
 
 const DataWarehousePage = () => {
+  const [pageTab, setPageTab] = useState<'data' | 'collection'>('data')
   const [categories, setCategories] = useState<DataCategory[]>([])
   const [myClients, setMyClients] = useState<{ id: string; name: string }[]>([])
   const [loading, setLoading] = useState(false)
@@ -321,15 +323,33 @@ const DataWarehousePage = () => {
             <p>快速查询和下载您所负责客户的业务数据，支持在线查询与批量下载。</p>
           </div>
           <Space>
-            <Button icon={<HistoryOutlined />} onClick={handleOpenHistory}>
-              操作记录
-            </Button>
+            {pageTab === 'data' && (
+              <Button icon={<HistoryOutlined />} onClick={handleOpenHistory}>
+                操作记录
+              </Button>
+            )}
           </Space>
         </div>
+        <Tabs
+          activeKey={pageTab}
+          onChange={(k) => setPageTab(k as 'data' | 'collection')}
+          style={{ marginBottom: -16 }}
+          items={[
+            { key: 'data', label: '数据查询' },
+            { key: 'collection', label: '采集任务管理' },
+          ]}
+        />
       </Card>
 
+      {/* Collection Task Tab */}
+      {pageTab === 'collection' && (
+        <Card>
+          <CollectionTaskTab />
+        </Card>
+      )}
+
       {/* Main layout: left sidebar + right content */}
-      <div className={styles.mainLayout}>
+      {pageTab === 'data' && <div className={styles.mainLayout}>
         {/* Left: source list */}
         <Card className={styles.sidebarCard} size="small">
           <div className={styles.sidebarHeader}>
@@ -454,7 +474,7 @@ const DataWarehousePage = () => {
             </>
           )}
         </div>
-      </div>
+      </div>}
 
       {/* Query Drawer */}
       <Drawer

@@ -7,6 +7,9 @@ import type {
   DownloadRecord,
   DataWarehouseBusinessType,
   DownloadCondition,
+  CollectionPlatformConfig,
+  CollectionTask,
+  CollectionTaskStatus,
 } from '../types/data-warehouse'
 
 const mockMyClients = [
@@ -733,6 +736,185 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+// ---- 采集任务管理 Mock Data ----
+
+const commonCondBrand = { id: 'brand', label: '品牌', type: 'select' as const, required: true, options: [{ label: '达能', value: 'danone' }, { label: '伊利', value: 'yili' }, { label: '嘉士伯', value: 'carlsberg' }, { label: '百威', value: 'budweiser' }] }
+const commonCondCategory = { id: 'category', label: '品类', type: 'select' as const, required: false, options: [{ label: '全部品类', value: '' }, { label: '乳制品', value: 'dairy' }, { label: '饮料', value: 'beverage' }, { label: '零食', value: 'snack' }, { label: '母婴', value: 'baby' }] }
+const commonCondDate = { id: 'dateRange', label: '日期范围', type: 'dateRange' as const, required: true }
+const commonCondBillType = { id: 'billType', label: '账单类型', type: 'select' as const, required: true, options: [{ label: '日账单', value: 'day' }, { label: '月账单', value: 'month' }] }
+const commonCondPagePos = { id: 'pagePosition', label: '页面位置', type: 'select' as const, required: false, options: [{ label: '全部', value: '' }, { label: '首页-焦点图', value: 'home-banner' }, { label: '首页-商品流', value: 'home-feed' }, { label: '搜索-结果位', value: 'search-result' }, { label: '商详-加购模块', value: 'detail-cart' }, { label: '活动页-主会场', value: 'event-main' }] }
+const commonCondActivityId = { id: 'activityId', label: '活动ID', type: 'text' as const, required: false }
+
+const instRetailPages = [
+  {
+    id: 'sand-table',
+    name: '经营沙盘',
+    modules: [
+      { id: 'core-kpi', name: '核心指标', conditions: [commonCondBrand, commonCondCategory, commonCondDate] },
+      { id: 'sales-trend', name: '销售走势', conditions: [commonCondBrand, commonCondCategory, commonCondDate] },
+      { id: 'goods-rank', name: '商品排行', conditions: [commonCondBrand, commonCondCategory, commonCondDate] },
+      { id: 'competitor', name: '竞品对比', conditions: [commonCondBrand, commonCondDate] },
+    ],
+  },
+  {
+    id: 'activity-mgmt',
+    name: '活动管理',
+    modules: [
+      { id: 'activity-list', name: '活动列表', conditions: [commonCondBrand, commonCondDate] },
+      { id: 'activity-detail', name: '活动明细', conditions: [commonCondActivityId, commonCondDate] },
+    ],
+  },
+  {
+    id: 'bill-center',
+    name: '账单中心',
+    modules: [
+      { id: 'marketing-bill', name: '营销账单', conditions: [commonCondBillType, commonCondDate] },
+    ],
+  },
+  {
+    id: 'rtb-ads',
+    name: 'RTB广告',
+    modules: [
+      { id: 'rtb-detail', name: '投放明细', conditions: [commonCondPagePos, commonCondDate] },
+      { id: 'audience-pack', name: '人群包数据', conditions: [commonCondBrand] },
+    ],
+  },
+]
+
+const collectionPlatformConfigs: CollectionPlatformConfig[] = [
+  { platformId: 'meituan', platformName: '美团闪购', pages: instRetailPages },
+  { platformId: 'taobao-flash', platformName: '淘宝闪购', pages: instRetailPages },
+  { platformId: 'jddj', platformName: '京东到家', pages: instRetailPages },
+  { platformId: 'dmall', platformName: '多点', pages: instRetailPages },
+  {
+    platformId: 'alipay',
+    platformName: '支付宝',
+    pages: [
+      {
+        id: 'activity-center',
+        name: '活动中心',
+        modules: [
+          { id: 'alipay-act-list', name: '活动列表', conditions: [commonCondBrand, commonCondDate] },
+          { id: 'alipay-act-detail', name: '活动明细', conditions: [commonCondActivityId, commonCondDate] },
+        ],
+      },
+      {
+        id: 'bill-center',
+        name: '账单中心',
+        modules: [
+          { id: 'alipay-bill', name: '营销账单', conditions: [commonCondBillType, commonCondDate] },
+          { id: 'alipay-nfc-bill', name: '碰一碰账单', conditions: [commonCondDate] },
+        ],
+      },
+      {
+        id: 'merchant-mgmt',
+        name: '商户管理',
+        modules: [
+          { id: 'merchant-list', name: '商户清单', conditions: [commonCondBrand] },
+        ],
+      },
+    ],
+  },
+  {
+    platformId: 'wechat-ministore',
+    platformName: '微信小店',
+    pages: [
+      {
+        id: 'activity-mgmt',
+        name: '活动管理',
+        modules: [
+          { id: 'wx-act-list', name: '活动列表', conditions: [commonCondBrand, commonCondDate] },
+          { id: 'wx-act-bill', name: '活动账单', conditions: [commonCondBillType, commonCondDate] },
+        ],
+      },
+      {
+        id: 'shop-bill',
+        name: '小店账单',
+        modules: [
+          { id: 'wx-sales-bill', name: '销售账单', conditions: [commonCondDate] },
+        ],
+      },
+    ],
+  },
+  {
+    platformId: 'douyin',
+    platformName: '抖音来客',
+    pages: [
+      {
+        id: 'activity-mgmt',
+        name: '活动管理',
+        modules: [
+          { id: 'dy-act-list', name: '活动列表', conditions: [commonCondBrand, commonCondDate] },
+          { id: 'dy-act-bill', name: '活动账单', conditions: [commonCondDate] },
+        ],
+      },
+    ],
+  },
+]
+
+const mockCollectionTasks: CollectionTask[] = [
+  {
+    id: 'CT-001',
+    name: '达能美团闪购11月经营数据',
+    platformId: 'meituan', platformName: '美团闪购',
+    clientId: 'C-001', clientName: '达能',
+    period: ['2025-11-01', '2025-11-30'],
+    modules: [
+      { pageId: 'sand-table', pageName: '经营沙盘', moduleId: 'core-kpi', moduleName: '核心指标', conditionGroups: [{ brand: 'danone', category: 'dairy', dateRange: '2025-11-01~2025-11-30' }, { brand: 'danone', category: 'beverage', dateRange: '2025-11-01~2025-11-30' }] },
+      { pageId: 'sand-table', pageName: '经营沙盘', moduleId: 'sales-trend', moduleName: '销售走势', conditionGroups: [{ brand: 'danone', category: 'dairy', dateRange: '2025-11-01~2025-11-30' }, { brand: 'danone', category: 'beverage', dateRange: '2025-11-01~2025-11-30' }] },
+      { pageId: 'bill-center', pageName: '账单中心', moduleId: 'marketing-bill', moduleName: '营销账单', conditionGroups: [{ billType: 'day', dateRange: '2025-11-01~2025-11-30' }] },
+    ],
+    status: '执行中', createdBy: '张三', createdAt: '2025-11-12 10:30', reviewedBy: '数据组-李四', reviewedAt: '2025-11-12 14:00',
+  },
+  {
+    id: 'CT-002',
+    name: '伊利京东到家Q4活动数据',
+    platformId: 'jddj', platformName: '京东到家',
+    clientId: 'C-002', clientName: '伊利',
+    period: ['2025-10-01', '2025-12-31'],
+    modules: [
+      { pageId: 'activity-mgmt', pageName: '活动管理', moduleId: 'activity-list', moduleName: '活动列表', conditionGroups: [{ brand: 'yili', dateRange: '2025-10-01~2025-12-31' }] },
+      { pageId: 'activity-mgmt', pageName: '活动管理', moduleId: 'activity-detail', moduleName: '活动明细', conditionGroups: [{ activityId: '', dateRange: '2025-10-01~2025-12-31' }] },
+    ],
+    status: '待复核', createdBy: '王五', createdAt: '2025-11-11 16:20',
+  },
+  {
+    id: 'CT-003',
+    name: '嘉士伯支付宝10月账单',
+    platformId: 'alipay', platformName: '支付宝',
+    clientId: 'C-004', clientName: '嘉士伯',
+    period: ['2025-10-01', '2025-10-31'],
+    modules: [
+      { pageId: 'bill-center', pageName: '账单中心', moduleId: 'alipay-bill', moduleName: '营销账单', conditionGroups: [{ billType: 'month', dateRange: '2025-10-01~2025-10-31' }] },
+    ],
+    status: '已完成', createdBy: '张三', createdAt: '2025-11-01 09:00', reviewedBy: '数据组-李四', reviewedAt: '2025-11-01 10:30',
+  },
+  {
+    id: 'CT-004',
+    name: '百威多点RTB投放数据',
+    platformId: 'dmall', platformName: '多点',
+    clientId: 'C-006', clientName: '百威',
+    period: ['2025-11-01', '2025-11-30'],
+    modules: [
+      { pageId: 'rtb-ads', pageName: 'RTB广告', moduleId: 'rtb-detail', moduleName: '投放明细', conditionGroups: [{ pagePosition: 'home-banner', dateRange: '2025-11-01~2025-11-30' }, { pagePosition: 'home-feed', dateRange: '2025-11-01~2025-11-30' }] },
+      { pageId: 'rtb-ads', pageName: 'RTB广告', moduleId: 'audience-pack', moduleName: '人群包数据', conditionGroups: [{ brand: 'budweiser' }] },
+    ],
+    status: '草稿', createdBy: '王五', createdAt: '2025-11-13 14:00',
+  },
+  {
+    id: 'CT-005',
+    name: '达能淘宝闪购双11专项',
+    platformId: 'taobao-flash', platformName: '淘宝闪购',
+    clientId: 'C-001', clientName: '达能',
+    period: ['2025-11-01', '2025-11-15'],
+    modules: [
+      { pageId: 'sand-table', pageName: '经营沙盘', moduleId: 'core-kpi', moduleName: '核心指标', conditionGroups: [{ brand: 'danone', category: '', dateRange: '2025-11-01~2025-11-15' }] },
+      { pageId: 'sand-table', pageName: '经营沙盘', moduleId: 'competitor', moduleName: '竞品对比', conditionGroups: [{ brand: 'danone', dateRange: '2025-11-01~2025-11-15' }] },
+    ],
+    status: '已暂停', createdBy: '张三', createdAt: '2025-11-10 11:00', reviewedBy: '数据组-赵六', reviewedAt: '2025-11-10 15:00',
+  },
+]
+
 export class DataWarehouseService {
   static async getPlatforms(): Promise<DataSourcePlatform[]> {
     await delay(200)
@@ -913,5 +1095,33 @@ export class DataWarehouseService {
       }
       return true
     })
+  }
+
+  // ---- 采集任务管理 ----
+  static getCollectionPlatformConfigs(): CollectionPlatformConfig[] {
+    return collectionPlatformConfigs
+  }
+
+  static async getCollectionTasks(): Promise<CollectionTask[]> {
+    await delay(200)
+    return [...mockCollectionTasks]
+  }
+
+  static async createCollectionTask(task: Omit<CollectionTask, 'id' | 'createdAt' | 'status'>): Promise<CollectionTask> {
+    await delay(300)
+    const newTask: CollectionTask = {
+      ...task,
+      id: `CT-${String(mockCollectionTasks.length + 1).padStart(3, '0')}`,
+      status: '待复核',
+      createdAt: new Date().toLocaleString('zh-CN'),
+    }
+    mockCollectionTasks.unshift(newTask)
+    return newTask
+  }
+
+  static async updateCollectionTaskStatus(id: string, status: CollectionTaskStatus): Promise<void> {
+    await delay(200)
+    const task = mockCollectionTasks.find((t) => t.id === id)
+    if (task) task.status = status
   }
 }

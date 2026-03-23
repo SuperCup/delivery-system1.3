@@ -172,6 +172,17 @@ export const BasicLayout = () => {
     })
   }, [location, menuRoutes])
 
+  const handleMenuClick = (e: { key: string }) => {
+    // MagiCore：外部入口（新标签打开），不进入系统内的 /magi-core 页面
+    if (e.key === '/magi-core') {
+      window.open('https://agent-helper.netlify.app/', '_blank', 'noopener,noreferrer')
+      return
+    }
+    if (e.key.startsWith('/')) {
+      navigate(e.key)
+    }
+  }
+
   return (
     <Layout className={styles.layout}>
       {/* 顶部导航栏 */}
@@ -191,11 +202,7 @@ export const BasicLayout = () => {
               mode="horizontal"
               selectedKeys={[selectedMenuKey]}
               items={menuItems}
-              onClick={(e) => {
-                if (e.key.startsWith('/')) {
-                  navigate(e.key)
-                }
-              }}
+              onClick={handleMenuClick}
               className={styles.topMenu}
             />
           )}

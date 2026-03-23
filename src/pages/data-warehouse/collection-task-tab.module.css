@@ -1,0 +1,248 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.filterBar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.taskNameLink {
+  color: #1677ff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.taskNameLink:hover {
+  color: #4096ff;
+}
+
+/* ---- Create Task Drawer ---- */
+.drawerFooter {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.createSteps {
+  margin-bottom: 28px;
+}
+
+.stepForm {
+  max-width: 640px;
+}
+
+/* Module Step */
+.moduleStep {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.moduleStepHint {
+  padding: 8px 12px;
+  background: #f0f7ff;
+  border-radius: 6px;
+  border: 1px solid #bae0ff;
+}
+
+.pageCollapse :global(.ant-collapse-header) {
+  align-items: center !important;
+}
+
+.pageLabel {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.moduleList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 0 8px;
+}
+
+.moduleCheckbox {
+  min-width: 120px;
+}
+
+/* Condition Groups Area */
+.condGroupsArea {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.condGroupsLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  padding: 0 2px;
+}
+
+.condGroupCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #fafbfc;
+}
+
+.condGroupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.condGroupTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  background: #e2e8f0;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.addGroupBtn {
+  width: 100%;
+  border-style: dashed;
+}
+
+.conditionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.conditionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.conditionLabel {
+  font-size: 12px;
+  color: #475569;
+}
+
+.condRequired {
+  color: #ef4444;
+  margin-right: 2px;
+}
+
+/* Confirm Step */
+.confirmStep {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.confirmInfo {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.confirmRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.confirmLabel {
+  flex-shrink: 0;
+  width: 90px;
+  font-size: 13px;
+  color: #94a3b8;
+  padding-top: 1px;
+}
+
+.confirmPageGroup {
+  margin-bottom: 12px;
+}
+
+.confirmPageName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+  padding-left: 4px;
+  border-left: 3px solid #1677ff;
+  padding-left: 8px;
+}
+
+.confirmModuleList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 12px;
+}
+
+.confirmModuleItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.confirmModuleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.confirmGroupList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.confirmGroupItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.confirmHint {
+  padding: 10px 14px;
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+/* Detail Drawer */
+.detailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0 8px;
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detailLabel {
+  flex-shrink: 0;
+  width: 90px;
+  font-size: 13px;
+  color: #94a3b8;
+}

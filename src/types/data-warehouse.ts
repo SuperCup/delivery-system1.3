@@ -112,3 +112,60 @@ export interface DownloadRecord {
   downloadedAt: string
   fileSize: string
 }
+
+// ---- 采集任务管理 Types ----
+
+export type CollectionTaskStatus = '草稿' | '待复核' | '执行中' | '已完成' | '已暂停' | '已取消'
+
+export type CollectionConditionInputType = 'select' | 'dateRange' | 'text'
+
+export interface CollectionConditionDef {
+  id: string
+  label: string
+  type: CollectionConditionInputType
+  required: boolean
+  options?: { label: string; value: string }[]
+}
+
+export interface CollectionPlatformModule {
+  id: string
+  name: string
+  conditions: CollectionConditionDef[]
+}
+
+export interface CollectionPlatformPage {
+  id: string
+  name: string
+  modules: CollectionPlatformModule[]
+}
+
+export interface CollectionPlatformConfig {
+  platformId: string
+  platformName: string
+  pages: CollectionPlatformPage[]
+}
+
+export interface CollectionTaskModuleEntry {
+  pageId: string
+  pageName: string
+  moduleId: string
+  moduleName: string
+  conditionGroups: Record<string, string>[]
+}
+
+export interface CollectionTask {
+  id: string
+  name: string
+  platformId: string
+  platformName: string
+  clientId: string
+  clientName: string
+  period: [string, string]
+  modules: CollectionTaskModuleEntry[]
+  status: CollectionTaskStatus
+  createdBy: string
+  createdAt: string
+  reviewedBy?: string
+  reviewedAt?: string
+  remark?: string
+}
