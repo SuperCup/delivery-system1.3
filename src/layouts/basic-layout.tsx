@@ -1,5 +1,5 @@
 import { Layout, Menu, theme, Avatar, Dropdown, Drawer, Badge, List, Typography, Button, message } from 'antd'
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import styles from './basic-layout.module.css'
 import { SystemLogo } from '../components/system-logo/system-logo'
@@ -21,6 +21,7 @@ export const BasicLayout = () => {
   const [messagesDrawerVisible, setMessagesDrawerVisible] = useState(false)
   const [homeMessages, setHomeMessages] = useState<HomeMessages | null>(null)
   const [messagesLoading, setMessagesLoading] = useState(false)
+  const magiCoreWindowRef = useRef<Window | null>(null)
 
   // 加载用户信息
   useEffect(() => {
@@ -108,6 +109,8 @@ export const BasicLayout = () => {
       }
       return pathname === route || pathname.startsWith(`${route}/`)
     })
+    // MagiCore 作为外部入口，不需要选中态（不显示下划线/高亮）
+    if (matched === '/magi-core') return ''
     return matched ?? ''
   }, [location, menuRoutes])
 
@@ -149,12 +152,12 @@ export const BasicLayout = () => {
   const menuItems = useMemo(
     () => [
       { key: '/home', label: '首页' },
-      { key: '/magi-core', label: '魔盒 MagiCore' },
+      { key: '/magi-core', label: '魔盒 MagiCore', className: styles.magiCoreMenuItem },
       { key: '/knowledge-base', label: '知识库' },
       { key: '/data-warehouse', label: '数据赋能' },
-        { key: '/tools-market', label: '工具市场' },
+      { key: '/tools-market', label: '工具市场' },
       { key: '/permission-center', label: '权限中心' },
-      ],
+    ],
     [],
   )
 
@@ -175,7 +178,17 @@ export const BasicLayout = () => {
   const handleMenuClick = (e: { key: string }) => {
     // MagiCore：外部入口（新标签打开），不进入系统内的 /magi-core 页面
     if (e.key === '/magi-core') {
-      window.open('https://agent-helper.netlify.app/', '_blank', 'noopener,noreferrer')
+      // 若已打开则直接切换到对应标签；否则新开一个标签
+      if (magiCoreWindowRef.current && !magiCoreWindowRef.current.closed) {
+        magiCoreWindowRef.current.focus()
+        return
+      }
+      // 使用固定 windowName 提高“复用同一标签”的成功率
+      magiCoreWindowRef.current = window.open(
+        'https://agent-helper.netlify.app/',
+        'magiCoreAgent',
+      )
+      magiCoreWindowRef.current?.focus()
       return
     }
     if (e.key.startsWith('/')) {

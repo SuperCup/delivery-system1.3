@@ -153,6 +153,21 @@
   color: #1677ff;
 }
 
+/* 魔盒菜单项：任何状态下都不显示下划线 / 选中态 */
+.topMenu :global(.ant-menu-item.magiCoreMenuItem)::after,
+.topMenu :global(.ant-menu-item.magiCoreMenuItem:hover)::after,
+.topMenu :global(.ant-menu-item.magiCoreMenuItem:active)::after {
+  border-bottom: none !important;
+  border-bottom-width: 0 !important;
+  inset-inline: unset !important;
+  transition: none !important;
+}
+
+.topMenu :global(.ant-menu-item.magiCoreMenuItem.ant-menu-item-active) {
+  color: #64748b !important;
+  background: none !important;
+}
+
 .brand {
   display: flex;
   align-items: center;
