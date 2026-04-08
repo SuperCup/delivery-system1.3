@@ -1,4 +1,4 @@
-import { Layout, Menu, theme, Avatar, Dropdown, Drawer, Badge, List, Typography, Button, message } from 'antd'
+import { Layout, Menu, theme, Avatar, Dropdown, Drawer, Badge, List, Typography, Button, message, Tag } from 'antd'
 import { useMemo, useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import styles from './basic-layout.module.css'
@@ -7,6 +7,8 @@ import type { UserProfile } from '../types/auth'
 import { AuthService } from '../services/auth-service'
 import { HomeService } from '../services/home-service'
 import type { HomeMessages, Message } from '../types/home'
+import { AiAgentEntryService } from '../services/ai-agent-entry-service'
+import type { AiAgentId } from '../types/ai-agent-entry'
 
 const { Paragraph, Text } = Typography
 import { UserOutlined, LogoutOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons'
@@ -21,11 +23,13 @@ export const BasicLayout = () => {
   const [messagesDrawerVisible, setMessagesDrawerVisible] = useState(false)
   const [homeMessages, setHomeMessages] = useState<HomeMessages | null>(null)
   const [messagesLoading, setMessagesLoading] = useState(false)
-  const magiCoreWindowRef = useRef<Window | null>(null)
+  const agentWindowsRef = useRef<Record<AiAgentId, Window | null>>({
+    'inst-retail': null,
+    'daodian-marketing': null,
+  })
+  const [agentEntries, setAgentEntries] = useState<ReturnType<typeof AiAgentEntryService.getAgentEntries> extends Promise<infer T> ? T : never>([])
 
-  // 加载用户信息
   useEffect(() => {
-    // 检查是否已登录
     if (!AuthService.isAuthenticated()) {
       navigate('/login', { replace: true })
       return
@@ -37,14 +41,24 @@ export const BasicLayout = () => {
         setUser(userData)
       } catch (error) {
         console.error('加载用户信息失败:', error)
-        // 如果加载失败，可能是未登录，跳转到登录页
         navigate('/login', { replace: true })
       }
     }
     loadUser()
   }, [navigate])
 
-  // 加载消息数据
+  useEffect(() => {
+    const loadAgentEntries = async () => {
+      try {
+        const entries = await AiAgentEntryService.getAgentEntries()
+        setAgentEntries(entries)
+      } catch {
+        setAgentEntries([])
+      }
+    }
+    loadAgentEntries()
+  }, [])
+
   const loadMessages = async () => {
     setMessagesLoading(true)
     try {
@@ -58,7 +72,6 @@ export const BasicLayout = () => {
     }
   }
 
-  // 打开消息抽屉时加载数据
   const handleBellClick = () => {
     setMessagesDrawerVisible(true)
     if (!homeMessages) {
@@ -88,7 +101,6 @@ export const BasicLayout = () => {
     )
   }
 
-  // 计算当前选中的菜单项（处理子路由的情况）
   const menuRoutes = useMemo(
     () => [
       '/home',
@@ -109,12 +121,10 @@ export const BasicLayout = () => {
       }
       return pathname === route || pathname.startsWith(`${route}/`)
     })
-    // MagiCore 作为外部入口，不需要选中态（不显示下划线/高亮）
     if (matched === '/magi-core') return ''
     return matched ?? ''
   }, [location, menuRoutes])
 
-  // 用户下拉菜单
   const userMenuItems = useMemo(() => [
     {
       key: 'profile',
@@ -138,7 +148,6 @@ export const BasicLayout = () => {
 
   const handleUserMenuClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
-      // 退出登录逻辑
       AuthService.logout()
       message.success('已退出登录')
       navigate('/login', { replace: true })
@@ -152,43 +161,59 @@ export const BasicLayout = () => {
   const menuItems = useMemo(
     () => [
       { key: '/home', label: '首页' },
-      { key: '/magi-core', label: '魔盒 MagiCore', className: styles.magiCoreMenuItem },
+      {
+        key: '/magi-core',
+        label: '魔盒 MagiCore',
+        className: styles.magiCoreMenuItem,
+        children: agentEntries.map((entry) => ({
+          key: `agent:${entry.id}`,
+          label: (
+            <span className={styles.agentMenuRow}>
+              <span className={styles.agentMenuText}>{entry.name}</span>
+              {!entry.isOnline && (
+                <Tag
+                  bordered={false}
+                  color="default"
+                  style={{ fontSize: 11, padding: '0 5px', lineHeight: '18px', marginLeft: 4 }}
+                >
+                  即将上线
+                </Tag>
+              )}
+            </span>
+          ),
+          disabled: !entry.isOnline,
+        })),
+      },
       { key: '/knowledge-base', label: '知识库' },
       { key: '/data-warehouse', label: '数据赋能' },
       { key: '/tools-market', label: '工具市场' },
       { key: '/permission-center', label: '权限中心' },
     ],
-    [],
+    [agentEntries],
   )
 
-  // 所有菜单路由列表
-  // 判断当前路由是否在菜单中
   const isMenuRoute = useMemo(() => {
     const { pathname } = location
-    // 检查是否匹配菜单路由或子路由
     return menuRoutes.some(route => {
       if (route === '/home') {
         return pathname === '/home'
       }
-      // 对于其他路由，检查是否以该路由开头（支持子路由）
       return pathname.startsWith(route)
     })
   }, [location, menuRoutes])
 
   const handleMenuClick = (e: { key: string }) => {
-    // MagiCore：外部入口（新标签打开），不进入系统内的 /magi-core 页面
-    if (e.key === '/magi-core') {
-      // 若已打开则直接切换到对应标签；否则新开一个标签
-      if (magiCoreWindowRef.current && !magiCoreWindowRef.current.closed) {
-        magiCoreWindowRef.current.focus()
+    if (e.key.startsWith('agent:')) {
+      const agentId = e.key.replace('agent:', '') as AiAgentId
+      const entry = agentEntries.find((x) => x.id === agentId && x.isOnline)
+      if (!entry) return
+      const existing = agentWindowsRef.current[agentId]
+      if (existing && !existing.closed) {
+        existing.focus()
         return
       }
-      // 使用固定 windowName 提高“复用同一标签”的成功率
-      magiCoreWindowRef.current = window.open(
-        'https://agent-helper.netlify.app/',
-        'magiCoreAgent',
-      )
-      magiCoreWindowRef.current?.focus()
+      agentWindowsRef.current[agentId] = window.open(entry.url, `agent:${agentId}`)
+      agentWindowsRef.current[agentId]?.focus()
       return
     }
     if (e.key.startsWith('/')) {
@@ -198,18 +223,15 @@ export const BasicLayout = () => {
 
   return (
     <Layout className={styles.layout}>
-      {/* 顶部导航栏 */}
       <Header className={styles.header}>
         <div className={styles.headerBar}>
-          {/* Logo */}
-          <div 
-            className={styles.brand} 
+          <div
+            className={styles.brand}
             onClick={() => navigate('/home')}
           >
             <SystemLogo size="default" />
           </div>
 
-          {/* 导航菜单 */}
           {isMenuRoute && selectedMenuKey && (
             <Menu
               mode="horizontal"
@@ -220,22 +242,19 @@ export const BasicLayout = () => {
             />
           )}
 
-          {/* 右侧区域 */}
           <div className={styles.headerRight}>
-            {/* 通知图标 */}
             <Badge count={homeMessages?.messages.filter(m => !m.isRead).length || 0} size="small">
-              <BellOutlined 
-                style={{ fontSize: '18px', color: token.colorTextSecondary, cursor: 'pointer' }} 
+              <BellOutlined
+                style={{ fontSize: '18px', color: token.colorTextSecondary, cursor: 'pointer' }}
                 onClick={handleBellClick}
               />
             </Badge>
-            
-            {/* 用户信息 */}
+
             <Dropdown menu={{ items: userMenuItems, onClick: handleUserMenuClick }} placement="bottomRight">
               <div className={styles.userBox}>
-                <Avatar 
-                  size="default" 
-                  icon={<UserOutlined />} 
+                <Avatar
+                  size="default"
+                  icon={<UserOutlined />}
                   style={{ backgroundColor: '#d9d9d9' }}
                 />
                 <span className={styles.userName}>{user?.name || '加载中...'}</span>
@@ -245,7 +264,6 @@ export const BasicLayout = () => {
         </div>
       </Header>
 
-      {/* 布局主体 */}
       <Layout>
         <Layout>
           <Content className={styles.content}>
@@ -254,7 +272,6 @@ export const BasicLayout = () => {
         </Layout>
       </Layout>
 
-      {/* 消息抽屉 */}
       <Drawer
         title={
           <div className={styles.drawerHeader}>

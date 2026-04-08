@@ -105,37 +105,52 @@
   transform: scale(1.15);
 }
 
-/* 下拉菜单样式 */
+/* MagiCore 悬停下拉菜单弹窗 */
 .topMenu :global(.ant-menu-submenu-popup) {
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  padding: 8px;
-  margin-top: 8px;
+  border-radius: 18px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.13), 0 2px 12px rgba(0, 0, 0, 0.07) !important;
+  padding: 8px !important;
+  margin-top: 4px !important;
+  min-width: 260px !important;
+  overflow: hidden;
+}
+
+.topMenu :global(.ant-menu-submenu-popup > .ant-menu) {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 .topMenu :global(.ant-menu-submenu-popup .ant-menu-item) {
-  height: 40px;
-  line-height: 40px;
-  margin: 4px 0;
-  border-radius: 6px;
-  padding: 0 16px;
-  transition: all 0.2s ease;
+  height: auto !important;
+  line-height: 1 !important;
+  margin: 3px 0 !important;
+  border-radius: 12px !important;
+  padding: 10px 12px !important;
+  transition: background 0.15s ease !important;
 }
 
 .topMenu :global(.ant-menu-submenu-popup .ant-menu-item:hover) {
-  background: linear-gradient(135deg, rgba(22, 119, 255, 0.1), rgba(64, 150, 255, 0.06));
-  color: #1677ff;
-  transform: translateX(4px);
+  background: rgba(22, 119, 255, 0.06) !important;
+  transform: none !important;
 }
 
-.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-selected) {
-  background: linear-gradient(135deg, rgba(22, 119, 255, 0.15), rgba(64, 150, 255, 0.1));
-  color: #1677ff;
-  font-weight: 600;
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-selected),
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-active) {
+  background: rgba(22, 119, 255, 0.08) !important;
+  color: inherit !important;
+  font-weight: inherit !important;
 }
 
-.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-selected::before) {
-  display: none;
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-selected::before),
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item::after) {
+  display: none !important;
+}
+
+.topMenu :global(.ant-menu-submenu-popup .ant-menu-item-disabled) {
+  cursor: default !important;
+  opacity: 0.5;
 }
 
 /* 下拉箭头样式 */
@@ -153,19 +168,34 @@
   color: #1677ff;
 }
 
-/* 魔盒菜单项：任何状态下都不显示下划线 / 选中态 */
-.topMenu :global(.ant-menu-item.magiCoreMenuItem)::after,
-.topMenu :global(.ant-menu-item.magiCoreMenuItem:hover)::after,
-.topMenu :global(.ant-menu-item.magiCoreMenuItem:active)::after {
+/* 魔盒菜单项（SubMenu 模式）：不显示下划线 / 选中态 */
+.topMenu :global(.ant-menu-submenu.magiCoreMenuItem > .ant-menu-submenu-title)::after,
+.topMenu :global(.ant-menu-submenu.magiCoreMenuItem.ant-menu-submenu-active > .ant-menu-submenu-title)::after,
+.topMenu :global(.ant-menu-submenu.magiCoreMenuItem.ant-menu-submenu-open > .ant-menu-submenu-title)::after {
   border-bottom: none !important;
   border-bottom-width: 0 !important;
   inset-inline: unset !important;
   transition: none !important;
 }
 
-.topMenu :global(.ant-menu-item.magiCoreMenuItem.ant-menu-item-active) {
+.topMenu :global(.ant-menu-submenu.magiCoreMenuItem.ant-menu-submenu-selected > .ant-menu-submenu-title) {
   color: #64748b !important;
-  background: none !important;
+}
+
+/* SubMenu 下拉菜单内的 Agent 菜单项 */
+.agentMenuRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 3px 0;
+}
+
+
+.agentMenuText {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
 }
 
 .brand {
