@@ -958,7 +958,7 @@ const mockCollectionTasks: CollectionTask[] = [
       { pageId: 'activity-mgmt', pageName: '活动管理', moduleId: 'activity-list', moduleName: '活动列表', conditionGroups: [{ brand: 'yili', dateRange: '2025-10-01~2025-12-31' }] },
       { pageId: 'activity-mgmt', pageName: '活动管理', moduleId: 'activity-detail', moduleName: '活动明细', conditionGroups: [{ activityId: '', dateRange: '2025-10-01~2025-12-31' }] },
     ],
-    status: '待复核', createdBy: '王五', createdAt: '2025-11-11 16:20',
+    status: '执行中', createdBy: '王五', createdAt: '2025-11-11 16:20',
   },
   {
     id: 'CT-003',
@@ -981,7 +981,7 @@ const mockCollectionTasks: CollectionTask[] = [
       { pageId: 'rtb-ads', pageName: 'RTB广告', moduleId: 'rtb-detail', moduleName: '投放明细', conditionGroups: [{ pagePosition: 'home-banner', dateRange: '2025-11-01~2025-11-30' }, { pagePosition: 'home-feed', dateRange: '2025-11-01~2025-11-30' }] },
       { pageId: 'rtb-ads', pageName: 'RTB广告', moduleId: 'audience-pack', moduleName: '人群包数据', conditionGroups: [{ brand: 'budweiser' }] },
     ],
-    status: '草稿', createdBy: '王五', createdAt: '2025-11-13 14:00',
+    status: '已暂停', createdBy: '王五', createdAt: '2025-11-13 14:00',
   },
   {
     id: 'CT-005',
@@ -1231,9 +1231,13 @@ export class DataWarehouseService {
     })
     const acquisitionDistribution = Array.from(acqMap.entries()).map(([method, v]) => ({ method, ...v }))
 
-    const taskStatusMap = new Map<CollectionTaskStatus, number>()
-    tasks.forEach((t) => taskStatusMap.set(t.status, (taskStatusMap.get(t.status) ?? 0) + 1))
-    const taskStatusSummary = Array.from(taskStatusMap.entries()).map(([status, count]) => ({ status, count }))
+    const allowedTaskStatuses: CollectionTaskStatus[] = ['执行中', '已完成', '已暂停']
+    const taskStatusMap = new Map<CollectionTaskStatus, number>(allowedTaskStatuses.map((s) => [s, 0]))
+    tasks.forEach((t) => {
+      if (!allowedTaskStatuses.includes(t.status)) return
+      taskStatusMap.set(t.status, (taskStatusMap.get(t.status) ?? 0) + 1)
+    })
+    const taskStatusSummary = allowedTaskStatuses.map((status) => ({ status, count: taskStatusMap.get(status) ?? 0 }))
 
     const recentUpdates = [...cats]
       .sort((a, b) => b.lastUpdatedAt.localeCompare(a.lastUpdatedAt))

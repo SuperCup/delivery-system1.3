@@ -28,10 +28,7 @@ import {
   SearchOutlined,
   CheckCircleOutlined,
   SyncOutlined,
-  ClockCircleOutlined,
   PauseCircleOutlined,
-  CloseCircleOutlined,
-  EditOutlined,
   EyeOutlined,
   StopOutlined,
   PlayCircleOutlined,
@@ -53,13 +50,10 @@ const { Text, Title } = Typography
 const { RangePicker } = DatePicker
 const { Panel } = Collapse
 
-const STATUS_CONFIG: Record<CollectionTaskStatus, { color: string; icon: React.ReactNode; label: string }> = {
-  草稿: { color: 'default', icon: <EditOutlined />, label: '草稿' },
-  待复核: { color: 'warning', icon: <ClockCircleOutlined />, label: '待复核' },
+const STATUS_CONFIG: Partial<Record<CollectionTaskStatus, { color: string; icon: React.ReactNode; label: string }>> = {
   执行中: { color: 'processing', icon: <SyncOutlined spin />, label: '执行中' },
   已完成: { color: 'success', icon: <CheckCircleOutlined />, label: '已完成' },
   已暂停: { color: 'default', icon: <PauseCircleOutlined />, label: '已暂停' },
-  已取消: { color: 'error', icon: <CloseCircleOutlined />, label: '已取消' },
 }
 
 const MY_CLIENTS = [
@@ -556,7 +550,11 @@ function CreateTaskDrawer({ open, onClose, onCreated, platformConfigs }: CreateT
 // ---- Task Detail Drawer ----
 function TaskDetailDrawer({ task, onClose }: { task: CollectionTask | null; onClose: () => void }) {
   if (!task) return null
-  const { color, icon, label } = STATUS_CONFIG[task.status]
+  const { color, icon, label } = STATUS_CONFIG[task.status] ?? {
+    color: 'default',
+    icon: <StopOutlined />,
+    label: task.status,
+  }
 
   // group modules by page
   const byPage = task.modules.reduce<Record<string, CollectionTask['modules']>>((acc, m) => {
@@ -670,7 +668,7 @@ export default function CollectionTaskTab() {
     {
       title: '状态', dataIndex: 'status', width: 90,
       render: (s: CollectionTaskStatus) => {
-        const { color, icon, label } = STATUS_CONFIG[s]
+        const { color, icon, label } = STATUS_CONFIG[s] ?? { color: 'default', icon: <StopOutlined />, label: s }
         return <Tag color={color} icon={icon}>{label}</Tag>
       },
     },
@@ -693,11 +691,7 @@ export default function CollectionTaskTab() {
               <Tooltip title="恢复"><Button type="text" size="small" icon={<PlayCircleOutlined />} /></Tooltip>
             </Popconfirm>
           )}
-          {(r.status === '草稿' || r.status === '待复核') && (
-            <Popconfirm title="确认取消该任务？" onConfirm={() => handleStatusChange(r.id, '已取消')}>
-              <Tooltip title="取消"><Button type="text" size="small" danger icon={<StopOutlined />} /></Tooltip>
-            </Popconfirm>
-          )}
+          {/* 已收敛为：执行中 / 已完成 / 已暂停（无需草稿/待复核/取消态操作） */}
         </Space>
       ),
     },
@@ -722,7 +716,7 @@ export default function CollectionTaskTab() {
           onChange={setFilterClient} allowClear options={MY_CLIENTS.map((c) => ({ label: c.name, value: c.id }))} />
         <Select placeholder="状态" style={{ width: 110 }} value={filterStatus || undefined}
           onChange={(v) => setFilterStatus(v ?? '')} allowClear
-          options={Object.keys(STATUS_CONFIG).map((s) => ({ label: s, value: s }))} />
+          options={(['执行中', '已完成', '已暂停'] as CollectionTaskStatus[]).map((s) => ({ label: s, value: s }))} />
       </div>
 
       <Table rowKey="id" loading={loading} dataSource={filtered} columns={columns} size="small"

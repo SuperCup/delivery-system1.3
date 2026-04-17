@@ -7,16 +7,13 @@ import {
   SyncOutlined,
   AppstoreOutlined,
   CheckCircleOutlined,
-  ClockCircleOutlined,
   PauseCircleOutlined,
-  EditOutlined,
-  StopOutlined,
 } from '@ant-design/icons'
 import { DataWarehouseService } from '../../services/data-warehouse-service'
 import type { DashboardStats } from '../../types/data-warehouse'
 import styles from './data-dashboard-tab.module.css'
 
-const { Text, Title } = Typography
+const { Text } = Typography
 
 const businessColorMap: Record<string, string> = {
   '到店营销': '#2f54eb',
@@ -36,13 +33,16 @@ const acquisitionColorMap: Record<string, string> = {
   '共享数仓': 'purple',
 }
 
+const acquisitionStrokeMap: Record<string, string> = {
+  '平台爬取': '#2f54eb',
+  '平台开放接口': '#13c2c2',
+  '共享数仓': '#722ed1',
+}
+
 const taskStatusConfig: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
   '执行中': { color: '#52c41a', icon: <SyncOutlined spin />, label: '执行中' },
-  '待复核': { color: '#faad14', icon: <ClockCircleOutlined />, label: '待复核' },
   '已完成': { color: '#1890ff', icon: <CheckCircleOutlined />, label: '已完成' },
   '已暂停': { color: '#d9d9d9', icon: <PauseCircleOutlined />, label: '已暂停' },
-  '草稿': { color: '#bfbfbf', icon: <EditOutlined />, label: '草稿' },
-  '已取消': { color: '#ff4d4f', icon: <StopOutlined />, label: '已取消' },
 }
 
 const DataDashboardTab = () => {
@@ -58,7 +58,7 @@ const DataDashboardTab = () => {
   if (loading || !stats) {
     return (
       <Card>
-        <Skeleton active paragraph={{ rows: 8 }} />
+        <Skeleton active paragraph={{ rows: 4 }} />
       </Card>
     )
   }
@@ -69,12 +69,12 @@ const DataDashboardTab = () => {
 
   return (
     <div className={styles.root}>
-      {/* KPI 卡片 */}
+      {/* KPI 卡片行 */}
       <div className={styles.kpiRow}>
         <Card className={styles.kpiCard}>
           <div className={styles.kpiInner}>
             <div className={styles.kpiIcon} style={{ background: 'rgba(47,84,235,0.08)', color: '#2f54eb' }}>
-              <DatabaseOutlined style={{ fontSize: 22 }} />
+              <DatabaseOutlined style={{ fontSize: 18 }} />
             </div>
             <div className={styles.kpiText}>
               <div className={styles.kpiValue}>{totalRecords.toLocaleString()}</div>
@@ -86,7 +86,7 @@ const DataDashboardTab = () => {
         <Card className={styles.kpiCard}>
           <div className={styles.kpiInner}>
             <div className={styles.kpiIcon} style={{ background: 'rgba(82,196,26,0.08)', color: '#52c41a' }}>
-              <AppstoreOutlined style={{ fontSize: 22 }} />
+              <AppstoreOutlined style={{ fontSize: 18 }} />
             </div>
             <div className={styles.kpiText}>
               <div className={styles.kpiValue}>{stats.totalCategories}</div>
@@ -98,7 +98,7 @@ const DataDashboardTab = () => {
         <Card className={styles.kpiCard}>
           <div className={styles.kpiInner}>
             <div className={styles.kpiIcon} style={{ background: 'rgba(114,46,209,0.08)', color: '#722ed1' }}>
-              <CloudDownloadOutlined style={{ fontSize: 22 }} />
+              <CloudDownloadOutlined style={{ fontSize: 18 }} />
             </div>
             <div className={styles.kpiText}>
               <div className={styles.kpiValue}>{stats.totalPlatforms}</div>
@@ -110,7 +110,7 @@ const DataDashboardTab = () => {
         <Card className={styles.kpiCard}>
           <div className={styles.kpiInner}>
             <div className={styles.kpiIcon} style={{ background: 'rgba(250,173,20,0.08)', color: '#faad14' }}>
-              <SyncOutlined style={{ fontSize: 22 }} />
+              <SyncOutlined style={{ fontSize: 18 }} />
             </div>
             <div className={styles.kpiText}>
               <div className={styles.kpiValue}>{stats.activeCollectionTasks}</div>
@@ -120,25 +120,19 @@ const DataDashboardTab = () => {
         </Card>
       </div>
 
-      {/* 中部：业务线 + 获取方式 */}
-      <div className={styles.midRow}>
+      {/* 详情行：4 列 */}
+      <div className={styles.detailRow}>
         {/* 各业务线数据体量 */}
-        <Card className={styles.midCard} title={<Title level={5} style={{ margin: 0 }}>各业务线数据体量</Title>}>
-          <Text type="secondary" style={{ fontSize: 12, display: 'block', marginBottom: 16 }}>
-            按业务板块统计已入库的数据总量
-          </Text>
+        <Card className={styles.detailCard} title="各业务线数据体量">
           {stats.businessDistribution.map((item) => (
             <div key={item.type} className={styles.distItem}>
               <div className={styles.distHeader}>
                 <span>
-                  <span
-                    className={styles.distDot}
-                    style={{ background: businessColorMap[item.type] }}
-                  />
-                  <Text strong>{item.type}</Text>
+                  <span className={styles.distDot} style={{ background: businessColorMap[item.type] }} />
+                  <Text style={{ fontSize: 12 }}>{item.type}</Text>
                 </span>
-                <Text type="secondary" style={{ fontSize: 12 }}>
-                  {item.categories} 类 · {item.records.toLocaleString()} 条
+                <Text type="secondary" style={{ fontSize: 11 }}>
+                  {item.records.toLocaleString()} 条
                 </Text>
               </div>
               <Progress
@@ -146,110 +140,76 @@ const DataDashboardTab = () => {
                 strokeColor={businessColorMap[item.type]}
                 showInfo={false}
                 size="small"
-                style={{ marginBottom: 4 }}
               />
-              <Text type="secondary" style={{ fontSize: 11 }}>
-                占总量 {((item.records / totalRecords) * 100).toFixed(1)}%
-              </Text>
             </div>
           ))}
         </Card>
 
         {/* 获取方式分布 */}
-        <Card className={styles.midCard} title={<Title level={5} style={{ margin: 0 }}>数据获取方式分布</Title>}>
-          <Text type="secondary" style={{ fontSize: 12, display: 'block', marginBottom: 16 }}>
-            按采集技术方案统计数据来源情况
-          </Text>
+        <Card className={styles.detailCard} title="数据获取方式分布">
           {stats.acquisitionDistribution.map((item) => (
             <div key={item.method} className={styles.distItem}>
               <div className={styles.distHeader}>
-                <span>
-                  <Tag
-                    color={acquisitionColorMap[item.method]}
-                    icon={acquisitionIconMap[item.method]}
-                    style={{ marginRight: 8 }}
-                  >
-                    {item.method}
-                  </Tag>
-                </span>
-                <Text type="secondary" style={{ fontSize: 12 }}>
-                  {item.categories} 类 · {item.records.toLocaleString()} 条
+                <Tag
+                  color={acquisitionColorMap[item.method]}
+                  icon={acquisitionIconMap[item.method]}
+                  style={{ marginBottom: 0, fontSize: 11 }}
+                >
+                  {item.method}
+                </Tag>
+                <Text type="secondary" style={{ fontSize: 11 }}>
+                  {item.records.toLocaleString()} 条
                 </Text>
               </div>
               <Progress
                 percent={Math.round((item.records / acqMax) * 100)}
-                strokeColor={acquisitionColorMap[item.method] === 'blue' ? '#2f54eb' : acquisitionColorMap[item.method] === 'cyan' ? '#13c2c2' : '#722ed1'}
+                strokeColor={acquisitionStrokeMap[item.method]}
                 showInfo={false}
                 size="small"
-                style={{ marginBottom: 4 }}
               />
-              <Text type="secondary" style={{ fontSize: 11 }}>
-                占总量 {((item.records / totalRecords) * 100).toFixed(1)}%
-              </Text>
             </div>
           ))}
         </Card>
-      </div>
 
-      {/* 底部：近期更新 + 采集任务状态 */}
-      <div className={styles.bottomRow}>
-        {/* 近期数据更新 */}
-        <Card className={styles.bottomCard} title={<Title level={5} style={{ margin: 0 }}>近期入库更新</Title>}>
-          <Text type="secondary" style={{ fontSize: 12, display: 'block', marginBottom: 12 }}>
-            按最近更新时间排序，展示最新入库的数据集
-          </Text>
-          {stats.recentUpdates.map((item, idx) => (
+        {/* 近期入库更新 */}
+        <Card className={styles.detailCard} title="近期入库更新">
+          {stats.recentUpdates.slice(0, 5).map((item, idx) => (
             <div key={item.categoryId}>
-              {idx > 0 && <Divider style={{ margin: '8px 0' }} />}
+              {idx > 0 && <Divider style={{ margin: '4px 0' }} />}
               <div className={styles.updateItem}>
                 <div className={styles.updateLeft}>
-                  <span
-                    className={styles.distDot}
-                    style={{ background: businessColorMap[item.businessType] }}
-                  />
-                  <div>
-                    <Text strong style={{ fontSize: 13 }}>{item.platformName}</Text>
-                    <Text type="secondary" style={{ fontSize: 12, marginLeft: 8 }}>
-                      {item.categoryName}
-                    </Text>
-                  </div>
+                  <span className={styles.distDot} style={{ background: businessColorMap[item.businessType] }} />
+                  <Text style={{ fontSize: 12 }} ellipsis>
+                    {item.platformName}
+                    <Text type="secondary" style={{ marginLeft: 4 }}>· {item.categoryName}</Text>
+                  </Text>
                 </div>
-                <Text type="secondary" style={{ fontSize: 12 }}>{item.updatedAt}</Text>
+                <Text type="secondary" style={{ fontSize: 11, flexShrink: 0 }}>
+                  {item.updatedAt.split(' ')[0]}
+                </Text>
               </div>
             </div>
           ))}
         </Card>
 
         {/* 采集任务运行情况 */}
-        <Card className={styles.bottomCard} title={<Title level={5} style={{ margin: 0 }}>采集任务运行情况</Title>}>
-          <Text type="secondary" style={{ fontSize: 12, display: 'block', marginBottom: 16 }}>
-            当前所有采集任务的状态汇总
-          </Text>
+        <Card className={styles.detailCard} title="采集任务状态">
           <div className={styles.taskGrid}>
             {stats.taskStatusSummary.map((item) => {
               const cfg = taskStatusConfig[item.status] ?? { color: '#999', icon: null, label: item.status }
               return (
                 <div key={item.status} className={styles.taskStatusItem}>
-                  <Badge
-                    count={item.count}
-                    style={{ backgroundColor: cfg.color }}
-                    overflowCount={99}
-                  />
-                  <div className={styles.taskStatusIcon} style={{ color: cfg.color }}>
-                    {cfg.icon}
-                  </div>
-                  <Text style={{ fontSize: 13 }}>{cfg.label}</Text>
+                  <Badge count={item.count} style={{ backgroundColor: cfg.color }} overflowCount={99} />
+                  <div className={styles.taskStatusIcon} style={{ color: cfg.color }}>{cfg.icon}</div>
+                  <Text style={{ fontSize: 11 }}>{cfg.label}</Text>
                 </div>
               )
             })}
           </div>
-
-          <Divider style={{ margin: '16px 0' }} />
           <div className={styles.taskTip}>
-            <SyncOutlined style={{ color: '#52c41a', marginRight: 6 }} />
-            <Text type="secondary" style={{ fontSize: 12 }}>
-              系统每日自动采集并更新，确保数据及时入库。如需新增采集范围，
-              请前往「采集任务管理」发起任务。
+            <SyncOutlined style={{ color: '#52c41a', marginRight: 6, flexShrink: 0 }} />
+            <Text type="secondary" style={{ fontSize: 11 }}>
+              系统每日自动采集，如需扩展请前往「采集任务管理」。
             </Text>
           </div>
         </Card>
