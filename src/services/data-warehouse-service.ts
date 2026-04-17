@@ -6,11 +6,89 @@ import type {
   ImportRecord,
   DownloadRecord,
   DataWarehouseBusinessType,
+  AcquisitionMethod,
   DownloadCondition,
   CollectionPlatformConfig,
   CollectionTask,
   CollectionTaskStatus,
+  DashboardStats,
 } from '../types/data-warehouse'
+
+// 每个数据类型的采集来源地址
+const sourcePagePaths: Record<string, string> = {
+  'alipay-activity':              'https://b.alipay.com/page/activity-center/list · 活动中心 - 活动列表',
+  'alipay-bill':                  'https://b.alipay.com/page/bill-center/marketing-bill · 账单中心 - 营销账单',
+  'alipay-touch':                 'https://b.alipay.com/page/bill-center/nfc-bill · 账单中心 - 碰一碰账单',
+  'alipay-merchant':              'https://b.alipay.com/page/merchant-center · 商户管理 - 商户清单',
+  'wechat-activity':              'https://pay.weixin.qq.com/marketing/activity-list · 营销中心 - 活动管理',
+  'wechat-bill':                  'https://pay.weixin.qq.com/marketing/bill · 营销中心 - 营销账单',
+  'wechat-shop-activity':         'https://pay.weixin.qq.com/ministore/activity · 微信小店 - 活动详情',
+  'wechat-shop-bill':             'https://pay.weixin.qq.com/ministore/bill · 微信小店 - 账单中心',
+  'wechat-shop-platform-activity':'https://shop.weixin.qq.com/activity/list · 小店管理 - 活动列表',
+  'wechat-shop-platform-bill':    'https://shop.weixin.qq.com/finance/bill · 小店管理 - 账单中心',
+  'douyin-activity':              'https://school.jinritemai.com/marketing/activity · 活动管理 - 活动列表',
+  'douyin-bill':                  'https://school.jinritemai.com/finance/bill-center · 财务中心 - 账单',
+  'meituan-plan':                 'https://e.dianping.com/flash/marketing-plan · 即时零售 - 营销方案',
+  'meituan-bill':                 'https://e.dianping.com/flash/bill-center · 即时零售 - 账单中心',
+  'meituan-rtb':                  'https://e.dianping.com/flash/rtb-ads · 即时零售 - RTB广告投放',
+  'taobao-plan':                  'https://flash.taobao.com/marketing-plan · 闪购后台 - 营销方案',
+  'taobao-bill':                  'https://flash.taobao.com/bill-center · 闪购后台 - 账单中心',
+  'taobao-rtb':                   'https://flash.taobao.com/rtb-ads · 闪购后台 - RTB广告',
+  'jd-plan':                      'https://daojia.jd.com/marketing/plan · 京东到家 - 营销方案',
+  'jd-bill':                      'https://daojia.jd.com/finance/bill-center · 京东到家 - 账单中心',
+  'jd-rtb':                       'https://daojia.jd.com/rtb/ads · 京东到家 - RTB广告',
+  'duodian-plan':                 'https://e.dmall.com/marketing-plan · 多点 - 营销方案',
+  'duodian-bill':                 'https://e.dmall.com/bill-center · 多点 - 账单中心',
+  'duodian-rtb':                  'https://e.dmall.com/rtb-ads · 多点 - RTB广告投放',
+  'internal-behavior':            '内部数仓同步 · 物码行为事件表 · 参考文档：物码事件埋点规范 v2.1',
+}
+
+// 常见字段名对应的示例值（面向业务人员展示）
+const commonFieldExamples: Record<string, string> = {
+  '活动ID': 'ACT-20251101-008',
+  '方案ID': 'PLAN-20251101-012',
+  '活动名称': '双11品牌营销专场',
+  '方案名称': '全场满减促销',
+  '方案类型': '满减',
+  '开始日期': '2025-11-01',
+  '结束日期': '2025-11-11',
+  '开始时间': '2025-11-01 00:00:00',
+  '结束时间': '2025-11-11 23:59:59',
+  '开始/结束日期': '2025-11-01 ~ 2025-11-11',
+  '开始/结束时间': '2025-11-01 00:00:00 ~ 2025-11-11 23:59:59',
+  '预算(元)': '500,000',
+  '状态': '进行中',
+  '活动类型': '满减',
+  '账单日期': '2025-11-10',
+  '账单类型': '日账单',
+  '消耗金额(元)': '35,800',
+  '核销金额(元)': '52,140',
+  '消耗(元)': '35,800',
+  '核销(元)': '52,140',
+  '订单笔数': '326',
+  '核销笔数': '326',
+  '订单数': '326',
+  'ROI': '1.46',
+  '日期': '2025-11-10',
+  '目标页面': '首页',
+  '模块': '焦点图',
+  '曝光量': '28,450',
+  '点击量': '1,823',
+  '转化数': '234',
+  '时间': '2025-11-10 10:23:45',
+  '用户ID': 'U_****_8829（已脱敏）',
+  '行为类型': '扫码',
+  '渠道': '小程序',
+  '设备类型': 'iOS',
+  '商户ID': 'M-10045',
+  '商户名称': '华东旗舰直营店',
+  '区域': '华东',
+  '开通状态': '已开通',
+  '签约日期': '2024-06-15',
+  '交易笔数': '158',
+  '交易金额(元)': '23,400',
+  '核销率': '87.3%',
+}
 
 const mockMyClients = [
   { id: 'C-001', name: '达能' },
@@ -616,11 +694,15 @@ function flattenCategories(): DataCategory[] {
         supportImport: false,
         icon: iconByPlatform[platform.id] ?? 'database',
         tags: [platform.name, dt.name],
-        fields: dt.fields,
+        fields: dt.fields.map((f) => ({
+          ...f,
+          example: f.example ?? commonFieldExamples[f.name],
+        })),
         downloadConditions: dt.downloadConditions,
         sampleClients: mockMyClients.map((c) => c.name),
         recordCount: dt.recordCount,
         lastUpdatedAt: dt.lastUpdatedAt,
+        sourcePagePath: sourcePagePaths[dt.id] ?? `${platform.name} · ${dt.name}`,
       })
     })
   })
@@ -1123,5 +1205,83 @@ export class DataWarehouseService {
     await delay(200)
     const task = mockCollectionTasks.find((t) => t.id === id)
     if (task) task.status = status
+  }
+
+  static async getDashboardStats(): Promise<DashboardStats> {
+    await delay(200)
+    const cats = flattenCategories()
+    const tasks = mockCollectionTasks
+
+    const totalRecords = cats.reduce((s, c) => s + c.recordCount, 0)
+    const totalPlatforms = new Set(cats.map((c) => c.platformId)).size
+    const totalCategories = cats.length
+    const activeCollectionTasks = tasks.filter((t) => t.status === '执行中').length
+
+    const bizMap = new Map<DataWarehouseBusinessType, { records: number; categories: number }>()
+    cats.forEach((c) => {
+      const cur = bizMap.get(c.businessType) ?? { records: 0, categories: 0 }
+      bizMap.set(c.businessType, { records: cur.records + c.recordCount, categories: cur.categories + 1 })
+    })
+    const businessDistribution = Array.from(bizMap.entries()).map(([type, v]) => ({ type, ...v }))
+
+    const acqMap = new Map<AcquisitionMethod, { categories: number; records: number }>()
+    cats.forEach((c) => {
+      const cur = acqMap.get(c.acquisitionMethod) ?? { categories: 0, records: 0 }
+      acqMap.set(c.acquisitionMethod, { categories: cur.categories + 1, records: cur.records + c.recordCount })
+    })
+    const acquisitionDistribution = Array.from(acqMap.entries()).map(([method, v]) => ({ method, ...v }))
+
+    const taskStatusMap = new Map<CollectionTaskStatus, number>()
+    tasks.forEach((t) => taskStatusMap.set(t.status, (taskStatusMap.get(t.status) ?? 0) + 1))
+    const taskStatusSummary = Array.from(taskStatusMap.entries()).map(([status, count]) => ({ status, count }))
+
+    const recentUpdates = [...cats]
+      .sort((a, b) => b.lastUpdatedAt.localeCompare(a.lastUpdatedAt))
+      .slice(0, 6)
+      .map((c) => ({
+        categoryId: c.id,
+        categoryName: c.name,
+        platformName: c.platformName,
+        businessType: c.businessType,
+        updatedAt: c.lastUpdatedAt,
+      }))
+
+    return {
+      totalRecords,
+      totalPlatforms,
+      totalCategories,
+      activeCollectionTasks,
+      businessDistribution,
+      acquisitionDistribution,
+      recentUpdates,
+      taskStatusSummary,
+    }
+  }
+
+  static async getCategorySampleData(
+    categoryId: string,
+  ): Promise<Record<string, string | number>[]> {
+    await delay(150)
+    const cats = flattenCategories()
+    const cat = cats.find((c) => c.id === categoryId)
+    if (!cat) return []
+    const platform = findPlatformById(cat.platformId)
+    if (!platform) return []
+    const records = generateSampleRecords(
+      categoryId,
+      cat.platformId,
+      'C-001',
+      '达能（示例）',
+      cat.businessType,
+      3,
+    )
+    const fieldNames = cat.fields.map((f) => f.name)
+    return records.map((r) => {
+      const row: Record<string, string | number> = {}
+      fieldNames.forEach((name) => {
+        if (r[name] !== undefined) row[name] = r[name] as string | number
+      })
+      return row
+    })
   }
 }

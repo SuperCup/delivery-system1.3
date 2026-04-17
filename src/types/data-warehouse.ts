@@ -27,6 +27,7 @@ export interface DataField {
   id: string
   name: string
   description: string
+  example?: string
 }
 
 /** 单一数据类型（如：活动详情、营销账单） */
@@ -39,6 +40,7 @@ export interface DataType {
   downloadConditions: DownloadCondition[]
   recordCount: number
   lastUpdatedAt: string
+  sourcePagePath: string
 }
 
 /** 数据来源平台（如：支付宝、微信、美团闪购） */
@@ -72,6 +74,24 @@ export interface DataCategory {
   sampleClients: string[]
   recordCount: number
   lastUpdatedAt: string
+  sourcePagePath: string
+}
+
+export interface DashboardStats {
+  totalRecords: number
+  totalPlatforms: number
+  totalCategories: number
+  activeCollectionTasks: number
+  businessDistribution: { type: DataWarehouseBusinessType; records: number; categories: number }[]
+  acquisitionDistribution: { method: AcquisitionMethod; categories: number; records: number }[]
+  recentUpdates: {
+    categoryId: string
+    categoryName: string
+    platformName: string
+    businessType: DataWarehouseBusinessType
+    updatedAt: string
+  }[]
+  taskStatusSummary: { status: CollectionTaskStatus; count: number }[]
 }
 
 export interface DataRecord {

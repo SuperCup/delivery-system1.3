@@ -95,13 +95,13 @@ export class BusinessRegionService {
   /**
    * 创建业务区域映射
    */
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   static async createBusinessRegionMapping(
     _clientId: string,
     regionName: string,
     cityCodes: string[],
   ): Promise<BusinessRegionMapping> {
     // 模拟API调用
+    void _clientId
     await new Promise((resolve) => setTimeout(resolve, 500))
 
     return {
@@ -112,12 +112,10 @@ export class BusinessRegionService {
       updatedAt: new Date().toLocaleString('zh-CN', { hour12: false }),
     }
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   /**
    * 更新业务区域映射
    */
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   static async updateBusinessRegionMapping(
     _clientId: string,
     _mappingId: string,
@@ -125,9 +123,12 @@ export class BusinessRegionService {
     _cityCodes: string[],
   ): Promise<void> {
     // 模拟API调用
+    void _clientId
+    void _mappingId
+    void _regionName
+    void _cityCodes
     await new Promise((resolve) => setTimeout(resolve, 500))
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   /**
    * 删除业务区域映射

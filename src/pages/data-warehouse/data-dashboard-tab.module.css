@@ -1,0 +1,180 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* KPI Row */
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.kpiCard :global(.ant-card-body) {
+  padding: 20px 24px;
+}
+
+.kpiInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.kpiIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpiText {
+  flex: 1;
+  min-width: 0;
+}
+
+.kpiValue {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgba(0, 0, 0, 0.88);
+  letter-spacing: -0.5px;
+}
+
+.kpiLabel {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 4px;
+}
+
+/* Mid Row */
+.midRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.midCard :global(.ant-card-head) {
+  padding: 16px 20px 0;
+  border-bottom: none;
+  min-height: auto;
+}
+
+.midCard :global(.ant-card-head-title) {
+  padding: 0 0 12px;
+}
+
+.midCard :global(.ant-card-body) {
+  padding: 0 20px 20px;
+}
+
+/* Distribution items */
+.distItem {
+  margin-bottom: 16px;
+}
+
+.distItem:last-child {
+  margin-bottom: 0;
+}
+
+.distHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.distDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Bottom Row */
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.bottomCard :global(.ant-card-head) {
+  padding: 16px 20px 0;
+  border-bottom: none;
+  min-height: auto;
+}
+
+.bottomCard :global(.ant-card-head-title) {
+  padding: 0 0 12px;
+}
+
+.bottomCard :global(.ant-card-body) {
+  padding: 0 20px 20px;
+}
+
+/* Recent updates */
+.updateItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.updateLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* Task status grid */
+.taskGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.taskStatusItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  text-align: center;
+}
+
+.taskStatusIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.taskTip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding: 10px 12px;
+  background: rgba(82, 196, 26, 0.04);
+  border-radius: 6px;
+  border: 1px solid rgba(82, 196, 26, 0.15);
+  line-height: 1.6;
+}
+
+@media (max-width: 1200px) {
+  .kpiRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .midRow,
+  .bottomRow {
+    grid-template-columns: 1fr;
+  }
+}

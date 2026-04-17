@@ -30,6 +30,7 @@ import {
   FileExcelOutlined,
   HistoryOutlined,
   InfoCircleOutlined,
+  EyeOutlined,
 } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import { DataWarehouseService } from '../../services/data-warehouse-service'
@@ -42,6 +43,8 @@ import type {
   DownloadCondition,
 } from '../../types/data-warehouse'
 import CollectionTaskTab from './collection-task-tab'
+import DataDashboardTab from './data-dashboard-tab'
+import WarehouseDetailDrawer from './warehouse-detail-drawer'
 import styles from './data-warehouse-page.module.css'
 
 const { Text, Title } = Typography
@@ -79,7 +82,15 @@ interface SourceGroup {
 }
 
 const DataWarehousePage = () => {
-  const [pageTab, setPageTab] = useState<'data' | 'collection'>('data')
+  const [pageTab, setPageTab] = useState<'warehouse' | 'data' | 'collection'>('warehouse')
+
+  const [detailDrawerOpen, setDetailDrawerOpen] = useState(false)
+  const [detailCategory, setDetailCategory] = useState<DataCategory | null>(null)
+
+  const handleOpenDetail = useCallback((cat: DataCategory) => {
+    setDetailCategory(cat)
+    setDetailDrawerOpen(true)
+  }, [])
   const [categories, setCategories] = useState<DataCategory[]>([])
   const [myClients, setMyClients] = useState<{ id: string; name: string }[]>([])
   const [loading, setLoading] = useState(false)
@@ -320,25 +331,33 @@ const DataWarehousePage = () => {
         <div className={styles.headerContent}>
           <div className={styles.headerLeft}>
             <h3>数据赋能</h3>
-            <p>快速查询和下载您所负责客户的业务数据，支持在线查询与批量下载。</p>
+            <p>集中管理已采集数据，支持总体看板、仓库浏览、在线查询与采集任务管理。</p>
           </div>
-          <Space>
-            {pageTab === 'data' && (
-              <Button icon={<HistoryOutlined />} onClick={handleOpenHistory}>
-                操作记录
-              </Button>
-            )}
-          </Space>
         </div>
-        <Tabs
-          activeKey={pageTab}
-          onChange={(k) => setPageTab(k as 'data' | 'collection')}
-          style={{ marginBottom: -16 }}
-          items={[
-            { key: 'data', label: '数据查询' },
-            { key: 'collection', label: '采集任务管理' },
-          ]}
-        />
+      </Card>
+
+      {/* 数据看板 - 常驻页面顶部 */}
+      <DataDashboardTab />
+
+      {/* 功能区 Tab - 数据仓库 / 数据查询 / 采集任务管理 */}
+      <Card className={styles.headerCard}>
+        <div className={styles.tabBarRow}>
+          <Tabs
+            activeKey={pageTab}
+            onChange={(k) => setPageTab(k as 'warehouse' | 'data' | 'collection')}
+            style={{ marginBottom: -16, flex: 1 }}
+            items={[
+              { key: 'warehouse', label: '数据仓库' },
+              { key: 'data', label: '数据查询' },
+              { key: 'collection', label: '采集任务管理' },
+            ]}
+          />
+          {pageTab === 'data' && (
+            <Button icon={<HistoryOutlined />} onClick={handleOpenHistory} style={{ marginBottom: 16 }}>
+              操作记录
+            </Button>
+          )}
+        </div>
       </Card>
 
       {/* Collection Task Tab */}
@@ -349,7 +368,8 @@ const DataWarehousePage = () => {
       )}
 
       {/* Main layout: left sidebar + right content */}
-      {pageTab === 'data' && <div className={styles.mainLayout}>
+      {(pageTab === 'warehouse' || pageTab === 'data') && <div className={styles.mainLayout}>
+
         {/* Left: source list */}
         <Card className={styles.sidebarCard} size="small">
           <div className={styles.sidebarHeader}>
@@ -459,14 +479,24 @@ const DataWarehousePage = () => {
                         </Tooltip>
                         {cat.recordCount.toLocaleString()} 条 · 更新于 {cat.lastUpdatedAt.split(' ')[0]}
                       </div>
-                      <Button
-                        type="primary"
-                        size="small"
-                        icon={<SearchOutlined />}
-                        onClick={() => handleOpenQuery(cat)}
-                      >
-                        查询 / 下载
-                      </Button>
+                      {pageTab === 'warehouse' ? (
+                        <Button
+                          size="small"
+                          icon={<EyeOutlined />}
+                          onClick={() => handleOpenDetail(cat)}
+                        >
+                          查看详情
+                        </Button>
+                      ) : (
+                        <Button
+                          type="primary"
+                          size="small"
+                          icon={<SearchOutlined />}
+                          onClick={() => handleOpenQuery(cat)}
+                        >
+                          查询 / 下载
+                        </Button>
+                      )}
                     </div>
                   </Card>
                 ))}
@@ -759,6 +789,12 @@ const DataWarehousePage = () => {
           ]}
         />
       </Drawer>
+      {/* Warehouse Detail Drawer */}
+      <WarehouseDetailDrawer
+        open={detailDrawerOpen}
+        category={detailCategory}
+        onClose={() => setDetailDrawerOpen(false)}
+      />
     </div>
   )
 }

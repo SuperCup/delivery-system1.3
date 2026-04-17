@@ -26,6 +26,14 @@
   font-size: 13px;
 }
 
+/* Tab bar row with optional action button */
+.tabBarRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 /* Main two-column layout */
 .mainLayout {
   display: flex;
