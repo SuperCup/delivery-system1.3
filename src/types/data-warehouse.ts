@@ -40,7 +40,7 @@ export interface DataType {
   downloadConditions: DownloadCondition[]
   recordCount: number
   lastUpdatedAt: string
-  sourcePagePath: string
+  sourcePagePath?: string
 }
 
 /** 数据来源平台（如：支付宝、微信、美团闪购） */
