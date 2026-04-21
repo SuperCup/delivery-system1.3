@@ -1,0 +1,27 @@
+{
+  "id": "ACT-004",
+  "platform": "淘宝闪购",
+  "activityNature": "品牌活动",
+  "activityName": "伊利低温奶满赠",
+  "schemeId": "SCHEME-004",
+  "schemeName": "低温日配专场",
+  "startDate": "2025-11-01",
+  "endDate": "2025-11-10",
+  "status": "进行中",
+  "budget": 120000,
+  "usedBudget": 68000,
+  "orderCount": 920,
+  "totalAmount": 560000,
+  "mechanismName": "第二件半价",
+  "projectCode": "SG-250104",
+  "description": "伊利低温奶满赠",
+  "createdAt": "2025-10-30 11:00:00",
+  "createdBy": "运营C",
+  "metrics": {
+    "totalOrders": 920,
+    "totalAmount": 560000,
+    "avgOrderAmount": 608,
+    "conversionRate": 9.5
+  },
+  "orderData": []
+}

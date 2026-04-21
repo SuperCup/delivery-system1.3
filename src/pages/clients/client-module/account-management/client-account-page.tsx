@@ -24,6 +24,7 @@ import {
   FileTextOutlined,
   LinkOutlined,
   EditOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
 import type {
@@ -213,6 +214,18 @@ export default function ClientAccountPage() {
     }
   }
 
+  const handleDeleteAccount = async (account: ClientAccount) => {
+    if (!clientId) return
+    try {
+      await ClientAccountService.deleteAccount(clientId, account.id)
+      message.success('账号已删除')
+      await loadAccounts()
+    } catch (error) {
+      const err = error as Error
+      message.error(`删除失败：${err.message}`)
+    }
+  }
+
   const handleViewLoginLogs = async (account: ClientAccount) => {
     if (!clientId) return
     setViewingAccount(account)
@@ -348,7 +361,7 @@ export default function ClientAccountPage() {
     {
       title: '操作',
       key: 'action',
-      width: 220,
+      width: 280,
       fixed: 'right',
       render: (_: unknown, record: ClientAccount) => (
         <Space>
@@ -389,6 +402,17 @@ export default function ClientAccountPage() {
           >
             登录日志
           </Button>
+          <Popconfirm
+            title="确定删除该账号？"
+            description="删除后列表中将不再展示该账号（模拟数据下为本地持久化）。"
+            onConfirm={() => handleDeleteAccount(record)}
+            okText="确定"
+            cancelText="取消"
+          >
+            <Button type="link" danger size="small" icon={<DeleteOutlined />}>
+              删除
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },

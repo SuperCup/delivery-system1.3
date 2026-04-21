@@ -1,0 +1,27 @@
+{
+  "id": "ACT-005",
+  "platform": "淘宝闪购",
+  "activityNature": "品牌活动",
+  "activityName": "雀巢咖啡囤货节",
+  "schemeId": "SCHEME-005",
+  "schemeName": "咖啡品类周",
+  "startDate": "2025-11-08",
+  "endDate": "2025-11-18",
+  "status": "进行中",
+  "budget": 90000,
+  "usedBudget": 41000,
+  "orderCount": 640,
+  "totalAmount": 380000,
+  "mechanismName": "满100减20元",
+  "projectCode": "SG-250105",
+  "description": "雀巢咖啡囤货节",
+  "createdAt": "2025-11-02 09:30:00",
+  "createdBy": "运营C",
+  "metrics": {
+    "totalOrders": 640,
+    "totalAmount": 380000,
+    "avgOrderAmount": 594,
+    "conversionRate": 8.8
+  },
+  "orderData": []
+}

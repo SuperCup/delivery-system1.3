@@ -1,0 +1,27 @@
+{
+  "id": "ACT-002",
+  "platform": "京东到家",
+  "activityNature": "品牌活动",
+  "activityName": "达能品牌满减活动",
+  "schemeId": "SCHEME-002",
+  "schemeName": "11.11 到家狂欢",
+  "startDate": "2025-11-05",
+  "endDate": "2025-11-15",
+  "status": "进行中",
+  "budget": 300000,
+  "usedBudget": 180000,
+  "orderCount": 2500,
+  "totalAmount": 1800000,
+  "mechanismName": "满80减15元",
+  "projectCode": "SG-250102",
+  "description": "达能品牌满减活动",
+  "createdAt": "2025-10-28 14:00:00",
+  "createdBy": "运营B",
+  "metrics": {
+    "totalOrders": 2500,
+    "totalAmount": 1800000,
+    "avgOrderAmount": 720,
+    "conversionRate": 10.2
+  },
+  "orderData": []
+}

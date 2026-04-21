@@ -1,6 +1,7 @@
 {
   "id": "ACT-001",
   "platform": "美团闪购",
+  "activityNature": "平台活动",
   "activityName": "康师傅双十一满减活动",
   "schemeId": "SCHEME-001",
   "schemeName": "双十一闪购狂欢节",

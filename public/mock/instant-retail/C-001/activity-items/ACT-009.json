@@ -1,0 +1,27 @@
+{
+  "id": "ACT-009",
+  "platform": "美团闪购",
+  "activityNature": "平台活动",
+  "activityName": "统一汤达人品牌周",
+  "schemeId": "SCHEME-009",
+  "schemeName": "大牌满减专场",
+  "startDate": "2025-11-20",
+  "endDate": "2025-11-30",
+  "status": "进行中",
+  "budget": 220000,
+  "usedBudget": 95000,
+  "orderCount": 1400,
+  "totalAmount": 880000,
+  "mechanismName": "满69减15元",
+  "projectCode": "SG-250109",
+  "description": "统一汤达人品牌周",
+  "createdAt": "2025-11-06 08:00:00",
+  "createdBy": "运营A",
+  "metrics": {
+    "totalOrders": 1400,
+    "totalAmount": 880000,
+    "avgOrderAmount": 629,
+    "conversionRate": 10.8
+  },
+  "orderData": []
+}

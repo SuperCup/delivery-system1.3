@@ -1,0 +1,28 @@
+{
+  "id": "ACT-003",
+  "platform": "美团闪购",
+  "activityNature": "品牌活动",
+  "activityName": "冬季暖饮节",
+  "schemeId": "SCHEME-003",
+  "schemeName": "冬季暖饮节",
+  "startDate": "2025-11-15",
+  "endDate": "2025-11-30",
+  "status": "已下架",
+  "budget": 200000,
+  "usedBudget": 120000,
+  "orderCount": 1800,
+  "totalAmount": 1150000,
+  "mechanismName": "满减",
+  "description": "冬季暖饮促销活动",
+  "createdAt": "2025-11-01 09:00:00",
+  "createdBy": "运营A",
+  "offlineAt": "2025-11-20 16:00:00",
+  "offlineBy": "运营A",
+  "metrics": {
+    "totalOrders": 1800,
+    "totalAmount": 1150000,
+    "avgOrderAmount": 639,
+    "conversionRate": 8.1
+  },
+  "orderData": []
+}

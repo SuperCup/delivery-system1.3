@@ -1,0 +1,27 @@
+{
+  "id": "ACT-007",
+  "platform": "多点",
+  "activityNature": "品牌活动",
+  "activityName": "联合利华家清满额赠",
+  "schemeId": "SCHEME-007",
+  "schemeName": "家清品类日",
+  "startDate": "2025-11-06",
+  "endDate": "2025-11-16",
+  "status": "进行中",
+  "budget": 80000,
+  "usedBudget": 35000,
+  "orderCount": 480,
+  "totalAmount": 290000,
+  "mechanismName": "满额赠礼",
+  "projectCode": "SG-250107",
+  "description": "联合利华家清满额赠",
+  "createdAt": "2025-11-04 10:20:00",
+  "createdBy": "运营D",
+  "metrics": {
+    "totalOrders": 480,
+    "totalAmount": 290000,
+    "avgOrderAmount": 604,
+    "conversionRate": 7.6
+  },
+  "orderData": []
+}

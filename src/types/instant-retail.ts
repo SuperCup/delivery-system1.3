@@ -1,5 +1,17 @@
 // 即时零售平台类型
-export type InstantRetailPlatform = '美团闪购' | '淘宝闪购' | '京东到家'
+export type InstantRetailPlatform = '美团闪购' | '淘宝闪购' | '京东到家' | '多点'
+
+/** 活动性质：仅美团闪购区分平台/品牌活动，其余平台固定为品牌活动 */
+export type InstantRetailActivityNature = '平台活动' | '品牌活动'
+
+export function resolveInstantRetailActivityNature(
+  platform: InstantRetailPlatform,
+  explicit?: string,
+): InstantRetailActivityNature {
+  if (platform !== '美团闪购') return '品牌活动'
+  if (explicit === '平台活动' || explicit === '品牌活动') return explicit
+  return '品牌活动'
+}
 
 // 营销日历相关类型
 export interface MarketingCalendarActivity {
@@ -145,6 +157,8 @@ export interface ActivityItem {
   id: string
   platform: InstantRetailPlatform
   activityName: string
+  /** 活动性质（美团：平台活动/品牌活动；其他平台：品牌活动） */
+  activityNature?: InstantRetailActivityNature
   schemeId?: string // 关联的方案ID
   schemeName?: string // 方案名称
   startDate: string

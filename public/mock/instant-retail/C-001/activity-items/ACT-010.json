@@ -1,0 +1,27 @@
+{
+  "id": "ACT-010",
+  "platform": "美团闪购",
+  "activityNature": "品牌活动",
+  "activityName": "嘉士伯单品直降",
+  "schemeId": "SCHEME-010",
+  "schemeName": "啤酒单品直降",
+  "startDate": "2025-11-22",
+  "endDate": "2025-11-30",
+  "status": "进行中",
+  "budget": 100000,
+  "usedBudget": 30000,
+  "orderCount": 520,
+  "totalAmount": 310000,
+  "mechanismName": "单品直降",
+  "projectCode": "SG-250110",
+  "description": "嘉士伯单品直降",
+  "createdAt": "2025-11-07 16:10:00",
+  "createdBy": "运营A",
+  "metrics": {
+    "totalOrders": 520,
+    "totalAmount": 310000,
+    "avgOrderAmount": 596,
+    "conversionRate": 9.1
+  },
+  "orderData": []
+}

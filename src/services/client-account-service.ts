@@ -3,7 +3,25 @@
  */
 import type { ClientAccount, LoginLog, CreateAccountFormData } from '../types/client-account'
 
+const deletedAccountIdsStorageKey = (clientId: string) => `client-account:deleted:${clientId}`
+
 export class ClientAccountService {
+  private static readDeletedAccountIds(clientId: string): Set<string> {
+    try {
+      const raw = localStorage.getItem(deletedAccountIdsStorageKey(clientId))
+      if (!raw) return new Set()
+      const parsed = JSON.parse(raw) as unknown
+      return new Set(Array.isArray(parsed) ? parsed : [])
+    } catch {
+      return new Set()
+    }
+  }
+
+  private static filterDeletedAccounts(clientId: string, accounts: ClientAccount[]): ClientAccount[] {
+    const deleted = this.readDeletedAccountIds(clientId)
+    return accounts.filter((a) => !deleted.has(a.id))
+  }
+
   /**
    * 获取客户账号列表
    */
@@ -17,11 +35,11 @@ export class ClientAccountService {
         throw new Error('Failed to fetch accounts')
       }
       const data = await response.json()
-      return data.accounts || []
+      return this.filterDeletedAccounts(clientId, data.accounts || [])
     } catch {
       // 如果文件不存在，返回默认数据
       console.warn('Mock data not found, using default data')
-      return this.getDefaultAccounts()
+      return this.filterDeletedAccounts(clientId, this.getDefaultAccounts())
     }
   }
 
@@ -157,6 +175,19 @@ export class ClientAccountService {
   ): Promise<void> {
     // 模拟API调用
     await new Promise((resolve) => setTimeout(resolve, 500))
+  }
+
+  /**
+   * 删除账号（前端模拟：写入本地已删除列表，刷新后仍不展示）
+   */
+  static async deleteAccount(clientId: string, accountId: string): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    const key = deletedAccountIdsStorageKey(clientId)
+    const deleted = [...this.readDeletedAccountIds(clientId)]
+    if (!deleted.includes(accountId)) {
+      deleted.push(accountId)
+      localStorage.setItem(key, JSON.stringify(deleted))
+    }
   }
 
   /**

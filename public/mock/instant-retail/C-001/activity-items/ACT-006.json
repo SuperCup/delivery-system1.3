@@ -1,0 +1,27 @@
+{
+  "id": "ACT-006",
+  "platform": "京东到家",
+  "activityNature": "品牌活动",
+  "activityName": "百威啤酒夜场专享",
+  "schemeId": "SCHEME-006",
+  "schemeName": "酒水夜场",
+  "startDate": "2025-11-12",
+  "endDate": "2025-11-25",
+  "status": "进行中",
+  "budget": 150000,
+  "usedBudget": 88000,
+  "orderCount": 1100,
+  "totalAmount": 720000,
+  "mechanismName": "限时秒杀价",
+  "projectCode": "SG-250106",
+  "description": "百威啤酒夜场专享",
+  "createdAt": "2025-11-03 15:00:00",
+  "createdBy": "运营B",
+  "metrics": {
+    "totalOrders": 1100,
+    "totalAmount": 720000,
+    "avgOrderAmount": 655,
+    "conversionRate": 11.0
+  },
+  "orderData": []
+}

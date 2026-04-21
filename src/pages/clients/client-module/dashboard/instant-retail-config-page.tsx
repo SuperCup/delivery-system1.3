@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Card,
   Tabs,
@@ -11,6 +11,7 @@ import {
   Form,
   Input,
   Select,
+  Upload,
   Modal,
   message,
   InputNumber,
@@ -32,25 +33,32 @@ import {
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import styles from './instant-retail-config-page.module.css'
-import type {
-  ActivityScheme,
-  PlatformCrawledScheme,
-  InstantRetailPlatform,
-  PriceMonitoringTask,
-  PriceMonitoringSource,
-  PriceMonitoringFrequency,
-  ActivityItem,
-  ActivityDetailInfo,
+import {
+  resolveInstantRetailActivityNature,
+  type ActivityScheme,
+  type PlatformCrawledScheme,
+  type InstantRetailPlatform,
+  type InstantRetailActivityNature,
+  type PriceMonitoringTask,
+  type PriceMonitoringSource,
+  type PriceMonitoringFrequency,
+  type ActivityItem,
+  type ActivityDetailInfo,
 } from '../../../../types/instant-retail'
 import type { Contact } from '../../../../types/client'
 import { InstantRetailService } from '../../../../services/instant-retail-service'
 import { ClientActivityService } from '../../../../services/client-activity-service'
+import type {
+  InstantRetailMechanismMapping,
+  InstantRetailMechanismMappingUpsertInput,
+} from '../../../../types/instant-retail-mechanism'
+import { InstantRetailMechanismService } from '../../../../services/instant-retail-mechanism-service'
 
 const { Title, Text } = Typography
 const { RangePicker } = DatePicker
 const { MonthPicker } = DatePicker
 
-const platforms: InstantRetailPlatform[] = ['美团闪购', '淘宝闪购', '京东到家']
+const platforms: InstantRetailPlatform[] = ['美团闪购', '淘宝闪购', '京东到家', '多点']
 const sourceOptions: PriceMonitoringSource[] = ['RPA自动采集', '人工截图上传分析']
 const frequencyOptions: PriceMonitoringFrequency[] = ['每日', '每周', '每两周', '每月']
 
@@ -85,6 +93,12 @@ export default function InstantRetailConfigPage() {
   const [taskForm] = Form.useForm()
   const [viewingTask, setViewingTask] = useState<PriceMonitoringTask | null>(null)
 
+  // 机制管理相关状态（用于维护“自定义机制名称”映射）
+  const [mechanismMappings, setMechanismMappings] = useState<InstantRetailMechanismMapping[]>([])
+  const [mechanismFilterForm] = Form.useForm()
+  const mechanismFilterValues = Form.useWatch([], mechanismFilterForm)
+  const [mechanismSourceItems, setMechanismSourceItems] = useState<ActivityItem[]>([])
+
   useEffect(() => {
     if (!clientId) return
     loadContacts()
@@ -111,10 +125,13 @@ export default function InstantRetailConfigPage() {
           await loadSchemes()
           break
         case 'activity':
-          await loadActivityItems()
+          await Promise.all([loadActivityItems(), loadMechanismMappings()])
           break
         case 'monitoring':
           await loadMonitoringTasks()
+          break
+        case 'mechanism':
+          await Promise.all([loadMechanismMappings(), loadMechanismSourceItems()])
           break
       }
     } catch (error: unknown) {
@@ -210,6 +227,302 @@ export default function InstantRetailConfigPage() {
       const err = error as Error
       message.error(`加载监测任务失败：${err.message}`)
     }
+  }
+
+  const loadMechanismMappings = async () => {
+    if (!clientId) return
+    try {
+      const list = await InstantRetailMechanismService.list(clientId)
+      setMechanismMappings(list)
+    } catch (error: unknown) {
+      const err = error as Error
+      message.error(`加载机制管理数据失败：${err.message}`)
+    }
+  }
+
+  const loadMechanismSourceItems = async () => {
+    if (!clientId) return
+    try {
+      // 机制管理默认加载“平台侧机制明细”（基于活动明细派生）
+      const items = await InstantRetailService.getActivityItems(clientId)
+      setMechanismSourceItems(items)
+    } catch (error: unknown) {
+      const err = error as Error
+      message.error(`加载平台机制明细失败：${err.message}`)
+    }
+  }
+
+  const platformMechanismRows = useMemo(() => {
+    const map = new Map<string, InstantRetailMechanismMapping>()
+    mechanismSourceItems.forEach((item) => {
+      if (!item.mechanismName) return
+      const activityNature = resolveInstantRetailActivityNature(item.platform, item.activityNature)
+      const input: InstantRetailMechanismMappingUpsertInput = {
+        platform: item.platform,
+        schemeName: item.schemeName,
+        activityName: item.activityName,
+        startDate: item.startDate,
+        endDate: item.endDate,
+        mechanismName: item.mechanismName,
+        activityNature,
+        customMechanismName: '',
+      }
+      const sourceKey = InstantRetailMechanismService.buildSourceKey(input)
+      if (map.has(sourceKey)) return
+      map.set(sourceKey, {
+        id: `MECHMAP-${sourceKey}`, // 展示用，占位（真正保存时会使用 service 内的稳定 id）
+        sourceKey,
+        platform: input.platform,
+        activityNature,
+        schemeName: input.schemeName?.trim() || undefined,
+        activityName: input.activityName?.trim() || undefined,
+        startDate: input.startDate,
+        endDate: input.endDate,
+        mechanismName: input.mechanismName,
+        customMechanismName: '',
+        createdAt: '',
+        updatedAt: '',
+      })
+    })
+    return Array.from(map.values())
+  }, [mechanismSourceItems])
+
+  const mergedMechanismRows = useMemo(() => {
+    const savedMap = new Map<string, InstantRetailMechanismMapping>()
+    mechanismMappings.forEach((m) => savedMap.set(m.sourceKey, m))
+    return platformMechanismRows.map((row) => {
+      const saved = savedMap.get(row.sourceKey)
+      if (!saved) return row
+      return {
+        ...row,
+        id: saved.id,
+        activityNature: saved.activityNature ?? row.activityNature,
+        customMechanismName: saved.customMechanismName,
+        createdAt: saved.createdAt,
+        updatedAt: saved.updatedAt,
+      }
+    })
+  }, [platformMechanismRows, mechanismMappings])
+
+  const handlePersistCustomMechanismName = async (
+    record: InstantRetailMechanismMapping,
+    raw: string,
+  ) => {
+    if (!clientId) return
+    const nextCustom = raw.trim()
+    if (nextCustom === (record.customMechanismName ?? '').trim()) return
+    try {
+      await InstantRetailMechanismService.upsert(clientId, {
+        id: record.createdAt ? record.id : undefined,
+        sourceKey: record.sourceKey,
+        platform: record.platform,
+        activityNature: record.activityNature,
+        schemeName: record.schemeName,
+        activityName: record.activityName,
+        startDate: record.startDate,
+        endDate: record.endDate,
+        mechanismName: record.mechanismName,
+        customMechanismName: nextCustom,
+      })
+      message.success('自定义机制名称已保存')
+      await loadMechanismMappings()
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : '保存失败'
+      message.error(`保存失败：${msg}`)
+    }
+  }
+
+  const filteredMechanismMappings = useMemo(() => {
+    const values = (mechanismFilterValues ?? {}) as Record<string, unknown>
+    const platform = values.platform as InstantRetailPlatform | '全部' | undefined
+    const schemeName = (values.schemeName as string | undefined)?.trim()
+    const activityName = (values.activityName as string | undefined)?.trim()
+    const mechanismName = (values.mechanismName as string | undefined)?.trim()
+    const customMechanismName = (values.customMechanismName as string | undefined)?.trim()
+    const activityNature = values.activityNature as InstantRetailActivityNature | '全部' | undefined
+    const timeRange = values.timeRange as [dayjs.Dayjs, dayjs.Dayjs] | undefined
+
+    const rangeStart = timeRange?.[0]?.format('YYYY-MM-DD')
+    const rangeEnd = timeRange?.[1]?.format('YYYY-MM-DD')
+
+    return mergedMechanismRows.filter((item) => {
+      if (platform && platform !== '全部' && item.platform !== platform) return false
+      if (activityNature && activityNature !== '全部' && item.activityNature !== activityNature) return false
+      if (schemeName && !(item.schemeName ?? '').includes(schemeName)) return false
+      if (activityName && !(item.activityName ?? '').includes(activityName)) return false
+      if (mechanismName && !item.mechanismName.includes(mechanismName)) return false
+      if (customMechanismName && !item.customMechanismName.includes(customMechanismName)) return false
+      if (rangeStart && item.startDate < rangeStart) return false
+      if (rangeEnd && item.endDate > rangeEnd) return false
+      return true
+    })
+  }, [mergedMechanismRows, mechanismFilterValues])
+
+  const getCustomMechanismNameForActivity = (activity: ActivityDetailInfo): string | undefined => {
+    if (!activity.mechanismName) return undefined
+    const activityNature = resolveInstantRetailActivityNature(activity.platform, activity.activityNature)
+    const hit = mechanismMappings.find((m) => {
+      if (m.platform !== activity.platform) return false
+      if (m.activityNature !== activityNature) return false
+      if (m.startDate !== activity.startDate || m.endDate !== activity.endDate) return false
+      if (m.mechanismName !== activity.mechanismName) return false
+      if (m.schemeName && (activity.schemeName || '') !== m.schemeName) return false
+      if (m.activityName && activity.activityName !== m.activityName) return false
+      return true
+    })
+    const custom = hit?.customMechanismName
+    return custom ? custom : undefined
+  }
+
+  const handleExportMechanismCsv = async () => {
+    const header = [
+      '平台',
+      '活动性质',
+      '方案名称',
+      '活动名称',
+      '活动开始日期',
+      '活动结束日期',
+      '机制名称',
+      '自定义机制名称',
+      'sourceKey',
+    ]
+    const escape = (value: string) => {
+      const v = value ?? ''
+      if (/[",\n]/.test(v)) return `"${v.replaceAll('"', '""')}"`
+      return v
+    }
+    const lines = filteredMechanismMappings.map((r) =>
+      [
+        r.platform,
+        r.activityNature,
+        r.schemeName ?? '',
+        r.activityName ?? '',
+        r.startDate,
+        r.endDate,
+        r.mechanismName,
+        r.customMechanismName ?? '',
+        r.sourceKey,
+      ]
+        .map(escape)
+        .join(','),
+    )
+    const csv = [header.join(','), ...lines].join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `机制管理-即时零售-${clientId}-${dayjs().format('YYYYMMDDHHmmss')}.csv`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+    message.success('已导出CSV')
+  }
+
+  const parseCsv = (text: string) => {
+    const rows: string[][] = []
+    let row: string[] = []
+    let current = ''
+    let inQuotes = false
+    for (let i = 0; i < text.length; i += 1) {
+      const char = text[i]
+      const next = text[i + 1]
+      if (inQuotes) {
+        if (char === '"' && next === '"') {
+          current += '"'
+          i += 1
+        } else if (char === '"') {
+          inQuotes = false
+        } else {
+          current += char
+        }
+        continue
+      }
+      if (char === '"') {
+        inQuotes = true
+        continue
+      }
+      if (char === ',') {
+        row.push(current)
+        current = ''
+        continue
+      }
+      if (char === '\n') {
+        row.push(current)
+        current = ''
+        if (row.some((c) => c.trim() !== '')) rows.push(row)
+        row = []
+        continue
+      }
+      if (char === '\r') continue
+      current += char
+    }
+    row.push(current)
+    if (row.some((c) => c.trim() !== '')) rows.push(row)
+    return rows
+  }
+
+  const handleImportMechanismCsvText = async (text: string) => {
+    if (!clientId) return
+    const rows = parseCsv(text)
+    if (rows.length < 2) {
+      message.warning('CSV内容为空或格式不正确')
+      return
+    }
+    const header = rows[0].map((h) => h.trim())
+    const idx = (name: string) => header.findIndex((h) => h === name)
+    const idxPlatform = idx('平台')
+    const idxActivityNature = idx('活动性质')
+    const idxScheme = idx('方案名称')
+    const idxActivity = idx('活动名称')
+    const idxStart = idx('活动开始日期')
+    const idxEnd = idx('活动结束日期')
+    const idxMechanism = idx('机制名称')
+    const idxCustom = idx('自定义机制名称')
+
+    const required = [idxPlatform, idxStart, idxEnd, idxMechanism]
+    if (required.some((i) => i < 0)) {
+      message.error('CSV表头不匹配，请使用“导出CSV”生成的模板再导入')
+      return
+    }
+
+    const inputs: InstantRetailMechanismMappingUpsertInput[] = []
+    for (let i = 1; i < rows.length; i += 1) {
+      const r = rows[i]
+      const platform = (r[idxPlatform] ?? '').trim() as InstantRetailPlatform
+      const startDate = (r[idxStart] ?? '').trim()
+      const endDate = (r[idxEnd] ?? '').trim()
+      const mechanismName = (r[idxMechanism] ?? '').trim()
+      const schemeName = idxScheme >= 0 ? (r[idxScheme] ?? '').trim() : ''
+      const activityName = idxActivity >= 0 ? (r[idxActivity] ?? '').trim() : ''
+      const customMechanismName = idxCustom >= 0 ? (r[idxCustom] ?? '').trim() : ''
+      const activityNatureRaw = idxActivityNature >= 0 ? (r[idxActivityNature] ?? '').trim() : ''
+
+      if (!platform || !startDate || !endDate || !mechanismName) continue
+
+      inputs.push({
+        platform,
+        schemeName: schemeName || undefined,
+        activityName: activityName || undefined,
+        startDate,
+        endDate,
+        mechanismName,
+        activityNature:
+          activityNatureRaw === '平台活动' || activityNatureRaw === '品牌活动'
+            ? activityNatureRaw
+            : undefined,
+        customMechanismName,
+      })
+    }
+
+    if (inputs.length === 0) {
+      message.warning('未解析到可导入的数据行')
+      return
+    }
+
+    const result = await InstantRetailMechanismService.upsertMany(clientId, inputs)
+    message.success(`导入完成：${result.saved}/${result.total}`)
+    await loadMechanismMappings()
   }
 
   const handleOpenSchemeModal = async () => {
@@ -655,6 +968,74 @@ export default function InstantRetailConfigPage() {
     },
   ]
 
+  const mechanismColumns: ColumnsType<InstantRetailMechanismMapping> = [
+    {
+      title: '平台',
+      dataIndex: 'platform',
+      key: 'platform',
+      width: 120,
+      render: (platform: InstantRetailPlatform) => <Tag color="blue">{platform}</Tag>,
+    },
+    {
+      title: '活动性质',
+      dataIndex: 'activityNature',
+      key: 'activityNature',
+      width: 110,
+      render: (n: InstantRetailActivityNature) => (
+        <Tag color={n === '平台活动' ? 'magenta' : 'default'}>{n}</Tag>
+      ),
+    },
+    {
+      title: '方案名称',
+      dataIndex: 'schemeName',
+      key: 'schemeName',
+      width: 180,
+      render: (name: string) => name || <Text type="secondary">—</Text>,
+    },
+    {
+      title: '活动名称',
+      dataIndex: 'activityName',
+      key: 'activityName',
+      width: 220,
+      render: (name: string) => name || <Text type="secondary">—</Text>,
+    },
+    {
+      title: '活动时间',
+      key: 'period',
+      width: 220,
+      render: (_, record) => (
+        <div>
+          {record.startDate} ~ {record.endDate}
+        </div>
+      ),
+    },
+    {
+      title: '机制名称',
+      dataIndex: 'mechanismName',
+      key: 'mechanismName',
+      width: 180,
+    },
+    {
+      title: '自定义机制名称',
+      key: 'customMechanismName',
+      width: 280,
+      render: (_, record) => (
+        <Input
+          key={`${record.sourceKey}-${record.customMechanismName}`}
+          defaultValue={record.customMechanismName}
+          placeholder="编辑后失焦或回车保存"
+          allowClear
+          onBlur={(e) => {
+            void handlePersistCustomMechanismName(record, e.target.value)
+          }}
+          onPressEnter={(e) => {
+            ;(e.target as HTMLInputElement).blur()
+          }}
+        />
+      ),
+    },
+  ]
+
   return (
     <div className={styles.page}>
       <Card className={styles.card}>
@@ -801,6 +1182,95 @@ export default function InstantRetailConfigPage() {
                     dataSource={monitoringTasks}
                     pagination={{ pageSize: 10 }}
                     scroll={{ x: 1400 }}
+                  />
+                </div>
+              ),
+            },
+            {
+              key: 'mechanism',
+              label: (
+                <Space>
+                  <FileTextOutlined />
+                  <span>机制管理</span>
+                </Space>
+              ),
+              children: (
+                <div>
+                  <div className={styles.tabDescription} style={{ marginBottom: 16 }}>
+                    <Text type="secondary">
+                      平台机制明细由活动数据自动生成；仅「自定义机制名称」可在表格内编辑（失焦保存），也可导出/导入 CSV 批量维护
+                    </Text>
+                  </div>
+                  <div style={{ marginBottom: 12 }}>
+                    <Space size={12} wrap>
+                      <Button onClick={() => Promise.all([loadMechanismSourceItems(), loadMechanismMappings()])}>
+                        从平台刷新
+                      </Button>
+                      <Button onClick={handleExportMechanismCsv}>导出CSV</Button>
+                      <Upload
+                        accept=".csv"
+                        showUploadList={false}
+                        beforeUpload={async (file) => {
+                          try {
+                            const text = await file.text()
+                            await handleImportMechanismCsvText(text)
+                          } catch (error: unknown) {
+                            const msg = error instanceof Error ? error.message : '导入失败'
+                            message.error(`导入失败：${msg}`)
+                          }
+                          return false
+                        }}
+                      >
+                        <Button>导入CSV</Button>
+                      </Upload>
+                    </Space>
+                  </div>
+                  <Form form={mechanismFilterForm} layout="inline" style={{ marginBottom: 16 }}>
+                    <Form.Item name="platform" label="平台" initialValue="全部">
+                      <Select
+                        style={{ width: 160 }}
+                        options={[
+                          { label: '全部平台', value: '全部' },
+                          ...platforms.map((p) => ({ label: p, value: p })),
+                        ]}
+                      />
+                    </Form.Item>
+                    <Form.Item name="activityNature" label="活动性质" initialValue="全部">
+                      <Select
+                        style={{ width: 140 }}
+                        options={[
+                          { label: '全部', value: '全部' },
+                          { label: '平台活动', value: '平台活动' },
+                          { label: '品牌活动', value: '品牌活动' },
+                        ]}
+                      />
+                    </Form.Item>
+                    <Form.Item name="schemeName" label="方案名称">
+                      <Input style={{ width: 160 }} placeholder="可空" allowClear />
+                    </Form.Item>
+                    <Form.Item name="activityName" label="活动名称">
+                      <Input style={{ width: 180 }} placeholder="可空" allowClear />
+                    </Form.Item>
+                    <Form.Item name="timeRange" label="活动时间">
+                      <RangePicker />
+                    </Form.Item>
+                    <Form.Item name="mechanismName" label="机制名称">
+                      <Input style={{ width: 160 }} placeholder="请输入" allowClear />
+                    </Form.Item>
+                    <Form.Item name="customMechanismName" label="自定义机制名称">
+                      <Input style={{ width: 180 }} placeholder="请输入" allowClear />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button onClick={() => mechanismFilterForm.resetFields()}>重置</Button>
+                    </Form.Item>
+                  </Form>
+                  <Table
+                    rowKey="sourceKey"
+                    loading={loading}
+                    columns={mechanismColumns}
+                    dataSource={filteredMechanismMappings}
+                    pagination={{ pageSize: 10 }}
+                    scroll={{ x: 1420 }}
                   />
                 </div>
               ),
@@ -982,12 +1452,29 @@ export default function InstantRetailConfigPage() {
           <div>
             <Descriptions column={2} bordered>
               <Descriptions.Item label="平台">{viewingActivity.platform}</Descriptions.Item>
+              <Descriptions.Item label="活动性质">
+                {resolveInstantRetailActivityNature(
+                  viewingActivity.platform,
+                  viewingActivity.activityNature,
+                )}
+              </Descriptions.Item>
               <Descriptions.Item label="活动名称">{viewingActivity.activityName}</Descriptions.Item>
               <Descriptions.Item label="方案名称">
                 {viewingActivity.schemeName || <Text type="secondary">—</Text>}
               </Descriptions.Item>
               <Descriptions.Item label="机制名称">
-                {viewingActivity.mechanismName || <Text type="secondary">—</Text>}
+                {(() => {
+                  const custom = getCustomMechanismNameForActivity(viewingActivity)
+                  if (custom) {
+                    return (
+                      <Space direction="vertical" size={0}>
+                        <Text strong>{custom}</Text>
+                        <Text type="secondary">原：{viewingActivity.mechanismName}</Text>
+                      </Space>
+                    )
+                  }
+                  return viewingActivity.mechanismName || <Text type="secondary">—</Text>
+                })()}
               </Descriptions.Item>
               <Descriptions.Item label="活动时间">
                 {viewingActivity.startDate} ~ {viewingActivity.endDate}
