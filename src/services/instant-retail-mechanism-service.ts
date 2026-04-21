@@ -118,7 +118,6 @@ export class InstantRetailMechanismService {
 
     let saved = 0
     for (const input of inputs) {
-      // eslint-disable-next-line no-await-in-loop
       await this.upsert(clientId, input)
       saved += 1
     }
